@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	pb "babel/protobuf"
+	pb "github.com/larskluge/babel/protobuf"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )
