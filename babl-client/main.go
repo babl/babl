@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/codegangsta/cli"
 	pb "github.com/larskluge/babl/protobuf"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
@@ -16,24 +17,62 @@ const (
 )
 
 func main() {
-	// Set up a connection to the server.
+	app := configureCli()
+	app.Run(os.Args)
+}
+
+func configureCli() (app *cli.App) {
+	app = cli.NewApp()
+	app.Name = "babl"
+	app.Usage = "Access the Babl Network."
+	app.Version = "0.0.1"
+	app.Action = defaultAction
+	app.Flags = []cli.Flag{
+		cli.StringSliceFlag{
+			Name:  "env, e",
+			Usage: "Send environment variables, e.g. -e FOO=42",
+		},
+		cli.BoolFlag{
+			Name:  "verbose",
+			Usage: "Verbose logging",
+		},
+	}
+	return
+}
+
+func defaultAction(c *cli.Context) {
+	module := c.Args().First()
+	if module == "" {
+		cli.ShowAppHelp(c)
+		os.Exit(1)
+	} else {
+		log.Println("connecting to module", module)
+
+		envs := c.StringSlice("env")
+		log.Println("env", len(envs), envs)
+
+		verbose := c.Bool("verbose")
+		log.Println("verbose", verbose)
+
+		run(c)
+	}
+}
+
+func run(cli *cli.Context) {
 	conn, err := grpc.Dial(address, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
-	// c := pb.NewGreeterClient(conn)
-	c := pb.NewStringUpcaseClient(conn)
 
-	// Contact the server and print out its response.
-	name := defaultName
-	if len(os.Args) > 1 {
-		name = os.Args[1]
-	}
-	in := []byte(name)
-	r, err := c.IO(context.Background(), &pb.BinRequest{In: in})
+	// module := cli.Args().First()
+	connection := pb.NewStringUpcaseClient(conn)
+
+	in := []byte("hello there")
+
+	r, err := connection.IO(context.Background(), &pb.BinRequest{In: in})
 	if err != nil {
-		log.Fatalf("could not greet: %v", err)
+		log.Fatalf("Failed: %v", err)
 	}
-	log.Printf("Greeting: %s", r.Out)
+	log.Printf("Response: %s", r.Out)
 }
