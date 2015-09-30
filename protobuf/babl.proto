@@ -12,6 +12,7 @@ service StringUpcase {
 
 message BinRequest {
   bytes in = 1;
+  map<string, string> env = 2;
 }
 
 message BinReply {

@@ -49,12 +49,20 @@ func (x BinReply_Status) String() string {
 }
 
 type BinRequest struct {
-	In []byte `protobuf:"bytes,1,opt,name=in,proto3" json:"in,omitempty"`
+	In  []byte            `protobuf:"bytes,1,opt,name=in,proto3" json:"in,omitempty"`
+	Env map[string]string `protobuf:"bytes,2,rep,name=env" json:"env,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 }
 
 func (m *BinRequest) Reset()         { *m = BinRequest{} }
 func (m *BinRequest) String() string { return proto.CompactTextString(m) }
 func (*BinRequest) ProtoMessage()    {}
+
+func (m *BinRequest) GetEnv() map[string]string {
+	if m != nil {
+		return m.Env
+	}
+	return nil
+}
 
 type BinReply struct {
 	Out    []byte          `protobuf:"bytes,1,opt,name=out,proto3" json:"out,omitempty"`

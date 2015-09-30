@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net"
@@ -26,7 +27,11 @@ func (s *server) IO(ctx context.Context, in *pb.BinRequest) (*pb.BinReply, error
 	// cmd := exec.Command("exit", "1")
 	// cmd := exec.Command("bash", "-c", "echo error >&2")
 	cmd := exec.Command("env")
-	cmd.Env = []string{"FOO=BAR"}
+	cmd.Env = make([]string, len(in.Env)) //{"FOO=BAR"}
+
+	for k, v := range in.Env {
+		cmd.Env = append(cmd.Env, fmt.Sprintf("%s=%s", k, v))
+	}
 
 	stdin, errIn := cmd.StdinPipe()
 	if errIn != nil {

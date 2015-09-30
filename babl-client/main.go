@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"strings"
 
 	"github.com/codegangsta/cli"
 	pb "github.com/larskluge/babl/protobuf"
@@ -69,8 +70,15 @@ func run(cli *cli.Context) {
 	connection := pb.NewStringUpcaseClient(conn)
 
 	in := []byte("hello there")
+	req := pb.BinRequest{In: in}
+	req.Env = make(map[string]string)
+	envs := cli.StringSlice("env")
+	for _, val := range envs {
+		x := strings.Split(val, "=")
+		req.Env[x[0]] = x[1]
+	}
 
-	r, err := connection.IO(context.Background(), &pb.BinRequest{In: in})
+	r, err := connection.IO(context.Background(), &req)
 	if err != nil {
 		log.Fatalf("Failed: %v", err)
 	}
