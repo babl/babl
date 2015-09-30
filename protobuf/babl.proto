@@ -3,7 +3,7 @@ syntax = "proto3";
 option java_package = "io.grpc.examples";
 option objc_class_prefix = "HLW";
 
-package protobuf;
+package babl;
 
 // The greeting service definition.
 service Greeter {
@@ -20,3 +20,22 @@ message HelloRequest {
 message HelloReply {
   string message = 1;
 }
+
+
+
+
+
+
+
+service StringUpcase {
+  rpc IO (BinRequest) returns (BinReply) {}
+}
+
+message BinRequest {
+  bytes in = 1;
+}
+
+message BinReply {
+  bytes out = 1;
+}
+

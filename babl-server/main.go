@@ -1,16 +1,17 @@
 package main
 
 import (
+	// "fmt"
 	"log"
 	"net"
 
-	pb "github.com/larskluge/babel/protobuf"
+	pb "github.com/larskluge/babl/protobuf"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )
 
 const (
-	port = ":50051"
+	port = ":4444"
 )
 
 // server is used to implement hellowrld.GreeterServer.
@@ -22,6 +23,12 @@ func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloRe
 	return &pb.HelloReply{Message: "Hello " + in.Name}, nil
 }
 
+func (s *server) IO(ctx context.Context, in *pb.BinRequest) (*pb.BinReply, error) {
+	log.Printf("Received: %s", in.In)
+	// msg := fmt.Sprintf("Hello %s", in.In)
+	return &pb.BinReply{Out: in.In}, nil
+}
+
 func main() {
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
@@ -30,5 +37,6 @@ func main() {
 	log.Printf("Listening at %s..", port)
 	s := grpc.NewServer()
 	pb.RegisterGreeterServer(s, &server{})
+	pb.RegisterStringUpcaseServer(s, &server{})
 	s.Serve(lis)
 }
