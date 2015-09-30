@@ -24,7 +24,9 @@ func (s *server) IO(ctx context.Context, in *pb.BinRequest) (*pb.BinReply, error
 
 	// cmd := exec.Command("cat")
 	// cmd := exec.Command("exit", "1")
-	cmd := exec.Command("bash", "-c", "echo error >&2")
+	// cmd := exec.Command("bash", "-c", "echo error >&2")
+	cmd := exec.Command("env")
+	cmd.Env = []string{"FOO=BAR"}
 
 	stdin, errIn := cmd.StdinPipe()
 	if errIn != nil {
