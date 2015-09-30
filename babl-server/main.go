@@ -1,7 +1,6 @@
 package main
 
 import (
-	// "fmt"
 	"io/ioutil"
 	"log"
 	"net"
@@ -24,25 +23,33 @@ func (s *server) IO(ctx context.Context, in *pb.BinRequest) (*pb.BinReply, error
 	log.Printf("Received: %s", in.In)
 
 	// cmd := exec.Command("cat")
-	cmd := exec.Command("exit", "1")
-	// cmd := exec.Command("bash", "-c", "echo error >&2")
+	// cmd := exec.Command("exit", "1")
+	cmd := exec.Command("bash", "-c", "echo error >&2")
 
-	grepIn, errIn := cmd.StdinPipe()
+	stdin, errIn := cmd.StdinPipe()
 	if errIn != nil {
-		// 	panic(errIn)
+		log.Printf("cmd.StdinPipe: %v", errIn)
 	}
-	grepOut, errOut := cmd.StdoutPipe()
+	stdout, errOut := cmd.StdoutPipe()
 	if errOut != nil {
-		// 	panic(errOut)
+		log.Printf("cmd.StdoutPipe: %v", errOut)
+	}
+	stderr, errErr := cmd.StderrPipe()
+	if errErr != nil {
+		log.Printf("cmd.StderrPipe: %v", errErr)
 	}
 	cmd.Start()
 
-	grepIn.Write(in.In)
-	grepIn.Close()
-	grepBytes, _ := ioutil.ReadAll(grepOut)
-	// if err != nil {
-	// 	panic(err)
-	// }
+	stdin.Write(in.In)
+	stdin.Close()
+	grepBytes, err := ioutil.ReadAll(stdout)
+	if err != nil {
+		log.Printf("ioutil.ReadAll: %v", err)
+	}
+	errBytes, _ := ioutil.ReadAll(stderr)
+	if len(errBytes) > 0 {
+		log.Printf("stderr: %s", errBytes)
+	}
 
 	res := pb.BinReply{Out: grepBytes}
 	res.Status = pb.BinReply_SUCCESS
