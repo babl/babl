@@ -28,6 +28,26 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
+type BinReply_Status int32
+
+const (
+	BinReply_SUCCESS BinReply_Status = 0
+	BinReply_ERROR   BinReply_Status = 1
+)
+
+var BinReply_Status_name = map[int32]string{
+	0: "SUCCESS",
+	1: "ERROR",
+}
+var BinReply_Status_value = map[string]int32{
+	"SUCCESS": 0,
+	"ERROR":   1,
+}
+
+func (x BinReply_Status) String() string {
+	return proto.EnumName(BinReply_Status_name, int32(x))
+}
+
 type BinRequest struct {
 	In []byte `protobuf:"bytes,1,opt,name=in,proto3" json:"in,omitempty"`
 }
@@ -37,12 +57,17 @@ func (m *BinRequest) String() string { return proto.CompactTextString(m) }
 func (*BinRequest) ProtoMessage()    {}
 
 type BinReply struct {
-	Out []byte `protobuf:"bytes,1,opt,name=out,proto3" json:"out,omitempty"`
+	Out    []byte          `protobuf:"bytes,1,opt,name=out,proto3" json:"out,omitempty"`
+	Status BinReply_Status `protobuf:"varint,2,opt,name=status,enum=babl.BinReply_Status" json:"status,omitempty"`
 }
 
 func (m *BinReply) Reset()         { *m = BinReply{} }
 func (m *BinReply) String() string { return proto.CompactTextString(m) }
 func (*BinReply) ProtoMessage()    {}
+
+func init() {
+	proto.RegisterEnum("babl.BinReply_Status", BinReply_Status_name, BinReply_Status_value)
+}
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ context.Context

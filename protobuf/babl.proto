@@ -16,4 +16,9 @@ message BinRequest {
 
 message BinReply {
   bytes out = 1;
+  enum Status {
+    SUCCESS = 0;
+    ERROR = 1;
+  }
+  Status status = 2;
 }
