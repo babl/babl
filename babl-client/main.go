@@ -48,17 +48,26 @@ func defaultAction(c *cli.Context) {
 	} else {
 		log.Println("connecting to module", module)
 
-		envs := c.StringSlice("env")
-		log.Println("env", len(envs), envs)
+		env := buildEnv(c.StringSlice("env"))
+		log.Println("env", env)
 
 		verbose := c.Bool("verbose")
 		log.Println("verbose", verbose)
 
-		run(c)
+		run(module, env)
 	}
 }
 
-func run(cli *cli.Context) {
+func buildEnv(envs []string) (env map[string]string) {
+	env = make(map[string]string)
+	for _, val := range envs {
+		x := strings.Split(val, "=")
+		env[x[0]] = x[1]
+	}
+	return
+}
+
+func run(module string, env map[string]string) {
 	var in []byte
 	if !isatty.IsTerminal(os.Stdin.Fd()) {
 		in, _ = ioutil.ReadAll(os.Stdin)
@@ -71,16 +80,10 @@ func run(cli *cli.Context) {
 	}
 	defer conn.Close()
 
-	// module := cli.Args().First()
 	connection := pb.NewStringUpcaseClient(conn)
 
 	req := pb.BinRequest{In: in}
-	req.Env = make(map[string]string)
-	envs := cli.StringSlice("env")
-	for _, val := range envs {
-		x := strings.Split(val, "=")
-		req.Env[x[0]] = x[1]
-	}
+	req.Env = env
 
 	r, err := connection.IO(context.Background(), &req)
 	if err != nil {
