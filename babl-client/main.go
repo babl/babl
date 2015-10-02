@@ -1,20 +1,20 @@
 package main
 
 import (
+	"io/ioutil"
 	"log"
 	"os"
 	"strings"
 
 	"github.com/codegangsta/cli"
 	pb "github.com/larskluge/babl/protobuf"
+	"github.com/mattn/go-isatty"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )
 
 const (
 	address = "localhost:4444"
-	// address     = "localdocker:8080"
-	defaultName = "world"
 )
 
 func main() {
@@ -59,6 +59,12 @@ func defaultAction(c *cli.Context) {
 }
 
 func run(cli *cli.Context) {
+	var in []byte
+	if !isatty.IsTerminal(os.Stdin.Fd()) {
+		in, _ = ioutil.ReadAll(os.Stdin)
+	}
+	log.Printf("%d bytes read from stdin", len(in))
+
 	conn, err := grpc.Dial(address, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
@@ -68,7 +74,6 @@ func run(cli *cli.Context) {
 	// module := cli.Args().First()
 	connection := pb.NewStringUpcaseClient(conn)
 
-	in := []byte("hello there")
 	req := pb.BinRequest{In: in}
 	req.Env = make(map[string]string)
 	envs := cli.StringSlice("env")
