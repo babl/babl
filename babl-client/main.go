@@ -1,9 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
+	"reflect"
 	"strings"
 
 	"github.com/codegangsta/cli"
@@ -80,7 +82,13 @@ func run(module string, env map[string]string) {
 	}
 	defer conn.Close()
 
-	connection := pb.NewStringUpcaseClient(conn)
+	// module := "string-upcase"
+	// connection := pb.NewStringUpcaseClient(conn)
+	// connection := pb."New%sClient(conn)"
+
+	t := reflect.TypeOf(pb)
+	method := t.MethodByName(fmt.Sprintf("New%sClient", module))
+	connection := method(conn)
 
 	req := pb.BinRequest{In: in}
 	req.Env = env
