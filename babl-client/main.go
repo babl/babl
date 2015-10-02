@@ -24,7 +24,6 @@ func main() {
 
 func configureCli() (app *cli.App) {
 	app = cli.NewApp()
-	app.Name = "babl"
 	app.Usage = "Access the Babl Network."
 	app.Version = "0.0.1"
 	app.Action = defaultAction
