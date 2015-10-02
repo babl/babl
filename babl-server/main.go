@@ -5,20 +5,64 @@ import (
 	"io/ioutil"
 	"log"
 	"net"
+	"os"
 	"os/exec"
 	"syscall"
 
+	"github.com/codegangsta/cli"
 	pb "github.com/larskluge/babl/protobuf"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )
 
-const (
-	port = ":4444"
-)
-
-// server is used to implement hellowrld.GreeterServer.
 type server struct{}
+
+var command string
+
+func main() {
+	app := configureCli()
+	app.Run(os.Args)
+}
+
+func configureCli() (app *cli.App) {
+	app = cli.NewApp()
+	app.Usage = "Server for a Babl Module"
+	app.Version = "0.0.1"
+	app.Action = defaultAction
+	app.Flags = []cli.Flag{
+		cli.StringFlag{
+			Name:  "cmd",
+			Usage: "Command to be executed",
+			Value: "cat",
+		},
+		cli.IntFlag{
+			Name:   "port",
+			Usage:  "Port for server to be started on",
+			EnvVar: "PORT",
+			Value:  4444,
+		},
+		cli.BoolFlag{
+			Name:  "verbose",
+			Usage: "Verbose logging",
+		},
+	}
+	return
+}
+
+func defaultAction(c *cli.Context) {
+	// verbose := c.Bool("verbose")
+	command = c.String("cmd")
+	port := fmt.Sprintf(":%d", c.Int("port"))
+
+	lis, err := net.Listen("tcp", port)
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+	log.Printf("Listening at %s..", port)
+	s := grpc.NewServer()
+	pb.RegisterStringUpcaseServer(s, &server{})
+	s.Serve(lis)
+}
 
 func (s *server) IO(ctx context.Context, in *pb.BinRequest) (*pb.BinReply, error) {
 	log.Printf("Received: %s", in.In)
@@ -26,7 +70,9 @@ func (s *server) IO(ctx context.Context, in *pb.BinRequest) (*pb.BinReply, error
 	// cmd := exec.Command("cat")
 	// cmd := exec.Command("exit", "1")
 	// cmd := exec.Command("bash", "-c", "echo error >&2")
-	cmd := exec.Command("env")
+	// cmd := exec.Command("env")
+	log.Printf("Executing %s", command)
+	cmd := exec.Command(command)
 	cmd.Env = make([]string, len(in.Env)) //{"FOO=BAR"}
 
 	for k, v := range in.Env {
@@ -78,17 +124,5 @@ func (s *server) IO(ctx context.Context, in *pb.BinRequest) (*pb.BinReply, error
 		}
 	}
 
-	// msg := fmt.Sprintf("Hello %s", in.In)
 	return &res, nil
-}
-
-func main() {
-	lis, err := net.Listen("tcp", port)
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
-	}
-	log.Printf("Listening at %s..", port)
-	s := grpc.NewServer()
-	pb.RegisterStringUpcaseServer(s, &server{})
-	s.Serve(lis)
 }
