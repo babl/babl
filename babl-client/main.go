@@ -87,4 +87,7 @@ func run(cli *cli.Context) {
 		log.Fatalf("Failed: %v", err)
 	}
 	log.Printf("Response: %s", r.Out)
+	if r.Status != pb.BinReply_SUCCESS {
+		os.Exit(int(r.Status))
+	}
 }
