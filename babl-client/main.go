@@ -15,10 +15,6 @@ import (
 	"google.golang.org/grpc"
 )
 
-const (
-	address = "localhost:4444"
-)
-
 func main() {
 	app := configureCli()
 	app.Run(os.Args)
@@ -30,6 +26,17 @@ func configureCli() (app *cli.App) {
 	app.Version = "0.0.1"
 	app.Action = defaultAction
 	app.Flags = []cli.Flag{
+		cli.StringFlag{
+			Name:  "host",
+			Usage: "Host to connect to, e.g. babl.sh, localhost",
+			Value: "localhost", // "babl.sh",
+		},
+		cli.IntFlag{
+			Name:   "port",
+			Usage:  "Port to connect to",
+			EnvVar: "PORT",
+			Value:  4444,
+		},
 		cli.StringSliceFlag{
 			Name:  "env, e",
 			Usage: "Send environment variables, e.g. -e FOO=42",
@@ -56,7 +63,9 @@ func defaultAction(c *cli.Context) {
 		verbose := c.Bool("verbose")
 		log.Println("verbose", verbose)
 
-		run(module, env)
+		address := fmt.Sprintf("%s:%d", c.String("host"), c.Int("port"))
+		log.Printf("Connecting to %s..", address)
+		run(address, module, env)
 	}
 }
 
@@ -69,7 +78,7 @@ func buildEnv(envs []string) (env map[string]string) {
 	return
 }
 
-func run(module string, env map[string]string) {
+func run(address string, module string, env map[string]string) {
 	var in []byte
 	if !isatty.IsTerminal(os.Stdin.Fd()) {
 		in, _ = ioutil.ReadAll(os.Stdin)
