@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"reflect"
+	// "reflect"
 	"strings"
 
 	"github.com/codegangsta/cli"
@@ -92,22 +92,33 @@ func run(address string, module string, env map[string]string) {
 	defer conn.Close()
 
 	// module := "string-upcase"
-	// connection := pb.NewStringUpcaseClient(conn)
 	// connection := pb."New%sClient(conn)"
 
-	t := reflect.TypeOf(pb)
-	method := t.MethodByName(fmt.Sprintf("New%sClient", module))
-	connection := method(conn)
+	// pb.Abc(5)
+
+	// t := reflect.TypeOf(pb)
+	// method := t.MethodByName(fmt.Sprintf("New%sClient", module))
+	// connection := method(conn)
+
+	// connection := pb.NewStringUpcaseClient(conn)
 
 	req := pb.BinRequest{In: in}
 	req.Env = env
 
-	r, err := connection.IO(context.Background(), &req)
-	if err != nil {
+	res := new(pb.BinReply)
+	// opts := grpc.CallOption{}
+	grpcModule := strings.Replace(strings.Title(module), "-", "", -1)
+	path := fmt.Sprintf("/babl.%s/IO", grpcModule)
+	if err := grpc.Invoke(context.Background(), path, &req, res, conn); err != nil {
 		log.Fatalf("Failed: %v", err)
 	}
-	log.Printf("Response: %s", r.Out)
-	if r.Status != pb.BinReply_SUCCESS {
-		os.Exit(int(r.Status))
+
+	// res, err := connection.IO(context.Background(), &req)
+	// if err != nil {
+	// 	log.Fatalf("Failed: %v", err)
+	// }
+	log.Printf("Response: %s", res.Out)
+	if res.Status != pb.BinReply_SUCCESS {
+		os.Exit(int(res.Status))
 	}
 }
