@@ -67,10 +67,6 @@ func defaultAction(c *cli.Context) {
 func (s *server) IO(ctx context.Context, in *pb.BinRequest) (*pb.BinReply, error) {
 	log.Printf("Received: %s", in.In)
 
-	// cmd := exec.Command("cat")
-	// cmd := exec.Command("exit", "1")
-	// cmd := exec.Command("bash", "-c", "echo error >&2")
-	// cmd := exec.Command("env")
 	log.Printf("Executing %s", command)
 	cmd := exec.Command(command)
 	cmd.Env = make([]string, len(in.Env)) //{"FOO=BAR"}
