@@ -31,6 +31,11 @@ func configureCli() (app *cli.App) {
 	app.Action = defaultAction
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
+			Name:   "module, m",
+			Usage:  "Module to serve",
+			EnvVar: "MODULE",
+		},
+		cli.StringFlag{
 			Name:  "cmd",
 			Usage: "Command to be executed",
 			Value: "cat",
@@ -50,18 +55,23 @@ func configureCli() (app *cli.App) {
 }
 
 func defaultAction(c *cli.Context) {
-	// verbose := c.Bool("verbose")
-	command = c.String("cmd")
-	port := fmt.Sprintf(":%d", c.Int("port"))
+	module := c.String("module")
+	if module == "" {
+		cli.ShowAppHelp(c)
+		os.Exit(1)
+	} else {
+		command = c.String("cmd")
+		address := fmt.Sprintf(":%d", c.Int("port"))
 
-	lis, err := net.Listen("tcp", port)
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		lis, err := net.Listen("tcp", address)
+		if err != nil {
+			log.Fatalf("failed to listen: %v", err)
+		}
+		log.Printf("Serving module %s, listening at %s..", module, address)
+		s := grpc.NewServer()
+		pb.Modules[module].Server(s, &server{})
+		s.Serve(lis)
 	}
-	log.Printf("Listening at %s..", port)
-	s := grpc.NewServer()
-	pb.Modules["string-upcase"].Server(s, &server{})
-	s.Serve(lis)
 }
 
 func (s *server) IO(ctx context.Context, in *pb.BinRequest) (*pb.BinReply, error) {
