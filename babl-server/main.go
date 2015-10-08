@@ -60,7 +60,7 @@ func defaultAction(c *cli.Context) {
 	}
 	log.Printf("Listening at %s..", port)
 	s := grpc.NewServer()
-	pb.RegisterStringUpcaseServer(s, &server{})
+	pb.Modules["string-upcase"].Server(s, &server{})
 	s.Serve(lis)
 }
 
