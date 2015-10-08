@@ -33,7 +33,7 @@ func configureCli() (app *cli.App) {
 		cli.StringFlag{
 			Name:   "module, m",
 			Usage:  "Module to serve",
-			EnvVar: "MODULE",
+			EnvVar: "BABL_MODULE",
 		},
 		cli.StringFlag{
 			Name:  "cmd",
