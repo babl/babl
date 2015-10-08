@@ -90,13 +90,10 @@ func run(address string, module string, env map[string]string) {
 	}
 	defer conn.Close()
 
-	req := pb.BinRequest{In: in}
-	req.Env = env
-
-	res := new(pb.BinReply)
-	grpcModule := strings.Replace(strings.Title(module), "-", "", -1)
-	path := fmt.Sprintf("/babl.%s/IO", grpcModule)
-	if err := grpc.Invoke(context.Background(), path, &req, res, conn); err != nil {
+	connection := pb.Modules[module].Client(conn)
+	req := pb.BinRequest{In: in, Env: env}
+	res, err := connection.IO(context.Background(), &req)
+	if err != nil {
 		log.Fatalf("Failed: %v", err)
 	}
 	log.Printf("Response: %s", res.Out)
