@@ -114,9 +114,9 @@ func RegisterStringUpcaseServer(s *grpc.Server, srv StringUpcaseServer) {
 	s.RegisterService(&_StringUpcase_serviceDesc, srv)
 }
 
-func _StringUpcase_IO_Handler(srv interface{}, ctx context.Context, codec grpc.Codec, buf []byte) (interface{}, error) {
+func _StringUpcase_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
 	in := new(BinRequest)
-	if err := codec.Unmarshal(buf, in); err != nil {
+	if err := dec(in); err != nil {
 		return nil, err
 	}
 	out, err := srv.(StringUpcaseServer).IO(ctx, in)
