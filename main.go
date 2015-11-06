@@ -90,7 +90,7 @@ func run(address string, module string, env map[string]string) {
 	}
 	log.Printf("%d bytes read from stdin", len(in))
 
-	sn := "babl.sh"
+	sn := "babl.test.youtube.com"
 	creds, err := credentials.NewClientTLSFromFile(*caFile, sn)
 	if err != nil {
 		log.Fatalf("Failed to create TLS credentials %v", err)
