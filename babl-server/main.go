@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -13,11 +14,17 @@ import (
 	pb "github.com/larskluge/babl/protobuf"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 )
 
 type server struct{}
 
 var command string
+
+var (
+	certFile = flag.String("cert_file", "testdata/server.pem", "The TLS cert file")
+	keyFile  = flag.String("key_file", "testdata/server.key", "The TLS key file")
+)
 
 func main() {
 	app := configureCli()
@@ -68,7 +75,14 @@ func defaultAction(c *cli.Context) {
 			log.Fatalf("failed to listen: %v", err)
 		}
 		log.Printf("Serving module %s, listening at %s..", module, address)
-		s := grpc.NewServer()
+
+		creds, err := credentials.NewServerTLSFromFile(*certFile, *keyFile)
+		if err != nil {
+			log.Fatalf("Failed to generate credentials %v", err)
+		}
+		opts := []grpc.ServerOption{grpc.Creds(creds)}
+
+		s := grpc.NewServer(opts...)
 		pb.Modules[module].Server(s, &server{})
 		s.Serve(lis)
 	}

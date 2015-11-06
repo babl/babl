@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -12,6 +13,11 @@ import (
 	"github.com/mattn/go-isatty"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
+)
+
+var (
+	caFile = flag.String("ca_file", "testdata/ca.pem", "The file containning the CA root cert file")
 )
 
 func main() {
@@ -84,7 +90,15 @@ func run(address string, module string, env map[string]string) {
 	}
 	log.Printf("%d bytes read from stdin", len(in))
 
-	conn, err := grpc.Dial(address, grpc.WithInsecure())
+	sn := "babl.sh"
+	creds, err := credentials.NewClientTLSFromFile(*caFile, sn)
+	if err != nil {
+		log.Fatalf("Failed to create TLS credentials %v", err)
+	}
+	var opts []grpc.DialOption
+	opts = append(opts, grpc.WithTransportCredentials(creds))
+
+	conn, err := grpc.Dial(address, opts...)
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
