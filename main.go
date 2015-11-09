@@ -1,7 +1,7 @@
 package main
 
 import (
-	"flag"
+	"crypto/x509"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -14,10 +14,6 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
-)
-
-var (
-	caFile = flag.String("ca_file", "testdata/ca.pem", "The file containning the CA root cert file")
 )
 
 func main() {
@@ -90,11 +86,18 @@ func run(address string, module string, env map[string]string) {
 	}
 	log.Printf("%d bytes read from stdin", len(in))
 
-	sn := "babl.test.youtube.com"
-	creds, err := credentials.NewClientTLSFromFile(*caFile, sn)
+	data, err := Asset("data/ca.pem")
 	if err != nil {
-		log.Fatalf("Failed to create TLS credentials %v", err)
+		log.Fatal("asset not found")
 	}
+
+	sn := "babl.test.youtube.com"
+	cp := x509.NewCertPool()
+	if !cp.AppendCertsFromPEM(data) {
+		log.Fatal("credentials: failed to append certificates")
+	}
+
+	creds := credentials.NewClientTLSFromCert(cp, sn)
 	var opts []grpc.DialOption
 	opts = append(opts, grpc.WithTransportCredentials(creds))
 
