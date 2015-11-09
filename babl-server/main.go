@@ -1,7 +1,7 @@
 package main
 
 import (
-	"flag"
+	"crypto/tls"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -20,11 +20,6 @@ import (
 type server struct{}
 
 var command string
-
-var (
-	certFile = flag.String("cert_file", "testdata/server.pem", "The TLS cert file")
-	keyFile  = flag.String("key_file", "testdata/server.key", "The TLS key file")
-)
 
 func main() {
 	app := configureCli()
@@ -76,10 +71,13 @@ func defaultAction(c *cli.Context) {
 		}
 		log.Printf("Serving module %s, listening at %s..", module, address)
 
-		creds, err := credentials.NewServerTLSFromFile(*certFile, *keyFile)
+		certPEMBlock, _ := Asset("data/server.pem")
+		keyPEMBlock, _ := Asset("data/server.key")
+		cert, err := tls.X509KeyPair(certPEMBlock, keyPEMBlock)
 		if err != nil {
-			log.Fatalf("Failed to generate credentials %v", err)
+			log.Fatalf("Could not load key pair %v", err)
 		}
+		creds := credentials.NewServerTLSFromCert(&cert)
 		opts := []grpc.ServerOption{grpc.Creds(creds)}
 
 		s := grpc.NewServer(opts...)
