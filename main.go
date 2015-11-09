@@ -30,7 +30,7 @@ func configureCli() (app *cli.App) {
 		cli.StringFlag{
 			Name:  "host",
 			Usage: "Host to connect to, e.g. babl.sh, localhost",
-			Value: "localhost", // "babl.sh",
+			Value: "babl.sh",
 		},
 		cli.IntFlag{
 			Name:   "port",
