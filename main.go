@@ -113,7 +113,7 @@ func run(address string, module string, env map[string]string) {
 	if err != nil {
 		log.Fatalf("Failed: %v", err)
 	}
-	log.Printf("Response: %s", res.Out)
+	fmt.Printf("%s", res.Out)
 	if res.Status != pb.BinReply_SUCCESS {
 		os.Exit(int(res.Status))
 	}
