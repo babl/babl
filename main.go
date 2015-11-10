@@ -113,8 +113,12 @@ func run(address string, module string, env map[string]string) {
 	if err != nil {
 		log.Fatalf("Failed: %v", err)
 	}
-	fmt.Printf("%s", res.Out)
-	if res.Status != pb.BinReply_SUCCESS {
+	if res.Status == pb.BinReply_SUCCESS {
+		out := res.Out
+		log.Printf("%d bytes received from module", len(out))
+		fmt.Printf("%s", out)
+	} else {
+		log.Print("Module execution failed")
 		os.Exit(int(res.Status))
 	}
 }
