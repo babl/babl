@@ -28,6 +28,15 @@ func RegisterStringUpcaseServer2(s *grpc.Server, srv BinaryServer) {
 	s.RegisterService(&_StringUpcase_serviceDesc, srv)
 }
 
+func NewDownloadClient2(cc *grpc.ClientConn) BinaryClient {
+	return &downloadClient{cc}
+}
+
+func RegisterDownloadServer2(s *grpc.Server, srv BinaryServer) {
+	s.RegisterService(&_Download_serviceDesc, srv)
+}
+
 var Modules = map[string]Component{
 	"string-upcase": Component{Client: NewStringUpcaseClient2, Server: RegisterStringUpcaseServer2},
+	"download":      Component{Client: NewDownloadClient2, Server: RegisterDownloadServer2},
 }

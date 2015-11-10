@@ -9,6 +9,9 @@ package babl;
 service StringUpcase {
   rpc IO (BinRequest) returns (BinReply) {}
 }
+service Download {
+  rpc IO (BinRequest) returns (BinReply) {}
+}
 
 message BinRequest {
   bytes in = 1;
