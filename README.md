@@ -3,7 +3,7 @@ _make sure you install v3_
 
 go get -a github.com/golang/protobuf/protoc-gen-go
 
-protoc -I ./protobuf/ ./protobuf/helloworld.proto --go_out=plugins=grpc:protobuf
+protoc -I ./protobuf/ ./protobuf/babl.proto --go_out=plugins=grpc:protobuf
 
 go-bindata data/...
 
