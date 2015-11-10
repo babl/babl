@@ -87,7 +87,11 @@ func defaultAction(c *cli.Context) {
 }
 
 func (s *server) IO(ctx context.Context, in *pb.BinRequest) (*pb.BinReply, error) {
-	log.Printf("Received: %s", in.In)
+	log.Print("-----------------------------------------------------------------------------------")
+	log.Printf("Received %d bytes", len(in.In))
+	if len(in.In) < 200 {
+		log.Printf("Received content: %s", in.In)
+	}
 
 	log.Printf("Executing %s", command)
 	cmd := exec.Command(command)
