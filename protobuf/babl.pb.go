@@ -194,3 +194,60 @@ var _Download_serviceDesc = grpc.ServiceDesc{
 	},
 	Streams: []grpc.StreamDesc{},
 }
+
+// Client API for S3 service
+
+type S3Client interface {
+	IO(ctx context.Context, in *BinRequest, opts ...grpc.CallOption) (*BinReply, error)
+}
+
+type s3Client struct {
+	cc *grpc.ClientConn
+}
+
+func NewS3Client(cc *grpc.ClientConn) S3Client {
+	return &s3Client{cc}
+}
+
+func (c *s3Client) IO(ctx context.Context, in *BinRequest, opts ...grpc.CallOption) (*BinReply, error) {
+	out := new(BinReply)
+	err := grpc.Invoke(ctx, "/babl.S3/IO", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for S3 service
+
+type S3Server interface {
+	IO(context.Context, *BinRequest) (*BinReply, error)
+}
+
+func RegisterS3Server(s *grpc.Server, srv S3Server) {
+	s.RegisterService(&_S3_serviceDesc, srv)
+}
+
+func _S3_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(BinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(S3Server).IO(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+var _S3_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "babl.S3",
+	HandlerType: (*S3Server)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "IO",
+			Handler:    _S3_IO_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{},
+}

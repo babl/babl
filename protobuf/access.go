@@ -36,7 +36,16 @@ func RegisterDownloadServer2(s *grpc.Server, srv BinaryServer) {
 	s.RegisterService(&_Download_serviceDesc, srv)
 }
 
+func NewS3Client2(cc *grpc.ClientConn) BinaryClient {
+	return &s3Client{cc}
+}
+
+func RegisterS3Server2(s *grpc.Server, srv BinaryServer) {
+	s.RegisterService(&_S3_serviceDesc, srv)
+}
+
 var Modules = map[string]Component{
 	"string-upcase": Component{Client: NewStringUpcaseClient2, Server: RegisterStringUpcaseServer2},
 	"download":      Component{Client: NewDownloadClient2, Server: RegisterDownloadServer2},
+	"s3":            Component{Client: NewS3Client2, Server: RegisterS3Server2},
 }
