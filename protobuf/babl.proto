@@ -28,4 +28,5 @@ message BinReply {
     ERROR = 1;
   }
   Status status = 2;
+  string error = 3;
 }

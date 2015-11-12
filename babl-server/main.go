@@ -128,6 +128,7 @@ func (s *server) IO(ctx context.Context, in *pb.BinRequest) (*pb.BinReply, error
 
 	res := pb.BinReply{Out: grepBytes}
 	res.Status = pb.BinReply_SUCCESS
+	res.Error = string(grepBytes[:len(grepBytes)])
 
 	if err := cmd.Wait(); err != nil {
 		res.Status = pb.BinReply_ERROR

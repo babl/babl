@@ -67,6 +67,7 @@ func (m *BinRequest) GetEnv() map[string]string {
 type BinReply struct {
 	Out    []byte          `protobuf:"bytes,1,opt,name=out,proto3" json:"out,omitempty"`
 	Status BinReply_Status `protobuf:"varint,2,opt,name=status,enum=babl.BinReply_Status" json:"status,omitempty"`
+	Error  string          `protobuf:"bytes,3,opt,name=error" json:"error,omitempty"`
 }
 
 func (m *BinReply) Reset()         { *m = BinReply{} }

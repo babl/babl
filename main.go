@@ -119,6 +119,7 @@ func run(address string, module string, env map[string]string) {
 		fmt.Printf("%s", out)
 	} else {
 		log.Print("Module execution failed")
+		log.Print(res.Error)
 		os.Exit(int(res.Status))
 	}
 }
