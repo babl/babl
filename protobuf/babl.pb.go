@@ -252,3 +252,60 @@ var _S3_serviceDesc = grpc.ServiceDesc{
 	},
 	Streams: []grpc.StreamDesc{},
 }
+
+// Client API for TestFail service
+
+type TestFailClient interface {
+	IO(ctx context.Context, in *BinRequest, opts ...grpc.CallOption) (*BinReply, error)
+}
+
+type testFailClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewTestFailClient(cc *grpc.ClientConn) TestFailClient {
+	return &testFailClient{cc}
+}
+
+func (c *testFailClient) IO(ctx context.Context, in *BinRequest, opts ...grpc.CallOption) (*BinReply, error) {
+	out := new(BinReply)
+	err := grpc.Invoke(ctx, "/babl.TestFail/IO", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for TestFail service
+
+type TestFailServer interface {
+	IO(context.Context, *BinRequest) (*BinReply, error)
+}
+
+func RegisterTestFailServer(s *grpc.Server, srv TestFailServer) {
+	s.RegisterService(&_TestFail_serviceDesc, srv)
+}
+
+func _TestFail_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(BinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(TestFailServer).IO(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+var _TestFail_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "babl.TestFail",
+	HandlerType: (*TestFailServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "IO",
+			Handler:    _TestFail_IO_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{},
+}

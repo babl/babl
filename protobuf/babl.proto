@@ -15,6 +15,9 @@ service Download {
 service S3 {
   rpc IO (BinRequest) returns (BinReply) {}
 }
+service TestFail {
+  rpc IO (BinRequest) returns (BinReply) {}
+}
 
 message BinRequest {
   bytes in = 1;

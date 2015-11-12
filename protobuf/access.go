@@ -23,7 +23,6 @@ type Component struct {
 func NewStringUpcaseClient2(cc *grpc.ClientConn) BinaryClient {
 	return &stringUpcaseClient{cc}
 }
-
 func RegisterStringUpcaseServer2(s *grpc.Server, srv BinaryServer) {
 	s.RegisterService(&_StringUpcase_serviceDesc, srv)
 }
@@ -31,7 +30,6 @@ func RegisterStringUpcaseServer2(s *grpc.Server, srv BinaryServer) {
 func NewDownloadClient2(cc *grpc.ClientConn) BinaryClient {
 	return &downloadClient{cc}
 }
-
 func RegisterDownloadServer2(s *grpc.Server, srv BinaryServer) {
 	s.RegisterService(&_Download_serviceDesc, srv)
 }
@@ -39,13 +37,20 @@ func RegisterDownloadServer2(s *grpc.Server, srv BinaryServer) {
 func NewS3Client2(cc *grpc.ClientConn) BinaryClient {
 	return &s3Client{cc}
 }
-
 func RegisterS3Server2(s *grpc.Server, srv BinaryServer) {
 	s.RegisterService(&_S3_serviceDesc, srv)
+}
+
+func NewTestFailClient2(cc *grpc.ClientConn) BinaryClient {
+	return &testFailClient{cc}
+}
+func RegisterTestFailServer2(s *grpc.Server, srv BinaryServer) {
+	s.RegisterService(&_TestFail_serviceDesc, srv)
 }
 
 var Modules = map[string]Component{
 	"string-upcase": Component{Client: NewStringUpcaseClient2, Server: RegisterStringUpcaseServer2},
 	"download":      Component{Client: NewDownloadClient2, Server: RegisterDownloadServer2},
 	"s3":            Component{Client: NewS3Client2, Server: RegisterS3Server2},
+	"test-fail":     Component{Client: NewTestFailClient2, Server: RegisterTestFailServer2},
 }
