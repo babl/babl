@@ -56,6 +56,11 @@ func defaultAction(c *cli.Context) {
 		cli.ShowAppHelp(c)
 		os.Exit(1)
 	} else {
+		if _, exists := pb.Modules[module]; exists == false {
+			log.Print("Unknown module")
+			os.Exit(2)
+		}
+
 		log.Println("connecting to module", module)
 
 		env := buildEnv(c.StringSlice("env"))
