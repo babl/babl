@@ -132,7 +132,7 @@ func run(address string, module string, env map[string]string) {
 		fmt.Printf("%s", out)
 	} else {
 		log.Printf("Module execution failed. %d bytes stdout, %d bytes stderr:", len(res.Stdout), len(res.Stderr))
-		fmt.Print(string(res.Stderr))
+		log.Print(string(res.Stderr))
 		os.Exit(int(res.Exitcode))
 	}
 }
