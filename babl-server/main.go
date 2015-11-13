@@ -12,6 +12,7 @@ import (
 
 	"github.com/codegangsta/cli"
 	pb "github.com/larskluge/babl/protobuf"
+	"github.com/larskluge/babl/shared"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -62,6 +63,7 @@ func defaultAction(c *cli.Context) {
 		cli.ShowAppHelp(c)
 		os.Exit(1)
 	} else {
+		shared.EnsureModuleExists(module)
 		command = c.String("cmd")
 		address := fmt.Sprintf(":%d", c.Int("port"))
 

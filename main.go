@@ -10,6 +10,7 @@ import (
 
 	"github.com/codegangsta/cli"
 	pb "github.com/larskluge/babl/protobuf"
+	"github.com/larskluge/babl/shared"
 	"github.com/mattn/go-isatty"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
@@ -56,11 +57,7 @@ func defaultAction(c *cli.Context) {
 		cli.ShowAppHelp(c)
 		os.Exit(1)
 	} else {
-		if _, exists := pb.Modules[module]; exists == false {
-			log.Print("Unknown module")
-			os.Exit(2)
-		}
-
+		shared.EnsureModuleExists(module)
 		log.Println("connecting to module", module)
 
 		env := buildEnv(c.StringSlice("env"))
