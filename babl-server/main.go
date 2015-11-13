@@ -90,9 +90,9 @@ func defaultAction(c *cli.Context) {
 
 func (s *server) IO(ctx context.Context, in *pb.BinRequest) (*pb.BinReply, error) {
 	log.Print("-----------------------------------------------------------------------------------")
-	log.Printf("Received %d bytes", len(in.In))
-	if len(in.In) < 200 {
-		log.Printf("Received content: %s", in.In)
+	log.Printf("Received %d bytes", len(in.Stdin))
+	if len(in.Stdin) > 0 && len(in.Stdin) < 200 {
+		log.Printf("Received content: %s", in.Stdin)
 	}
 
 	log.Printf("Executing %s", command)
@@ -117,23 +117,24 @@ func (s *server) IO(ctx context.Context, in *pb.BinRequest) (*pb.BinReply, error
 	}
 	cmd.Start()
 
-	stdin.Write(in.In)
+	stdin.Write(in.Stdin)
 	stdin.Close()
-	grepBytes, err := ioutil.ReadAll(stdout)
+	outBytes, err := ioutil.ReadAll(stdout)
 	if err != nil {
-		log.Printf("ioutil.ReadAll: %v", err)
+		log.Printf("ioutil.ReadAll[stdout]: %v", err)
 	}
-	errBytes, _ := ioutil.ReadAll(stderr)
-	if len(errBytes) > 0 {
-		log.Printf("stderr: %s", errBytes)
+	errBytes, err := ioutil.ReadAll(stderr)
+	if err != nil {
+		log.Printf("ioutil.ReadAll[stderr]: %v", err)
 	}
+	log.Printf("%d bytes stdout, %d bytes stderr.", len(outBytes), len(errBytes))
 
-	res := pb.BinReply{Out: grepBytes}
-	res.Status = pb.BinReply_SUCCESS
-	res.Error = string(grepBytes[:len(grepBytes)])
+	res := pb.BinReply{Stdout: outBytes}
+	res.Exitcode = 0
+	res.Stderr = errBytes
 
 	if err := cmd.Wait(); err != nil {
-		res.Status = pb.BinReply_ERROR
+		res.Exitcode = 255
 		if exiterr, ok := err.(*exec.ExitError); ok {
 			// The program has exited with an exit code != 0
 
@@ -142,6 +143,7 @@ func (s *server) IO(ctx context.Context, in *pb.BinRequest) (*pb.BinReply, error
 			// defined for both Unix and Windows and in both cases has
 			// an ExitStatus() method with the same signature.
 			if status, ok := exiterr.Sys().(syscall.WaitStatus); ok {
+				res.Exitcode = 7 //int32(status.ExitStatus())                      // FIXME return actual exit code
 				log.Printf("Exit Status: %d", status.ExitStatus())
 			}
 		} else {

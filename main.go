@@ -121,18 +121,18 @@ func run(address string, module string, env map[string]string) {
 	defer conn.Close()
 
 	connection := pb.Modules[module].Client(conn)
-	req := pb.BinRequest{In: in, Env: env}
+	req := pb.BinRequest{Stdin: in, Env: env}
 	res, err := connection.IO(context.Background(), &req)
 	if err != nil {
 		log.Fatalf("Failed: %v", err)
 	}
-	if res.Status == pb.BinReply_SUCCESS {
-		out := res.Out
+	if res.Exitcode == 0 {
+		out := res.Stdout
 		log.Printf("%d bytes received from module", len(out))
 		fmt.Printf("%s", out)
 	} else {
-		log.Print("Module execution failed")
-		log.Print(res.Error)
-		os.Exit(int(res.Status))
+		log.Printf("Module execution failed. %d bytes stdout, %d bytes stderr:", len(res.Stdout), len(res.Stderr))
+		fmt.Print(string(res.Stderr))
+		os.Exit(int(res.Exitcode))
 	}
 }
