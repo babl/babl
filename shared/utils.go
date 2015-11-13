@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sort"
 
 	pb "github.com/larskluge/babl/protobuf"
 )
@@ -16,7 +17,12 @@ func EnsureModuleExists(module string) {
 }
 
 func PrintAvailableModules() {
-	for k, _ := range pb.Modules {
-		fmt.Println(k)
+	var modules []string
+	for module, _ := range pb.Modules {
+		modules = append(modules, module)
+	}
+	sort.Strings(modules)
+	for _, module := range modules {
+		fmt.Println(module)
 	}
 }
