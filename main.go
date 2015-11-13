@@ -48,6 +48,17 @@ func configureCli() (app *cli.App) {
 			Usage: "Verbose logging",
 		},
 	}
+	app.Commands = []cli.Command{
+		{
+			Name:    "list-modules",
+			Aliases: []string{"ls"},
+			Usage:   "List all available modules",
+			Action: func(_ *cli.Context) {
+				shared.PrintAvailableModules()
+			},
+			SkipFlagParsing: true,
+		},
+	}
 	return
 }
 
