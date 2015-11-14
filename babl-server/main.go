@@ -153,3 +153,9 @@ func (s *server) IO(ctx context.Context, in *pb.BinRequest) (*pb.BinReply, error
 
 	return &res, nil
 }
+
+func (s *server) Ping(ctx context.Context, in *pb.Empty) (*pb.Pong, error) {
+	log.Println("Ping Request")
+	res := pb.Pong{Val: "pong"}
+	return &res, nil
+}

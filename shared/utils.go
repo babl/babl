@@ -17,12 +17,15 @@ func EnsureModuleExists(module string) {
 }
 
 func PrintAvailableModules() {
-	var modules []string
+	for _, module := range Modules() {
+		fmt.Println(module)
+	}
+}
+
+func Modules() (modules []string) {
 	for module, _ := range pb.Modules {
 		modules = append(modules, module)
 	}
 	sort.Strings(modules)
-	for _, module := range modules {
-		fmt.Println(module)
-	}
+	return
 }

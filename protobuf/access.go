@@ -7,9 +7,11 @@ import (
 
 type BinaryClient interface {
 	IO(ctx context.Context, in *BinRequest, opts ...grpc.CallOption) (*BinReply, error)
+	Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Pong, error)
 }
 type BinaryServer interface {
 	IO(context.Context, *BinRequest) (*BinReply, error)
+	Ping(context.Context, *Empty) (*Pong, error)
 }
 
 type ClientFunc func(cc *grpc.ClientConn) BinaryClient

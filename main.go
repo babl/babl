@@ -25,8 +25,7 @@ func main() {
 func configureCli() (app *cli.App) {
 	app = cli.NewApp()
 	app.Usage = "Client to access the Babl Network."
-	app.Version = "0.0.1"
-	app.Action = defaultAction
+	app.Version = "0.1.0"
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:  "host",
@@ -48,6 +47,29 @@ func configureCli() (app *cli.App) {
 			Usage: "Verbose logging",
 		},
 	}
+	app.HideHelp = true
+
+	pingCommands := []cli.Command{}
+	for _, module := range shared.Modules() {
+		pingCommands = append(pingCommands, cli.Command{
+			Name: module,
+			Action: func(c *cli.Context) {
+				module := c.Command.Name
+				fmt.Print("pinging.. ")
+				conn := conn(address(c))
+				defer conn.Close()
+				connection := pb.Modules[module].Client(conn)
+				req := pb.Empty{}
+				res, err := connection.Ping(context.Background(), &req)
+				if err == nil {
+					fmt.Println(res.Val)
+				} else {
+					log.Fatalf("Failed: %v", err)
+				}
+			},
+		})
+	}
+
 	app.Commands = []cli.Command{
 		{
 			Name:    "list-modules",
@@ -58,29 +80,44 @@ func configureCli() (app *cli.App) {
 			},
 			SkipFlagParsing: true,
 		},
+		{
+			Name:            "ping",
+			Usage:           "ping <module>",
+			SkipFlagParsing: true,
+			Subcommands:     pingCommands,
+		},
+	}
+
+	for _, module := range shared.Modules() {
+		app.Commands = append(app.Commands, cli.Command{
+			Name:  module,
+			Usage: "MODULE",
+			Action: func(c *cli.Context) {
+				module := c.Command.Name
+				defaultAction(c, module)
+			},
+		})
 	}
 	return
 }
 
-func defaultAction(c *cli.Context) {
-	module := c.Args().First()
-	if module == "" {
-		cli.ShowAppHelp(c)
-		os.Exit(1)
-	} else {
-		shared.EnsureModuleExists(module)
-		log.Println("connecting to module", module)
+func address(c *cli.Context) string {
+	return fmt.Sprintf("%s:%d", c.GlobalString("host"), c.GlobalInt("port"))
+}
 
-		env := buildEnv(c.StringSlice("env"))
-		log.Println("env", env)
+func defaultAction(c *cli.Context, module string) {
+	shared.EnsureModuleExists(module)
+	log.Println("connecting to module", module)
 
-		verbose := c.Bool("verbose")
-		log.Println("verbose", verbose)
+	env := buildEnv(c.GlobalStringSlice("env"))
+	log.Println("env", env)
 
-		address := fmt.Sprintf("%s:%d", c.String("host"), c.Int("port"))
-		log.Printf("Connecting to %s..", address)
-		run(address, module, env)
-	}
+	verbose := c.GlobalBool("verbose")
+	log.Println("verbose", verbose)
+
+	address := address(c)
+	log.Printf("Connecting to %s..", address)
+	run(address, module, env)
 }
 
 func buildEnv(envs []string) (env map[string]string) {
@@ -92,18 +129,19 @@ func buildEnv(envs []string) (env map[string]string) {
 	return
 }
 
-func run(address string, module string, env map[string]string) {
-	var in []byte
+func stdin() (in []byte) {
 	if !isatty.IsTerminal(os.Stdin.Fd()) {
 		in, _ = ioutil.ReadAll(os.Stdin)
 	}
 	log.Printf("%d bytes read from stdin", len(in))
+	return
+}
 
+func conn(address string) *grpc.ClientConn {
 	data, err := Asset("data/ca.pem")
 	if err != nil {
 		log.Fatal("asset not found")
 	}
-
 	sn := "babl.test.youtube.com"
 	cp := x509.NewCertPool()
 	if !cp.AppendCertsFromPEM(data) {
@@ -111,17 +149,20 @@ func run(address string, module string, env map[string]string) {
 	}
 
 	creds := credentials.NewClientTLSFromCert(cp, sn)
-	var opts []grpc.DialOption
-	opts = append(opts, grpc.WithTransportCredentials(creds))
-
+	opts := []grpc.DialOption{grpc.WithTransportCredentials(creds)}
 	conn, err := grpc.Dial(address, opts...)
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
+	return conn
+}
+
+func run(address string, module string, env map[string]string) {
+	conn := conn(address)
 	defer conn.Close()
 
 	connection := pb.Modules[module].Client(conn)
-	req := pb.BinRequest{Stdin: in, Env: env}
+	req := pb.BinRequest{Stdin: stdin(), Env: env}
 	res, err := connection.IO(context.Background(), &req)
 	if err != nil {
 		log.Fatalf("Failed: %v", err)

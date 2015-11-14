@@ -8,15 +8,19 @@ package babl;
 
 service StringUpcase {
   rpc IO (BinRequest) returns (BinReply) {}
+  rpc Ping (Empty) returns (Pong) {}
 }
 service Download {
   rpc IO (BinRequest) returns (BinReply) {}
+  rpc Ping (Empty) returns (Pong) {}
 }
 service S3 {
   rpc IO (BinRequest) returns (BinReply) {}
+  rpc Ping (Empty) returns (Pong) {}
 }
 service TestFail {
   rpc IO (BinRequest) returns (BinReply) {}
+  rpc Ping (Empty) returns (Pong) {}
 }
 
 message BinRequest {
@@ -28,4 +32,11 @@ message BinReply {
   bytes stdout = 1;
   bytes stderr = 2;
   int32 exitcode = 3;
+}
+
+message Empty {
+}
+
+message Pong {
+  string val = 1;
 }

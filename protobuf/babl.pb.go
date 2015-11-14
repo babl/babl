@@ -11,6 +11,8 @@ It is generated from these files:
 It has these top-level messages:
 	BinRequest
 	BinReply
+	Empty
+	Pong
 */
 package babl
 
@@ -54,6 +56,21 @@ func (m *BinReply) Reset()         { *m = BinReply{} }
 func (m *BinReply) String() string { return proto.CompactTextString(m) }
 func (*BinReply) ProtoMessage()    {}
 
+type Empty struct {
+}
+
+func (m *Empty) Reset()         { *m = Empty{} }
+func (m *Empty) String() string { return proto.CompactTextString(m) }
+func (*Empty) ProtoMessage()    {}
+
+type Pong struct {
+	Val string `protobuf:"bytes,1,opt,name=val" json:"val,omitempty"`
+}
+
+func (m *Pong) Reset()         { *m = Pong{} }
+func (m *Pong) String() string { return proto.CompactTextString(m) }
+func (*Pong) ProtoMessage()    {}
+
 // Reference imports to suppress errors if they are not otherwise used.
 var _ context.Context
 var _ grpc.ClientConn
@@ -62,6 +79,7 @@ var _ grpc.ClientConn
 
 type StringUpcaseClient interface {
 	IO(ctx context.Context, in *BinRequest, opts ...grpc.CallOption) (*BinReply, error)
+	Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Pong, error)
 }
 
 type stringUpcaseClient struct {
@@ -81,10 +99,20 @@ func (c *stringUpcaseClient) IO(ctx context.Context, in *BinRequest, opts ...grp
 	return out, nil
 }
 
+func (c *stringUpcaseClient) Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Pong, error) {
+	out := new(Pong)
+	err := grpc.Invoke(ctx, "/babl.StringUpcase/Ping", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for StringUpcase service
 
 type StringUpcaseServer interface {
 	IO(context.Context, *BinRequest) (*BinReply, error)
+	Ping(context.Context, *Empty) (*Pong, error)
 }
 
 func RegisterStringUpcaseServer(s *grpc.Server, srv StringUpcaseServer) {
@@ -103,6 +131,18 @@ func _StringUpcase_IO_Handler(srv interface{}, ctx context.Context, dec func(int
 	return out, nil
 }
 
+func _StringUpcase_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(StringUpcaseServer).Ping(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 var _StringUpcase_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "babl.StringUpcase",
 	HandlerType: (*StringUpcaseServer)(nil),
@@ -110,6 +150,10 @@ var _StringUpcase_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "IO",
 			Handler:    _StringUpcase_IO_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _StringUpcase_Ping_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{},
@@ -119,6 +163,7 @@ var _StringUpcase_serviceDesc = grpc.ServiceDesc{
 
 type DownloadClient interface {
 	IO(ctx context.Context, in *BinRequest, opts ...grpc.CallOption) (*BinReply, error)
+	Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Pong, error)
 }
 
 type downloadClient struct {
@@ -138,10 +183,20 @@ func (c *downloadClient) IO(ctx context.Context, in *BinRequest, opts ...grpc.Ca
 	return out, nil
 }
 
+func (c *downloadClient) Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Pong, error) {
+	out := new(Pong)
+	err := grpc.Invoke(ctx, "/babl.Download/Ping", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for Download service
 
 type DownloadServer interface {
 	IO(context.Context, *BinRequest) (*BinReply, error)
+	Ping(context.Context, *Empty) (*Pong, error)
 }
 
 func RegisterDownloadServer(s *grpc.Server, srv DownloadServer) {
@@ -160,6 +215,18 @@ func _Download_IO_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	return out, nil
 }
 
+func _Download_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(DownloadServer).Ping(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 var _Download_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "babl.Download",
 	HandlerType: (*DownloadServer)(nil),
@@ -167,6 +234,10 @@ var _Download_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "IO",
 			Handler:    _Download_IO_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _Download_Ping_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{},
@@ -176,6 +247,7 @@ var _Download_serviceDesc = grpc.ServiceDesc{
 
 type S3Client interface {
 	IO(ctx context.Context, in *BinRequest, opts ...grpc.CallOption) (*BinReply, error)
+	Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Pong, error)
 }
 
 type s3Client struct {
@@ -195,10 +267,20 @@ func (c *s3Client) IO(ctx context.Context, in *BinRequest, opts ...grpc.CallOpti
 	return out, nil
 }
 
+func (c *s3Client) Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Pong, error) {
+	out := new(Pong)
+	err := grpc.Invoke(ctx, "/babl.S3/Ping", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for S3 service
 
 type S3Server interface {
 	IO(context.Context, *BinRequest) (*BinReply, error)
+	Ping(context.Context, *Empty) (*Pong, error)
 }
 
 func RegisterS3Server(s *grpc.Server, srv S3Server) {
@@ -217,6 +299,18 @@ func _S3_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) 
 	return out, nil
 }
 
+func _S3_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(S3Server).Ping(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 var _S3_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "babl.S3",
 	HandlerType: (*S3Server)(nil),
@@ -224,6 +318,10 @@ var _S3_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "IO",
 			Handler:    _S3_IO_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _S3_Ping_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{},
@@ -233,6 +331,7 @@ var _S3_serviceDesc = grpc.ServiceDesc{
 
 type TestFailClient interface {
 	IO(ctx context.Context, in *BinRequest, opts ...grpc.CallOption) (*BinReply, error)
+	Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Pong, error)
 }
 
 type testFailClient struct {
@@ -252,10 +351,20 @@ func (c *testFailClient) IO(ctx context.Context, in *BinRequest, opts ...grpc.Ca
 	return out, nil
 }
 
+func (c *testFailClient) Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Pong, error) {
+	out := new(Pong)
+	err := grpc.Invoke(ctx, "/babl.TestFail/Ping", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for TestFail service
 
 type TestFailServer interface {
 	IO(context.Context, *BinRequest) (*BinReply, error)
+	Ping(context.Context, *Empty) (*Pong, error)
 }
 
 func RegisterTestFailServer(s *grpc.Server, srv TestFailServer) {
@@ -274,6 +383,18 @@ func _TestFail_IO_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	return out, nil
 }
 
+func _TestFail_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(TestFailServer).Ping(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 var _TestFail_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "babl.TestFail",
 	HandlerType: (*TestFailServer)(nil),
@@ -281,6 +402,10 @@ var _TestFail_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "IO",
 			Handler:    _TestFail_IO_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _TestFail_Ping_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{},
