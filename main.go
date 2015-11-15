@@ -55,7 +55,7 @@ func configureCli() (app *cli.App) {
 			Name: module,
 			Action: func(c *cli.Context) {
 				module := c.Command.Name
-				fmt.Print("pinging.. ")
+				fmt.Print("ping.. ")
 				conn := conn(address(c))
 				defer conn.Close()
 				connection := pb.Modules[module].Client(conn)
