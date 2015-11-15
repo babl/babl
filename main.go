@@ -167,13 +167,12 @@ func run(address string, module string, env map[string]string) {
 	if err != nil {
 		log.Fatalf("Failed: %v", err)
 	}
-	if res.Exitcode == 0 {
-		out := res.Stdout
-		log.Printf("%d bytes received from module", len(out))
-		fmt.Printf("%s", out)
-	} else {
-		log.Printf("Module execution failed. %d bytes stdout, %d bytes stderr:", len(res.Stdout), len(res.Stderr))
-		log.Print(string(res.Stderr))
-		os.Exit(int(res.Exitcode))
+	status := "SUCCESS"
+	if res.Exitcode != 0 {
+		status = "ERROR"
 	}
+	log.Printf("Module finished: %s. %d bytes stdout, %d bytes stderr:", status, len(res.Stdout), len(res.Stderr))
+	log.Print(string(res.Stderr))
+	fmt.Printf("%s", res.Stdout)
+	os.Exit(int(res.Exitcode))
 }
