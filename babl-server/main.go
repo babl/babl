@@ -39,9 +39,10 @@ func configureCli() (app *cli.App) {
 			EnvVar: "BABL_MODULE",
 		},
 		cli.StringFlag{
-			Name:  "cmd",
-			Usage: "Command to be executed",
-			Value: "cat",
+			Name:   "cmd",
+			Usage:  "Command to be executed",
+			Value:  "cat",
+			EnvVar: "BABL_COMMAND",
 		},
 		cli.IntFlag{
 			Name:   "port",
