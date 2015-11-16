@@ -144,7 +144,7 @@ func (s *server) IO(ctx context.Context, in *pb.BinRequest) (*pb.BinReply, error
 			// defined for both Unix and Windows and in both cases has
 			// an ExitStatus() method with the same signature.
 			if status, ok := exiterr.Sys().(syscall.WaitStatus); ok {
-				res.Exitcode = 7 //int32(status.ExitStatus())                      // FIXME return actual exit code
+				res.Exitcode = int32(status.ExitStatus())
 				log.Printf("Exit Status: %d", status.ExitStatus())
 			}
 		} else {
