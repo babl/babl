@@ -18,6 +18,10 @@ service S3 {
   rpc IO (BinRequest) returns (BinReply) {}
   rpc Ping (Empty) returns (Pong) {}
 }
+service ImageResize {
+  rpc IO (BinRequest) returns (BinReply) {}
+  rpc Ping (Empty) returns (Pong) {}
+}
 service TestFail {
   rpc IO (BinRequest) returns (BinReply) {}
   rpc Ping (Empty) returns (Pong) {}

@@ -327,6 +327,90 @@ var _S3_serviceDesc = grpc.ServiceDesc{
 	Streams: []grpc.StreamDesc{},
 }
 
+// Client API for ImageResize service
+
+type ImageResizeClient interface {
+	IO(ctx context.Context, in *BinRequest, opts ...grpc.CallOption) (*BinReply, error)
+	Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Pong, error)
+}
+
+type imageResizeClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewImageResizeClient(cc *grpc.ClientConn) ImageResizeClient {
+	return &imageResizeClient{cc}
+}
+
+func (c *imageResizeClient) IO(ctx context.Context, in *BinRequest, opts ...grpc.CallOption) (*BinReply, error) {
+	out := new(BinReply)
+	err := grpc.Invoke(ctx, "/babl.ImageResize/IO", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imageResizeClient) Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Pong, error) {
+	out := new(Pong)
+	err := grpc.Invoke(ctx, "/babl.ImageResize/Ping", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for ImageResize service
+
+type ImageResizeServer interface {
+	IO(context.Context, *BinRequest) (*BinReply, error)
+	Ping(context.Context, *Empty) (*Pong, error)
+}
+
+func RegisterImageResizeServer(s *grpc.Server, srv ImageResizeServer) {
+	s.RegisterService(&_ImageResize_serviceDesc, srv)
+}
+
+func _ImageResize_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(BinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(ImageResizeServer).IO(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func _ImageResize_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(ImageResizeServer).Ping(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+var _ImageResize_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "babl.ImageResize",
+	HandlerType: (*ImageResizeServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "IO",
+			Handler:    _ImageResize_IO_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _ImageResize_Ping_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{},
+}
+
 // Client API for TestFail service
 
 type TestFailClient interface {
