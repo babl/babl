@@ -1,0 +1,4 @@
+babl:
+  build:
+    image: larskluge/babl
+    dockerfile_path: Dockerfile
