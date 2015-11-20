@@ -13,6 +13,6 @@ COPY . ./
 # Vendoring can be done through the godeps tool or Go vendoring available with
 # Go versions after 1.5.1
 
-go get -t -v ./...
+RUN go get -t -v ./...
 
-go get github.com/mitchellh/gox
+RUN go get github.com/mitchellh/gox
