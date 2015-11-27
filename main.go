@@ -136,7 +136,11 @@ func defaultAction(c *cli.Context, module_with_tag string) {
 	shared.EnsureModuleExists(module)
 	log.Println("connecting to module", module)
 
-	env := Config().Defaults[module_with_tag].Env
+	env := make(map[string]string)
+	mod, ok := Config().Defaults[module_with_tag]
+	if ok {
+		env = mod.Env
+	}
 	buildEnv(&env, c.GlobalStringSlice("env"))
 	log.Println("env", env)
 
