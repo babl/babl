@@ -86,6 +86,13 @@ func configureCli() (app *cli.App) {
 			SkipFlagParsing: true,
 			Subcommands:     pingCommands,
 		},
+		{
+			Name:            "config",
+			SkipFlagParsing: true,
+			Action: func(_ *cli.Context) {
+				Config()
+			},
+		},
 	}
 
 	for _, module := range shared.Modules() {
@@ -98,6 +105,17 @@ func configureCli() (app *cli.App) {
 			},
 		})
 	}
+	for module, _ := range Config().Defaults {
+		app.Commands = append(app.Commands, cli.Command{
+			Name:  module,
+			Usage: "MODULE",
+			Action: func(c *cli.Context) {
+				module := c.Command.Name
+				// parts := string.Split(module, ":")
+				defaultAction(c, module)
+			},
+		})
+	}
 	return
 }
 
@@ -105,11 +123,21 @@ func address(c *cli.Context) string {
 	return fmt.Sprintf("%s:%d", c.GlobalString("host"), c.GlobalInt("port"))
 }
 
-func defaultAction(c *cli.Context, module string) {
+func defaultAction(c *cli.Context, module_with_tag string) {
+	tag := ""
+	parts := strings.Split(module_with_tag, ":")
+	module := parts[0]
+	if len(parts) > 1 {
+		tag = parts[1]
+	}
+
+	log.Println("Tag", tag)
+
 	shared.EnsureModuleExists(module)
 	log.Println("connecting to module", module)
 
-	env := buildEnv(c.GlobalStringSlice("env"))
+	env := Config().Defaults[module_with_tag].Env
+	buildEnv(&env, c.GlobalStringSlice("env"))
 	log.Println("env", env)
 
 	verbose := c.GlobalBool("verbose")
@@ -120,11 +148,10 @@ func defaultAction(c *cli.Context, module string) {
 	run(address, module, env)
 }
 
-func buildEnv(envs []string) (env map[string]string) {
-	env = make(map[string]string)
+func buildEnv(env *map[string]string, envs []string) {
 	for _, val := range envs {
 		x := strings.Split(val, "=")
-		env[x[0]] = x[1]
+		(*env)[x[0]] = x[1]
 	}
 	return
 }
