@@ -4,7 +4,6 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"os/user"
 	"path"
 
 	"gopkg.in/yaml.v2"
@@ -24,11 +23,7 @@ type Module struct {
 }
 
 func Config() (cfg Cfg) {
-	usr, err := user.Current()
-	if err != nil {
-		panic(err)
-	}
-	filename := path.Join(usr.HomeDir, ConfigFile)
+	filename := path.Join(os.Getenv("HOME"), ConfigFile)
 
 	if _, err := os.Stat(filename); err == nil {
 		// config found
