@@ -90,7 +90,7 @@ func configureCli() (app *cli.App) {
 			Name:            "config",
 			SkipFlagParsing: true,
 			Action: func(_ *cli.Context) {
-				Config()
+				fmt.Println(Config())
 			},
 		},
 	}
