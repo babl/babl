@@ -25,7 +25,7 @@ type Module struct {
 
 func Config() (cfg Cfg) {
 	usr, err := user.Current()
-	if err == nil {
+	if err != nil {
 		panic(err)
 	}
 	filename := path.Join(usr.HomeDir, ConfigFile)
