@@ -23,7 +23,7 @@ type Module struct {
 	Env    map[string]string
 }
 
-func Config() (cfg *Cfg) {
+func Config() (cfg Cfg) {
 	usr, _ := user.Current()
 	filename := path.Join(usr.HomeDir, ConfigFile)
 
@@ -38,8 +38,6 @@ func Config() (cfg *Cfg) {
 		} else {
 			log.Printf("Could not read configuration file (%s): %v", ConfigFile, err)
 		}
-		return
-	} else {
-		return nil
 	}
+	return
 }
