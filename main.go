@@ -38,37 +38,12 @@ func configureCli() (app *cli.App) {
 			EnvVar: "PORT",
 			Value:  4444,
 		},
-		cli.StringSliceFlag{
-			Name:  "env, e",
-			Usage: "Send environment variables, e.g. -e FOO=42",
-		},
 		cli.BoolFlag{
 			Name:  "verbose",
 			Usage: "Verbose logging",
 		},
 	}
 	app.HideHelp = true
-
-	pingCommands := []cli.Command{}
-	for _, module := range shared.Modules() {
-		pingCommands = append(pingCommands, cli.Command{
-			Name: module,
-			Action: func(c *cli.Context) {
-				module := c.Command.Name
-				fmt.Print("ping.. ")
-				conn := conn(address(c))
-				defer conn.Close()
-				connection := pb.Modules[module].Client(conn)
-				req := pb.Empty{}
-				res, err := connection.Ping(context.Background(), &req)
-				if err == nil {
-					fmt.Println(res.Val)
-				} else {
-					log.Fatalf("Failed: %v", err)
-				}
-			},
-		})
-	}
 
 	app.Commands = []cli.Command{
 		{
@@ -78,17 +53,19 @@ func configureCli() (app *cli.App) {
 			Action: func(_ *cli.Context) {
 				shared.PrintAvailableModules()
 			},
-			SkipFlagParsing: true,
 		},
 		{
-			Name:            "ping",
-			Usage:           "ping <module>",
-			SkipFlagParsing: true,
-			Subcommands:     pingCommands,
+			Name:        "ping",
+			Usage:       "ping <module>",
+			Subcommands: pingSubCommands(),
+			Action: func(_ *cli.Context) {
+				fmt.Println("Unknown module")
+				os.Exit(3)
+			},
 		},
 		{
-			Name:            "config",
-			SkipFlagParsing: true,
+			Name:  "config",
+			Usage: "Print configuration",
 			Action: func(_ *cli.Context) {
 				fmt.Println(Config())
 			},
@@ -96,25 +73,10 @@ func configureCli() (app *cli.App) {
 	}
 
 	for _, module := range shared.Modules() {
-		app.Commands = append(app.Commands, cli.Command{
-			Name:  module,
-			Usage: "MODULE",
-			Action: func(c *cli.Context) {
-				module := c.Command.Name
-				defaultAction(c, module)
-			},
-		})
+		appendModuleCommand(&app.Commands, module)
 	}
 	for module, _ := range Config().Defaults {
-		app.Commands = append(app.Commands, cli.Command{
-			Name:  module,
-			Usage: "MODULE",
-			Action: func(c *cli.Context) {
-				module := c.Command.Name
-				// parts := string.Split(module, ":")
-				defaultAction(c, module)
-			},
-		})
+		appendModuleCommand(&app.Commands, module)
 	}
 	return
 }
@@ -141,7 +103,7 @@ func defaultAction(c *cli.Context, module_with_tag string) {
 	if ok {
 		env = mod.Env
 	}
-	buildEnv(&env, c.GlobalStringSlice("env"))
+	buildEnv(&env, c.StringSlice("env"))
 	log.Println("env", env)
 
 	verbose := c.GlobalBool("verbose")
