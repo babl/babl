@@ -6,9 +6,7 @@ import (
 	"os"
 
 	"github.com/codegangsta/cli"
-	pb "github.com/larskluge/babl/protobuf"
 	"github.com/larskluge/babl/shared"
-	"golang.org/x/net/context"
 )
 
 func appendModuleCommand(cmds *[]cli.Command, module string) {
@@ -35,11 +33,11 @@ func pingSubCommands() (cmds []cli.Command) {
 			Action: func(c *cli.Context) {
 				module := c.Command.Name
 				fmt.Print("ping.. ")
-				conn := conn(address(c))
-				defer conn.Close()
-				connection := pb.Modules[module].Client(conn)
-				req := pb.Empty{}
-				res, err := connection.Ping(context.Background(), &req)
+				m := shared.Module{
+					Name:    module,
+					Address: address(c),
+				}
+				res, err := m.Ping()
 				if err == nil {
 					fmt.Println(res.Val)
 				} else {

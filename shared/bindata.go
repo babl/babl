@@ -3,7 +3,7 @@
 // data/ca.pem
 // DO NOT EDIT!
 
-package main
+package shared
 
 import (
 	"bytes"

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"crypto/x509"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -9,12 +8,8 @@ import (
 	"strings"
 
 	"github.com/codegangsta/cli"
-	pb "github.com/larskluge/babl/protobuf"
 	"github.com/larskluge/babl/shared"
 	"github.com/mattn/go-isatty"
-	"golang.org/x/net/context"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
 )
 
 func main() {
@@ -52,7 +47,14 @@ func defaultAction(c *cli.Context, module_with_tag string) {
 
 	address := address(c)
 	log.Printf("Connecting to %s..", address)
-	run(address, module, env)
+
+	m := shared.Module{
+		Name:    module,
+		Address: address,
+		Env:     env,
+	}
+	_, _, exitcode, _ := m.Call(stdin())
+	os.Exit(exitcode)
 }
 
 func buildEnv(env *map[string]string, envs []string) {
@@ -69,44 +71,4 @@ func stdin() (in []byte) {
 	}
 	log.Printf("%d bytes read from stdin", len(in))
 	return
-}
-
-func conn(address string) *grpc.ClientConn {
-	data, err := Asset("data/ca.pem")
-	if err != nil {
-		log.Fatal("asset not found")
-	}
-	sn := "babl.test.youtube.com"
-	cp := x509.NewCertPool()
-	if !cp.AppendCertsFromPEM(data) {
-		log.Fatal("credentials: failed to append certificates")
-	}
-
-	creds := credentials.NewClientTLSFromCert(cp, sn)
-	opts := []grpc.DialOption{grpc.WithTransportCredentials(creds)}
-	conn, err := grpc.Dial(address, opts...)
-	if err != nil {
-		log.Fatalf("did not connect: %v", err)
-	}
-	return conn
-}
-
-func run(address string, module string, env map[string]string) {
-	conn := conn(address)
-	defer conn.Close()
-
-	connection := pb.Modules[module].Client(conn)
-	req := pb.BinRequest{Stdin: stdin(), Env: env}
-	res, err := connection.IO(context.Background(), &req)
-	if err != nil {
-		log.Fatalf("Failed: %v", err)
-	}
-	status := "SUCCESS"
-	if res.Exitcode != 0 {
-		status = "ERROR"
-	}
-	log.Printf("Module finished: %s. %d bytes stdout, %d bytes stderr:", status, len(res.Stdout), len(res.Stderr))
-	log.Print(string(res.Stderr))
-	fmt.Printf("%s", res.Stdout)
-	os.Exit(int(res.Exitcode))
 }
