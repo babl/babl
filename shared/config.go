@@ -1,4 +1,4 @@
-package main
+package shared
 
 import (
 	"io/ioutil"
@@ -14,10 +14,10 @@ const (
 )
 
 type Cfg struct {
-	Defaults map[string]Module
+	Defaults map[string]module
 }
 
-type Module struct {
+type module struct {
 	Module string
 	Env    map[string]string
 }

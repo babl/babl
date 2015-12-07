@@ -31,12 +31,9 @@ func pingSubCommands() (cmds []cli.Command) {
 		cmds = append(cmds, cli.Command{
 			Name: module,
 			Action: func(c *cli.Context) {
-				module := c.Command.Name
 				fmt.Print("ping.. ")
-				m := shared.Module{
-					Name:    module,
-					Address: address(c),
-				}
+				m := shared.NewModule(c.Command.Name)
+				m.Address = address(c)
 				res, err := m.Ping()
 				if err == nil {
 					fmt.Println(res.Val)
@@ -94,7 +91,7 @@ func configureCli() (app *cli.App) {
 			Name:  "config",
 			Usage: "Print configuration",
 			Action: func(_ *cli.Context) {
-				fmt.Println(Config())
+				fmt.Println(shared.Config())
 			},
 		},
 	}
@@ -102,7 +99,7 @@ func configureCli() (app *cli.App) {
 	for _, module := range shared.Modules() {
 		appendModuleCommand(&app.Commands, module)
 	}
-	for module, _ := range Config().Defaults {
+	for module, _ := range shared.Config().Defaults {
 		appendModuleCommand(&app.Commands, module)
 	}
 	return

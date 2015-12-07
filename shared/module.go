@@ -4,6 +4,7 @@ import (
 	"crypto/x509"
 	"fmt"
 	"log"
+	"strings"
 
 	pb "github.com/larskluge/babl/protobuf"
 	"golang.org/x/net/context"
@@ -13,8 +14,39 @@ import (
 
 type Module struct {
 	Name    string
+	Tag     string
 	Address string
 	Env     map[string]string
+}
+
+func NewModule(name_with_tag string) *Module {
+	tag := ""
+	parts := strings.Split(name_with_tag, ":")
+	name := parts[0]
+	if len(parts) > 1 {
+		tag = parts[1]
+	}
+
+	m := Module{
+		Name:    name,
+		Tag:     tag,
+		Address: "babl.sh",
+		Env:     make(map[string]string),
+	}
+	m.loadDefaults()
+	EnsureModuleExists(m.Name)
+	return &m
+}
+
+func (m *Module) Fullname() string {
+	return fmt.Sprintf("%s:%s", m.Name, m.Tag)
+}
+
+func (m *Module) loadDefaults() {
+	mod, ok := Config().Defaults[m.Fullname()]
+	if ok {
+		m.Env = mod.Env
+	}
 }
 
 func (m *Module) Call(stdin []byte) (stdout []byte, stderr []byte, exitcode int, err error) {

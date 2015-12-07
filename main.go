@@ -22,37 +22,19 @@ func address(c *cli.Context) string {
 }
 
 func defaultAction(c *cli.Context, module_with_tag string) {
-	tag := ""
-	parts := strings.Split(module_with_tag, ":")
-	module := parts[0]
-	if len(parts) > 1 {
-		tag = parts[1]
-	}
+	m := shared.NewModule(module_with_tag)
 
-	log.Println("Tag", tag)
+	log.Println("Connecting to module", m.Name, m.Tag)
 
-	shared.EnsureModuleExists(module)
-	log.Println("connecting to module", module)
+	buildEnv(&m.Env, c.StringSlice("env"))
+	log.Println("env", m.Env)
 
-	env := make(map[string]string)
-	mod, ok := Config().Defaults[module_with_tag]
-	if ok {
-		env = mod.Env
-	}
-	buildEnv(&env, c.StringSlice("env"))
-	log.Println("env", env)
+	// verbose := c.GlobalBool("verbose")
+	// log.Println("verbose", verbose)
 
-	verbose := c.GlobalBool("verbose")
-	log.Println("verbose", verbose)
+	m.Address = address(c)
+	log.Printf("Connecting to %s..", m.Address)
 
-	address := address(c)
-	log.Printf("Connecting to %s..", address)
-
-	m := shared.Module{
-		Name:    module,
-		Address: address,
-		Env:     env,
-	}
 	_, _, exitcode, _ := m.Call(stdin())
 	os.Exit(exitcode)
 }
