@@ -30,7 +30,7 @@ func NewModule(name_with_tag string) *Module {
 	m := Module{
 		Name:    name,
 		Tag:     tag,
-		Address: "babl.sh",
+		Address: "babl.sh:4444",
 		Env:     make(map[string]string),
 	}
 	m.loadDefaults()
