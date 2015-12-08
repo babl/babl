@@ -26,7 +26,7 @@ func defaultAction(c *cli.Context, module_with_tag string) {
 
 	log.Println("Connecting to module", m.Name, m.Tag)
 
-	buildEnv(&m.Env, c.StringSlice("env"))
+	applyEnv(&m.Env, c.StringSlice("env"))
 	log.Println("env", m.Env)
 
 	// verbose := c.GlobalBool("verbose")
@@ -39,12 +39,11 @@ func defaultAction(c *cli.Context, module_with_tag string) {
 	os.Exit(exitcode)
 }
 
-func buildEnv(env *map[string]string, envs []string) {
+func applyEnv(env *map[string]string, envs []string) {
 	for _, val := range envs {
 		x := strings.Split(val, "=")
 		(*env)[x[0]] = x[1]
 	}
-	return
 }
 
 func stdin() (in []byte) {
