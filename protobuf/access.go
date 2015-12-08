@@ -29,6 +29,13 @@ func RegisterStringUpcaseServer2(s *grpc.Server, srv BinaryServer) {
 	s.RegisterService(&_StringUpcase_serviceDesc, srv)
 }
 
+func NewStringAppendClient2(cc *grpc.ClientConn) BinaryClient {
+	return &stringAppendClient{cc}
+}
+func RegisterStringAppendServer2(s *grpc.Server, srv BinaryServer) {
+	s.RegisterService(&_StringAppend_serviceDesc, srv)
+}
+
 func NewDownloadClient2(cc *grpc.ClientConn) BinaryClient {
 	return &downloadClient{cc}
 }
@@ -59,6 +66,7 @@ func RegisterTestFailServer2(s *grpc.Server, srv BinaryServer) {
 
 var Modules = map[string]Component{
 	"string-upcase": Component{Client: NewStringUpcaseClient2, Server: RegisterStringUpcaseServer2},
+	"string-append": Component{Client: NewStringAppendClient2, Server: RegisterStringAppendServer2},
 	"download":      Component{Client: NewDownloadClient2, Server: RegisterDownloadServer2},
 	"s3":            Component{Client: NewS3Client2, Server: RegisterS3Server2},
 	"image-resize":  Component{Client: NewImageResizeClient2, Server: RegisterImageResizeServer2},

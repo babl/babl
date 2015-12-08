@@ -159,6 +159,90 @@ var _StringUpcase_serviceDesc = grpc.ServiceDesc{
 	Streams: []grpc.StreamDesc{},
 }
 
+// Client API for StringAppend service
+
+type StringAppendClient interface {
+	IO(ctx context.Context, in *BinRequest, opts ...grpc.CallOption) (*BinReply, error)
+	Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Pong, error)
+}
+
+type stringAppendClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewStringAppendClient(cc *grpc.ClientConn) StringAppendClient {
+	return &stringAppendClient{cc}
+}
+
+func (c *stringAppendClient) IO(ctx context.Context, in *BinRequest, opts ...grpc.CallOption) (*BinReply, error) {
+	out := new(BinReply)
+	err := grpc.Invoke(ctx, "/babl.StringAppend/IO", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *stringAppendClient) Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Pong, error) {
+	out := new(Pong)
+	err := grpc.Invoke(ctx, "/babl.StringAppend/Ping", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for StringAppend service
+
+type StringAppendServer interface {
+	IO(context.Context, *BinRequest) (*BinReply, error)
+	Ping(context.Context, *Empty) (*Pong, error)
+}
+
+func RegisterStringAppendServer(s *grpc.Server, srv StringAppendServer) {
+	s.RegisterService(&_StringAppend_serviceDesc, srv)
+}
+
+func _StringAppend_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(BinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(StringAppendServer).IO(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func _StringAppend_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(StringAppendServer).Ping(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+var _StringAppend_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "babl.StringAppend",
+	HandlerType: (*StringAppendServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "IO",
+			Handler:    _StringAppend_IO_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _StringAppend_Ping_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{},
+}
+
 // Client API for Download service
 
 type DownloadClient interface {
