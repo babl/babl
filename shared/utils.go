@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"sort"
+	"strings"
 
 	pb "github.com/larskluge/babl/protobuf"
 )
@@ -28,4 +29,12 @@ func Modules() (modules []string) {
 	}
 	sort.Strings(modules)
 	return
+}
+
+func Version() string {
+	version, err := Asset("data/VERSION")
+	if err != nil {
+		panic(err)
+	}
+	return strings.Trim(string(version), "\n")
 }

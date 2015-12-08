@@ -49,7 +49,7 @@ func pingSubCommands() (cmds []cli.Command) {
 func configureCli() (app *cli.App) {
 	app = cli.NewApp()
 	app.Usage = "Client to access the Babl Network."
-	app.Version = "0.1.0"
+	app.Version = shared.Version()
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:  "host",
