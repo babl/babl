@@ -56,17 +56,6 @@ func (m *Module) Call(stdin []byte) (stdout []byte, stderr []byte, exitcode int,
 	connection := pb.Modules[m.Name].Client(conn)
 	req := pb.BinRequest{Stdin: stdin, Env: m.Env}
 	res, err := connection.IO(context.Background(), &req)
-	if err != nil {
-		log.Fatalf("Failed: %v", err)
-	}
-	status := "SUCCESS"
-	if res.Exitcode != 0 {
-		status = "ERROR"
-	}
-	log.Printf("Module finished: %s. %d bytes stdout, %d bytes stderr:", status, len(res.Stdout), len(res.Stderr))
-	log.Print(string(res.Stderr))
-	fmt.Printf("%s", res.Stdout)
-
 	return res.Stdout, res.Stderr, int(res.Exitcode), err
 }
 

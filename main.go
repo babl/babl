@@ -35,7 +35,16 @@ func defaultAction(c *cli.Context, module_with_tag string) {
 	m.Address = address(c)
 	log.Printf("Connecting to %s..", m.Address)
 
-	_, _, exitcode, _ := m.Call(stdin())
+	stdout, stderr, exitcode, err := m.Call(stdin())
+	status := "SUCCESS"
+	if err != nil || exitcode != 0 {
+		status = "ERROR"
+	}
+	log.Printf("Module finished: %s. %d bytes stdout, %d bytes stderr:", status, len(stdout), len(stderr))
+	if len(stderr) > 0 {
+		log.Print(string(stderr))
+	}
+	fmt.Printf("%s", stdout)
 	os.Exit(exitcode)
 }
 
