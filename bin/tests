@@ -1,6 +1,7 @@
 #!/bin/bash -xe
 
 go version
+cp $(pwd)/../.babl.yml ~/
 
 go build -v ./...
 go test -v ./...
@@ -9,9 +10,10 @@ go test -v ./...
 go install
 babl --help
 echo i should be upper case now | babl string-upcase
-gox -osarch="linux/amd64"
+gox -osarch="linux/amd64" -osarch="darwin/amd64"
 ./babl_linux_amd64
-cat babl_linux_amd64 | gzip | babl s3 -e BUCKET=babl -e FILE=/babl_linux_amd64.gz -e AWS_ACCESS_KEY_ID=AKIAJXXFBMHHERIBZ34Q -e AWS_SECRET_ACCESS_KEY=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 -e ACL=public-read
+cat babl_linux_amd64 | gzip | babl s3:babl -e FILE=/babl_linux_amd64.gz
+cat babl_darwin_amd64 | gzip | babl s3:babl -e FILE=/babl_darwin_amd64.gz
 
 # server
 cd babl-server
@@ -20,6 +22,4 @@ babl-server --help
 gox -osarch="linux/amd64"
 ./babl-server_linux_amd64 --help
 wc -c ./babl-server_linux_amd64
-
-cat babl-server_linux_amd64 | gzip | babl s3 -e BUCKET=babl -e FILE=/babl-server_linux_amd64.gz -e AWS_ACCESS_KEY_ID=AKIAJXXFBMHHERIBZ34Q -e AWS_SECRET_ACCESS_KEY=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 -e ACL=public-read
-rm babl-server_linux_amd64
+cat babl-server_linux_amd64 | gzip | babl s3:babl -e FILE=/babl-server_linux_amd64.gz
