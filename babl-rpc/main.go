@@ -2,9 +2,15 @@ package main
 
 import (
 	"encoding/base64"
+	"flag"
+	"fmt"
 
 	"github.com/DavidHuie/quartz/go/quartz"
 	"github.com/larskluge/babl/shared"
+)
+
+var (
+	printVersion = flag.Bool("version", false, "print version & exit")
 )
 
 type Babl struct{}
@@ -40,7 +46,13 @@ func (_ *Babl) Module(req ModuleRequest, response *ModuleResponse) error {
 }
 
 func main() {
-	Babl := &Babl{}
-	quartz.RegisterName("babl", Babl)
-	quartz.Start()
+	flag.Parse()
+	if *printVersion {
+		version, _ := shared.Asset("data/VERSION")
+		fmt.Printf("%s", version)
+	} else {
+		Babl := &Babl{}
+		quartz.RegisterName("babl", Babl)
+		quartz.Start()
+	}
 }
