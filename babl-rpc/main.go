@@ -48,8 +48,7 @@ func (_ *Babl) Module(req ModuleRequest, response *ModuleResponse) error {
 func main() {
 	flag.Parse()
 	if *printVersion {
-		version, _ := shared.Asset("data/VERSION")
-		fmt.Printf("%s", version)
+		fmt.Println(shared.Version())
 	} else {
 		Babl := &Babl{}
 		quartz.RegisterName("babl", Babl)
