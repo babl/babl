@@ -40,7 +40,7 @@ func defaultAction(c *cli.Context, module_with_tag string) {
 	if err != nil || exitcode != 0 {
 		status = "ERROR"
 	}
-	log.Printf("Module finished: %s. %d bytes stdout, %d bytes stderr:", status, len(stdout), len(stderr))
+	log.Printf("Module finished: %s. %d bytes stdout, %d bytes stderr:, exit w/ %d", status, len(stdout), len(stderr), exitcode)
 	if len(stderr) > 0 {
 		log.Print(string(stderr))
 	}
