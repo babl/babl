@@ -11,7 +11,7 @@ go install
 babl --help
 echo i should be upper case now | babl string-upcase
 gox -osarch="linux/amd64" -osarch="darwin/amd64"
-./babl_linux_amd64
+./babl_linux_amd64 --help
 cat babl_linux_amd64 | gzip | babl s3:babl -e FILE=/babl_linux_amd64.gz
 cat babl_darwin_amd64 | gzip | babl s3:babl -e FILE=/babl_darwin_amd64.gz
 
@@ -21,5 +21,4 @@ go install
 babl-server --help
 gox -osarch="linux/amd64"
 ./babl-server_linux_amd64 --help
-wc -c ./babl-server_linux_amd64
 cat babl-server_linux_amd64 | gzip | babl s3:babl -e FILE=/babl-server_linux_amd64.gz
