@@ -67,7 +67,12 @@ func configureCli() (app *cli.App) {
 			Usage: "Verbose logging",
 		},
 	}
-	app.HideHelp = true
+	app.Action = func(c *cli.Context) {
+		fmt.Fprintln(app.Writer, "Incorrect Usage.")
+		fmt.Fprintln(app.Writer)
+		cli.ShowAppHelp(c)
+		os.Exit(1)
+	}
 
 	app.Commands = []cli.Command{
 		{
