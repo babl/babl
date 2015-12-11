@@ -2,12 +2,14 @@ package shared
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"sort"
 	"strings"
 
 	pb "github.com/larskluge/babl/protobuf"
+	"github.com/mattn/go-isatty"
 )
 
 func EnsureModuleExists(module string) {
@@ -37,4 +39,12 @@ func Version() string {
 		panic(err)
 	}
 	return strings.Trim(string(version), "\n")
+}
+
+func ReadStdin() (in []byte) {
+	if !isatty.IsTerminal(os.Stdin.Fd()) {
+		in, _ = ioutil.ReadAll(os.Stdin)
+	}
+	log.Printf("%d bytes read from stdin", len(in))
+	return
 }

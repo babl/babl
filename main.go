@@ -2,14 +2,12 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"strings"
 
 	"github.com/codegangsta/cli"
 	"github.com/larskluge/babl/shared"
-	"github.com/mattn/go-isatty"
 )
 
 func main() {
@@ -35,7 +33,7 @@ func defaultAction(c *cli.Context, module_with_tag string) {
 	m.Address = address(c)
 	log.Printf("Connecting to %s..", m.Address)
 
-	stdout, stderr, exitcode, err := m.Call(stdin())
+	stdout, stderr, exitcode, err := m.Call(shared.ReadStdin())
 	status := "SUCCESS"
 	if err != nil || exitcode != 0 {
 		status = "ERROR"
@@ -53,12 +51,4 @@ func applyEnv(env *map[string]string, envs []string) {
 		x := strings.Split(val, "=")
 		(*env)[x[0]] = x[1]
 	}
-}
-
-func stdin() (in []byte) {
-	if !isatty.IsTerminal(os.Stdin.Fd()) {
-		in, _ = ioutil.ReadAll(os.Stdin)
-	}
-	log.Printf("%d bytes read from stdin", len(in))
-	return
 }
