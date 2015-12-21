@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"flag"
 	"fmt"
+	"log"
 
 	"github.com/DavidHuie/quartz/go/quartz"
 	"github.com/larskluge/babl/shared"
@@ -32,6 +33,7 @@ func (_ *Babl) Module(req ModuleRequest, response *ModuleResponse) error {
 	m.Env = req.Env
 
 	stdin, err := base64.StdEncoding.DecodeString(req.Stdin)
+	log.Printf("Received %d bytes decoded data for Stdin", len(stdin))
 	if err != nil {
 		return err
 	}
