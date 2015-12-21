@@ -1,3 +1,6 @@
+//go:generate protoc -I ./protobuf/ ./protobuf/babl.proto --go_out=plugins=grpc:protobuf
+//go:generate cd shared && go-bindata -pkg shared data/...
+
 package main
 
 import (
