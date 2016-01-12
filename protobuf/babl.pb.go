@@ -495,6 +495,90 @@ var _ImageResize_serviceDesc = grpc.ServiceDesc{
 	Streams: []grpc.StreamDesc{},
 }
 
+// Client API for RenderWebsite service
+
+type RenderWebsiteClient interface {
+	IO(ctx context.Context, in *BinRequest, opts ...grpc.CallOption) (*BinReply, error)
+	Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Pong, error)
+}
+
+type renderWebsiteClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewRenderWebsiteClient(cc *grpc.ClientConn) RenderWebsiteClient {
+	return &renderWebsiteClient{cc}
+}
+
+func (c *renderWebsiteClient) IO(ctx context.Context, in *BinRequest, opts ...grpc.CallOption) (*BinReply, error) {
+	out := new(BinReply)
+	err := grpc.Invoke(ctx, "/babl.RenderWebsite/IO", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *renderWebsiteClient) Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Pong, error) {
+	out := new(Pong)
+	err := grpc.Invoke(ctx, "/babl.RenderWebsite/Ping", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for RenderWebsite service
+
+type RenderWebsiteServer interface {
+	IO(context.Context, *BinRequest) (*BinReply, error)
+	Ping(context.Context, *Empty) (*Pong, error)
+}
+
+func RegisterRenderWebsiteServer(s *grpc.Server, srv RenderWebsiteServer) {
+	s.RegisterService(&_RenderWebsite_serviceDesc, srv)
+}
+
+func _RenderWebsite_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(BinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(RenderWebsiteServer).IO(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func _RenderWebsite_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(RenderWebsiteServer).Ping(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+var _RenderWebsite_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "babl.RenderWebsite",
+	HandlerType: (*RenderWebsiteServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "IO",
+			Handler:    _RenderWebsite_IO_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _RenderWebsite_Ping_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{},
+}
+
 // Client API for TestFail service
 
 type TestFailClient interface {

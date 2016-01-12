@@ -26,6 +26,10 @@ service ImageResize {
   rpc IO (BinRequest) returns (BinReply) {}
   rpc Ping (Empty) returns (Pong) {}
 }
+service RenderWebsite {
+  rpc IO (BinRequest) returns (BinReply) {}
+  rpc Ping (Empty) returns (Pong) {}
+}
 service TestFail {
   rpc IO (BinRequest) returns (BinReply) {}
   rpc Ping (Empty) returns (Pong) {}
