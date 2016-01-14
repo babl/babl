@@ -75,6 +75,90 @@ func (*Pong) ProtoMessage()    {}
 var _ context.Context
 var _ grpc.ClientConn
 
+// Client API for BablBuild service
+
+type BablBuildClient interface {
+	IO(ctx context.Context, in *BinRequest, opts ...grpc.CallOption) (*BinReply, error)
+	Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Pong, error)
+}
+
+type bablBuildClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewBablBuildClient(cc *grpc.ClientConn) BablBuildClient {
+	return &bablBuildClient{cc}
+}
+
+func (c *bablBuildClient) IO(ctx context.Context, in *BinRequest, opts ...grpc.CallOption) (*BinReply, error) {
+	out := new(BinReply)
+	err := grpc.Invoke(ctx, "/babl.BablBuild/IO", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bablBuildClient) Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Pong, error) {
+	out := new(Pong)
+	err := grpc.Invoke(ctx, "/babl.BablBuild/Ping", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for BablBuild service
+
+type BablBuildServer interface {
+	IO(context.Context, *BinRequest) (*BinReply, error)
+	Ping(context.Context, *Empty) (*Pong, error)
+}
+
+func RegisterBablBuildServer(s *grpc.Server, srv BablBuildServer) {
+	s.RegisterService(&_BablBuild_serviceDesc, srv)
+}
+
+func _BablBuild_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(BinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(BablBuildServer).IO(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func _BablBuild_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(BablBuildServer).Ping(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+var _BablBuild_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "babl.BablBuild",
+	HandlerType: (*BablBuildServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "IO",
+			Handler:    _BablBuild_IO_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _BablBuild_Ping_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{},
+}
+
 // Client API for StringUpcase service
 
 type StringUpcaseClient interface {

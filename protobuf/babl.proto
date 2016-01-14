@@ -6,6 +6,10 @@ option objc_class_prefix = "HLW";
 package babl;
 
 
+service BablBuild {
+  rpc IO (BinRequest) returns (BinReply) {}
+  rpc Ping (Empty) returns (Pong) {}
+}
 service StringUpcase {
   rpc IO (BinRequest) returns (BinReply) {}
   rpc Ping (Empty) returns (Pong) {}

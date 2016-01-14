@@ -3,6 +3,13 @@
 // DO NOT EDIT!
 
 
+func NewBablBuildClient2(cc *grpc.ClientConn) BinaryClient {
+	return &bablBuildClient{cc}
+}
+func RegisterBablBuildServer2(s *grpc.Server, srv BinaryServer) {
+	s.RegisterService(&_BablBuild_serviceDesc, srv)
+}
+
 func NewStringUpcaseClient2(cc *grpc.ClientConn) BinaryClient {
 	return &stringUpcaseClient{cc}
 }
@@ -53,6 +60,7 @@ func RegisterTestFailServer2(s *grpc.Server, srv BinaryServer) {
 }
 
 var Modules = map[string]Component{
+	"babl-build": Component{Client: NewBablBuildClient2, Server: RegisterBablBuildServer2},
 	"string-upcase": Component{Client: NewStringUpcaseClient2, Server: RegisterStringUpcaseServer2},
 	"string-append": Component{Client: NewStringAppendClient2, Server: RegisterStringAppendServer2},
 	"download": Component{Client: NewDownloadClient2, Server: RegisterDownloadServer2},
