@@ -100,11 +100,13 @@ func (s *server) IO(ctx context.Context, in *pb.BinRequest) (*pb.BinReply, error
 
 	log.Printf("Executing %s", command)
 	cmd := exec.Command(command)
-	cmd.Env = make([]string, len(in.Env)) //{"FOO=BAR"}
+	env := os.Environ()
+	cmd.Env = []string{} //{"FOO=BAR"}
 
 	for k, v := range in.Env {
 		cmd.Env = append(cmd.Env, fmt.Sprintf("%s=%s", k, v))
 	}
+	cmd.Env = append(cmd.Env, env...)
 
 	stdin, errIn := cmd.StdinPipe()
 	if errIn != nil {
