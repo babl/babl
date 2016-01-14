@@ -2,6 +2,11 @@
 // source: babl.proto
 // DO NOT EDIT!
 
+package babl
+
+import (
+	grpc "google.golang.org/grpc"
+)
 
 func NewBablBuildClient2(cc *grpc.ClientConn) BinaryClient {
 	return &bablBuildClient{cc}

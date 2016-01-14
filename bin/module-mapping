@@ -21,6 +21,11 @@ puts %{\
 // source: babl.proto
 // DO NOT EDIT!
 
+package babl
+
+import (
+	grpc "google.golang.org/grpc"
+)
 }
 
 names.each do |n|
