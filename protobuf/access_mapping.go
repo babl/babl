@@ -15,6 +15,13 @@ func RegisterBablBuildServer2(s *grpc.Server, srv BinaryServer) {
 	s.RegisterService(&_BablBuild_serviceDesc, srv)
 }
 
+func NewBablDeployClient2(cc *grpc.ClientConn) BinaryClient {
+	return &bablDeployClient{cc}
+}
+func RegisterBablDeployServer2(s *grpc.Server, srv BinaryServer) {
+	s.RegisterService(&_BablDeploy_serviceDesc, srv)
+}
+
 func NewStringUpcaseClient2(cc *grpc.ClientConn) BinaryClient {
 	return &stringUpcaseClient{cc}
 }
@@ -66,6 +73,7 @@ func RegisterTestFailServer2(s *grpc.Server, srv BinaryServer) {
 
 var Modules = map[string]Component{
 	"babl-build": Component{Client: NewBablBuildClient2, Server: RegisterBablBuildServer2},
+	"babl-deploy": Component{Client: NewBablDeployClient2, Server: RegisterBablDeployServer2},
 	"string-upcase": Component{Client: NewStringUpcaseClient2, Server: RegisterStringUpcaseServer2},
 	"string-append": Component{Client: NewStringAppendClient2, Server: RegisterStringAppendServer2},
 	"download": Component{Client: NewDownloadClient2, Server: RegisterDownloadServer2},

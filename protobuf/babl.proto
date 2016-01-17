@@ -10,6 +10,10 @@ service BablBuild {
   rpc IO (BinRequest) returns (BinReply) {}
   rpc Ping (Empty) returns (Pong) {}
 }
+service BablDeploy {
+  rpc IO (BinRequest) returns (BinReply) {}
+  rpc Ping (Empty) returns (Pong) {}
+}
 service StringUpcase {
   rpc IO (BinRequest) returns (BinReply) {}
   rpc Ping (Empty) returns (Pong) {}

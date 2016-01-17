@@ -159,6 +159,90 @@ var _BablBuild_serviceDesc = grpc.ServiceDesc{
 	Streams: []grpc.StreamDesc{},
 }
 
+// Client API for BablDeploy service
+
+type BablDeployClient interface {
+	IO(ctx context.Context, in *BinRequest, opts ...grpc.CallOption) (*BinReply, error)
+	Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Pong, error)
+}
+
+type bablDeployClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewBablDeployClient(cc *grpc.ClientConn) BablDeployClient {
+	return &bablDeployClient{cc}
+}
+
+func (c *bablDeployClient) IO(ctx context.Context, in *BinRequest, opts ...grpc.CallOption) (*BinReply, error) {
+	out := new(BinReply)
+	err := grpc.Invoke(ctx, "/babl.BablDeploy/IO", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bablDeployClient) Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Pong, error) {
+	out := new(Pong)
+	err := grpc.Invoke(ctx, "/babl.BablDeploy/Ping", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for BablDeploy service
+
+type BablDeployServer interface {
+	IO(context.Context, *BinRequest) (*BinReply, error)
+	Ping(context.Context, *Empty) (*Pong, error)
+}
+
+func RegisterBablDeployServer(s *grpc.Server, srv BablDeployServer) {
+	s.RegisterService(&_BablDeploy_serviceDesc, srv)
+}
+
+func _BablDeploy_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(BinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(BablDeployServer).IO(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func _BablDeploy_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(BablDeployServer).Ping(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+var _BablDeploy_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "babl.BablDeploy",
+	HandlerType: (*BablDeployServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "IO",
+			Handler:    _BablDeploy_IO_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _BablDeploy_Ping_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{},
+}
+
 // Client API for StringUpcase service
 
 type StringUpcaseClient interface {
