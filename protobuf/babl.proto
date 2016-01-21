@@ -1,44 +1,57 @@
 syntax = "proto3";
 
-option java_package = "io.grpc.examples";
-option objc_class_prefix = "HLW";
+option java_package = "sh.babl";
+option objc_class_prefix = "BABL";
 
 package babl;
+import "google/protobuf/descriptor.proto";
 
+extend google.protobuf.ServiceOptions {
+  string babl_user = 54444;
+}
 
 service BablBuild {
+  option (babl_user) = "larskluge";
   rpc IO (BinRequest) returns (BinReply) {}
   rpc Ping (Empty) returns (Pong) {}
 }
 service BablDeploy {
+  option (babl_user) = "larskluge";
   rpc IO (BinRequest) returns (BinReply) {}
   rpc Ping (Empty) returns (Pong) {}
 }
 service StringUpcase {
+  option (babl_user) = "larskluge";
   rpc IO (BinRequest) returns (BinReply) {}
   rpc Ping (Empty) returns (Pong) {}
 }
 service StringAppend {
+  option (babl_user) = "larskluge";
   rpc IO (BinRequest) returns (BinReply) {}
   rpc Ping (Empty) returns (Pong) {}
 }
 service Download {
+  option (babl_user) = "larskluge";
   rpc IO (BinRequest) returns (BinReply) {}
   rpc Ping (Empty) returns (Pong) {}
 }
 service S3 {
+  option (babl_user) = "larskluge";
   rpc IO (BinRequest) returns (BinReply) {}
   rpc Ping (Empty) returns (Pong) {}
 }
 service ImageResize {
+  option (babl_user) = "larskluge";
   rpc IO (BinRequest) returns (BinReply) {}
   rpc Ping (Empty) returns (Pong) {}
 }
 service RenderWebsite {
+  option (babl_user) = "larskluge";
   rpc IO (BinRequest) returns (BinReply) {}
   rpc Ping (Empty) returns (Pong) {}
 }
 service TestFail {
+  option (babl_user) = "larskluge";
   rpc IO (BinRequest) returns (BinReply) {}
   rpc Ping (Empty) returns (Pong) {}
 }

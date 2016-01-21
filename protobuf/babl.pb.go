@@ -19,6 +19,7 @@ package babl
 import proto "github.com/golang/protobuf/proto"
 import fmt "fmt"
 import math "math"
+import google_protobuf "google/protobuf"
 
 import (
 	context "golang.org/x/net/context"
@@ -70,6 +71,18 @@ type Pong struct {
 func (m *Pong) Reset()         { *m = Pong{} }
 func (m *Pong) String() string { return proto.CompactTextString(m) }
 func (*Pong) ProtoMessage()    {}
+
+var E_BablUser = &proto.ExtensionDesc{
+	ExtendedType:  (*google_protobuf.ServiceOptions)(nil),
+	ExtensionType: (*string)(nil),
+	Field:         54444,
+	Name:          "babl.babl_user",
+	Tag:           "bytes,54444,opt,name=babl_user",
+}
+
+func init() {
+	proto.RegisterExtension(E_BablUser)
+}
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ context.Context
