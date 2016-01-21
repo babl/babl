@@ -5,80 +5,24 @@
 package babl
 
 import (
+	_ "github.com/larskluge/babl/protobuf/messages"
+	babltester "github.com/larskluge/babl/protobuf/modules/babltester"
+	larskluge "github.com/larskluge/babl/protobuf/modules/larskluge"
 	grpc "google.golang.org/grpc"
 )
 
-func NewBablBuildClient2(cc *grpc.ClientConn) BinaryClient {
-	return &bablBuildClient{cc}
+func NewStringUpcaseClient(cc *grpc.ClientConn) BinaryClient {
+	return BinaryClient(larskluge.NewStringUpcaseClient(cc))
 }
-func RegisterBablBuildServer2(s *grpc.Server, srv BinaryServer) {
-	s.RegisterService(&_BablBuild_serviceDesc, srv)
-}
-
-func NewBablDeployClient2(cc *grpc.ClientConn) BinaryClient {
-	return &bablDeployClient{cc}
-}
-func RegisterBablDeployServer2(s *grpc.Server, srv BinaryServer) {
-	s.RegisterService(&_BablDeploy_serviceDesc, srv)
-}
-
-func NewStringUpcaseClient2(cc *grpc.ClientConn) BinaryClient {
-	return &stringUpcaseClient{cc}
-}
-func RegisterStringUpcaseServer2(s *grpc.Server, srv BinaryServer) {
-	s.RegisterService(&_StringUpcase_serviceDesc, srv)
-}
-
-func NewStringAppendClient2(cc *grpc.ClientConn) BinaryClient {
-	return &stringAppendClient{cc}
-}
-func RegisterStringAppendServer2(s *grpc.Server, srv BinaryServer) {
-	s.RegisterService(&_StringAppend_serviceDesc, srv)
-}
-
-func NewDownloadClient2(cc *grpc.ClientConn) BinaryClient {
-	return &downloadClient{cc}
-}
-func RegisterDownloadServer2(s *grpc.Server, srv BinaryServer) {
-	s.RegisterService(&_Download_serviceDesc, srv)
-}
-
-func NewS3Client2(cc *grpc.ClientConn) BinaryClient {
-	return &s3Client{cc}
-}
-func RegisterS3Server2(s *grpc.Server, srv BinaryServer) {
-	s.RegisterService(&_S3_serviceDesc, srv)
-}
-
-func NewImageResizeClient2(cc *grpc.ClientConn) BinaryClient {
-	return &imageResizeClient{cc}
-}
-func RegisterImageResizeServer2(s *grpc.Server, srv BinaryServer) {
-	s.RegisterService(&_ImageResize_serviceDesc, srv)
-}
-
-func NewRenderWebsiteClient2(cc *grpc.ClientConn) BinaryClient {
-	return &renderWebsiteClient{cc}
-}
-func RegisterRenderWebsiteServer2(s *grpc.Server, srv BinaryServer) {
-	s.RegisterService(&_RenderWebsite_serviceDesc, srv)
-}
-
-func NewTestFailClient2(cc *grpc.ClientConn) BinaryClient {
-	return &testFailClient{cc}
-}
-func RegisterTestFailServer2(s *grpc.Server, srv BinaryServer) {
-	s.RegisterService(&_TestFail_serviceDesc, srv)
+func RegisterStringUpcaseServer(s *grpc.Server, srv BinaryServer) {
+	larskluge.RegisterStringUpcaseServer(s, srv)
 }
 
 var Modules = map[string]Component{
-	"babl-build": Component{Client: NewBablBuildClient2, Server: RegisterBablBuildServer2},
-	"babl-deploy": Component{Client: NewBablDeployClient2, Server: RegisterBablDeployServer2},
-	"string-upcase": Component{Client: NewStringUpcaseClient2, Server: RegisterStringUpcaseServer2},
-	"string-append": Component{Client: NewStringAppendClient2, Server: RegisterStringAppendServer2},
-	"download": Component{Client: NewDownloadClient2, Server: RegisterDownloadServer2},
-	"s3": Component{Client: NewS3Client2, Server: RegisterS3Server2},
-	"image-resize": Component{Client: NewImageResizeClient2, Server: RegisterImageResizeServer2},
-	"render-website": Component{Client: NewRenderWebsiteClient2, Server: RegisterRenderWebsiteServer2},
-	"test-fail": Component{Client: NewTestFailClient2, Server: RegisterTestFailServer2},
+	"babltester/bar": Component{Client: func(cc *grpc.ClientConn) BinaryClient {
+		return BinaryClient(babltester.NewBarClient(cc))
+	}, Server: func(s *grpc.Server, srv BinaryServer) {
+		babltester.RegisterBarServer(s, srv)
+	}},
+	"larskluge/string-upcase": Component{Client: NewStringUpcaseClient, Server: RegisterStringUpcaseServer},
 }

@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package babl;
+
+
+message BinRequest {
+  bytes stdin = 1;
+  map<string, string> env = 2;
+}
+
+message BinReply {
+  bytes stdout = 1;
+  bytes stderr = 2;
+  int32 exitcode = 3;
+}
+
+message Empty {
+}
+
+message Pong {
+  string val = 1;
+}

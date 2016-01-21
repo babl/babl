@@ -14,6 +14,7 @@ import (
 
 	"github.com/codegangsta/cli"
 	pb "github.com/larskluge/babl/protobuf"
+	pbm "github.com/larskluge/babl/protobuf/messages"
 	"github.com/larskluge/babl/shared"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
@@ -91,7 +92,7 @@ func defaultAction(c *cli.Context) {
 	}
 }
 
-func (s *server) IO(ctx context.Context, in *pb.BinRequest) (*pb.BinReply, error) {
+func (s *server) IO(ctx context.Context, in *pbm.BinRequest) (*pbm.BinReply, error) {
 	log.Print("-----------------------------------------------------------------------------------")
 	log.Printf("Received %d bytes", len(in.Stdin))
 	if len(in.Stdin) > 0 && len(in.Stdin) < 200 {
@@ -134,7 +135,7 @@ func (s *server) IO(ctx context.Context, in *pb.BinRequest) (*pb.BinReply, error
 	}
 	log.Printf("%d bytes stdout, %d bytes stderr.", len(outBytes), len(errBytes))
 
-	res := pb.BinReply{Stdout: outBytes}
+	res := pbm.BinReply{Stdout: outBytes}
 	res.Exitcode = 0
 	res.Stderr = errBytes
 
@@ -159,8 +160,8 @@ func (s *server) IO(ctx context.Context, in *pb.BinRequest) (*pb.BinReply, error
 	return &res, nil
 }
 
-func (s *server) Ping(ctx context.Context, in *pb.Empty) (*pb.Pong, error) {
+func (s *server) Ping(ctx context.Context, in *pbm.Empty) (*pbm.Pong, error) {
 	log.Println("Ping Request")
-	res := pb.Pong{Val: "pong"}
+	res := pbm.Pong{Val: "pong"}
 	return &res, nil
 }

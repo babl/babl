@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	pb "github.com/larskluge/babl/protobuf"
+	pbm "github.com/larskluge/babl/protobuf/messages"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -54,7 +55,7 @@ func (m *Module) Call(stdin []byte) (stdout []byte, stderr []byte, exitcode int,
 	defer conn.Close()
 
 	connection := pb.Modules[m.Name].Client(conn)
-	req := pb.BinRequest{Stdin: stdin, Env: m.Env}
+	req := pbm.BinRequest{Stdin: stdin, Env: m.Env}
 	res, err := connection.IO(context.Background(), &req)
 	return res.Stdout, res.Stderr, int(res.Exitcode), err
 }
@@ -79,12 +80,12 @@ func (m *Module) Connect() *grpc.ClientConn {
 	return conn
 }
 
-func (m *Module) Ping() (res *pb.Pong, err error) {
+func (m *Module) Ping() (res *pbm.Pong, err error) {
 	conn := m.Connect()
 	defer conn.Close()
 
 	connection := pb.Modules[m.Name].Client(conn)
-	req := pb.Empty{}
+	req := pbm.Empty{}
 	res, err = connection.Ping(context.Background(), &req)
 	return
 }

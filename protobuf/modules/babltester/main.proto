@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package babl.babeltester;
+import "messages/main.proto";
+
+
+service Bar {
+  rpc IO (babl.BinRequest) returns (babl.BinReply) {}
+  rpc Ping (babl.Empty) returns (babl.Pong) {}
+}
