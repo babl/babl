@@ -1,4 +1,5 @@
-//go:generate protoc -I ./protobuf/ ./protobuf/babl.proto --go_out=plugins=grpc:protobuf
+//go:generate bin/module-proto
+//go:generate bin/protoc
 //go:generate sh -c "bin/module-mapping > protobuf/access_mapping.go"
 //go:generate cd shared && go-bindata -pkg shared data/...
 

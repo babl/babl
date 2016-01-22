@@ -1,0 +1,13 @@
+modules:
+  larskluge:
+    - babl-build
+    - babl-deploy
+    - download
+    - image-resize
+    - render-website
+    - s3
+    - string-append
+    - string-upcase
+    - test-fail
+  babltester:
+    - bar
