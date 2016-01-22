@@ -5,7 +5,6 @@
 package babl
 
 import (
-	_ "github.com/larskluge/babl/protobuf/messages"
 	babltester "github.com/larskluge/babl/protobuf/modules/babltester"
 	larskluge "github.com/larskluge/babl/protobuf/modules/larskluge"
 	grpc "google.golang.org/grpc"
@@ -19,10 +18,13 @@ func RegisterStringUpcaseServer(s *grpc.Server, srv BinaryServer) {
 }
 
 var Modules = map[string]Component{
-	"babltester/bar": Component{Client: func(cc *grpc.ClientConn) BinaryClient {
-		return BinaryClient(babltester.NewBarClient(cc))
-	}, Server: func(s *grpc.Server, srv BinaryServer) {
-		babltester.RegisterBarServer(s, srv)
-	}},
+	"babltester/bar": Component{
+		Client: func(cc *grpc.ClientConn) BinaryClient {
+			return BinaryClient(babltester.NewBarClient(cc))
+		},
+		Server: func(s *grpc.Server, srv BinaryServer) {
+			babltester.RegisterBarServer(s, srv)
+		},
+	},
 	"larskluge/string-upcase": Component{Client: NewStringUpcaseClient, Server: RegisterStringUpcaseServer},
 }
