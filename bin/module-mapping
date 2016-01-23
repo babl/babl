@@ -39,7 +39,7 @@ var Modules = map[string]Component{
 conf.each do |(user, u)|
   mods = u['modules']
   mods.each do |mod|
-    cc = mod.gsub('-', '_').camelize
+    cc = mod.gsub('-', '_').gsub(/(\d+)/, "\t\\1\t").split("\t").map(&:camelize).join
 
     contents += %<\
 	"#{user}/#{mod}": Component{

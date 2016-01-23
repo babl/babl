@@ -29,7 +29,7 @@ import "github.com/larskluge/babl/protobuf/messages/main.proto";
 }
 
   modules.each do |mod|
-    cc = mod.gsub('-', '_').camelize
+    cc = mod.gsub('-', '_').gsub(/(\d+)/, "\t\\1\t").split("\t").map(&:camelize).join
     contents += %{
 service #{cc} {
   rpc IO (babl.BinRequest) returns (babl.BinReply) {}
