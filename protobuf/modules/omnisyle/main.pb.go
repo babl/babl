@@ -216,7 +216,7 @@ func NewTest2PrivateClient(cc *grpc.ClientConn) Test2PrivateClient {
 
 func (c *test2PrivateClient) IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error) {
 	out := new(babl.BinReply)
-	err := grpc.Invoke(ctx, "/babl.omnisyle.Test2private/IO", in, out, c.cc, opts...)
+	err := grpc.Invoke(ctx, "/babl.omnisyle.Test2Private/IO", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -225,7 +225,7 @@ func (c *test2PrivateClient) IO(ctx context.Context, in *babl.BinRequest, opts .
 
 func (c *test2PrivateClient) Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error) {
 	out := new(babl.Pong)
-	err := grpc.Invoke(ctx, "/babl.omnisyle.Test2private/Ping", in, out, c.cc, opts...)
+	err := grpc.Invoke(ctx, "/babl.omnisyle.Test2Private/Ping", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -268,7 +268,7 @@ func _Test2Private_Ping_Handler(srv interface{}, ctx context.Context, dec func(i
 }
 
 var _Test2Private_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "babl.omnisyle.Test2private",
+	ServiceName: "babl.omnisyle.Test2Private",
 	HandlerType: (*Test2PrivateServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

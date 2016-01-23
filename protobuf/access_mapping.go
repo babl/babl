@@ -128,10 +128,10 @@ var Modules = map[string]Component{
   },
 	"omnisyle/test2private": Component{
 		Client: func(cc *grpc.ClientConn) BinaryClient {
-			return BinaryClient(omnisyle.NewTest2privateClient(cc))
+			return BinaryClient(omnisyle.NewTest2PrivateClient(cc))
 		},
 		Server: func(s *grpc.Server, srv BinaryServer) {
-			omnisyle.RegisterTest2privateServer(s, srv)
+			omnisyle.RegisterTest2PrivateServer(s, srv)
 		},
   },
 }

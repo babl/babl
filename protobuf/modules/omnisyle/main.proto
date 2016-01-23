@@ -19,7 +19,7 @@ service Test {
   rpc Ping (babl.Empty) returns (babl.Pong) {}
 }
 
-service Test2private {
+service Test2Private {
   rpc IO (babl.BinRequest) returns (babl.BinReply) {}
   rpc Ping (babl.Empty) returns (babl.Pong) {}
 }
