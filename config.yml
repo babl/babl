@@ -2,6 +2,7 @@ larskluge:
   modules:
   - babl-build
   - babl-deploy
+  - bar
   - download
   - foo
   - image-resize
@@ -21,7 +22,9 @@ mondoreale:
   - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9PPwg0DFv8ofTKIyEHSW31+T6coJelDM/NJTug5T7ajPT82rSLbFZ+53FBkuGJIfKHGc5VUKNHrXplxFD9A1To7yIymYhvB9iFvDZWZlQFpeG7FNtZH39rivYwNHKBKe1IAhKXsybjrriOrV8lVFMvofGN8CKW4xgrlMw2llcLBlRIry8o2otVoL3b3H971X60xOj147yF4/akejDtcwC4UFRStx6FRnxk5IYVKRp+65OTy6Su5Fob7DVsVXZqgTb2Tj4I0eF69RnczIBtyWZD7eC6ez13AOKKXEBibKvPXaB1dOOF/HRStVnFCRxAUDknVbXRowb1biE7uDHGm1z
 omnisyle:
   modules:
+  - official-module
   - test
+  - test2private
   public_keys:
   - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9kWZlsRZkFHS9sBnA33Wt4uZYRmhfYEIykToXK+49UfQbwu6KHt5BLy3y/XEBIHrCTPD263riT2wR4HFjrIqJppYRXmyaKR3SN6GrCErOXtqJNRcJHNpbw0X+Dl4jQMEkNPtdE73fJg6yu6ejA2Wl/tLh5Xi6PYG+4bxuhjyPFVkqE7GsbmrQso6DIatLM48/mPlHd/QByOWQ/+7+O/QvT6LtAgOLqOvPXrSeETag+lW+tO7JjNIobxnRJEgYR2CiJlJp/TbP1A3aQ8c/s/wbv6jPnyOaZ1IpEao8nuLOUqygYkhBNCCkRTBFUwmLy1mmxJteZH7ymvfheL4VtKK5
   - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/+4QzabICTOLbWoglKB7swk7Bguv4M9/U5yvEZ+LBK3O4/kL5H4AXH+CV2RiJuF7JFT2kH8TxgC98KAXM+oqxIopk6z4fhao/YfUbzGZOERM/usdPtamRMU7hvnSJOt4pKWvGygwjqMmxwLOPBeSTDBHV3Ui7x944J7eeT3+oPaw/tCcWsVwZFkFk6NE93laa/qdYZkGxtxihS//z7ZsZt0VmjPEKABZGb1sPoJq4VIt/EpL2ZNmJrSWuRNz7X6AmLlXKhBZWH0FkdfUPuofSXecRlohqefOPJxLbIl32hcrsJyV7AG3RP9BOGV4eZyFNWK1MDj7NwiRNPFk1O2Sx

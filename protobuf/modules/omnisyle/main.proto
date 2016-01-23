@@ -9,7 +9,17 @@ package babl.omnisyle;
 import "github.com/larskluge/babl/protobuf/messages/main.proto";
 
 
+service OfficialModule {
+  rpc IO (babl.BinRequest) returns (babl.BinReply) {}
+  rpc Ping (babl.Empty) returns (babl.Pong) {}
+}
+
 service Test {
+  rpc IO (babl.BinRequest) returns (babl.BinReply) {}
+  rpc Ping (babl.Empty) returns (babl.Pong) {}
+}
+
+service Test2private {
   rpc IO (babl.BinRequest) returns (babl.BinReply) {}
   rpc Ping (babl.Empty) returns (babl.Pong) {}
 }

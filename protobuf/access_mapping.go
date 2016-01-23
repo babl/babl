@@ -30,6 +30,14 @@ var Modules = map[string]Component{
 			larskluge.RegisterBablDeployServer(s, srv)
 		},
   },
+	"larskluge/bar": Component{
+		Client: func(cc *grpc.ClientConn) BinaryClient {
+			return BinaryClient(larskluge.NewBarClient(cc))
+		},
+		Server: func(s *grpc.Server, srv BinaryServer) {
+			larskluge.RegisterBarServer(s, srv)
+		},
+  },
 	"larskluge/download": Component{
 		Client: func(cc *grpc.ClientConn) BinaryClient {
 			return BinaryClient(larskluge.NewDownloadClient(cc))
@@ -102,12 +110,28 @@ var Modules = map[string]Component{
 			mondoreale.RegisterFoobarServer(s, srv)
 		},
   },
+	"omnisyle/official-module": Component{
+		Client: func(cc *grpc.ClientConn) BinaryClient {
+			return BinaryClient(omnisyle.NewOfficialModuleClient(cc))
+		},
+		Server: func(s *grpc.Server, srv BinaryServer) {
+			omnisyle.RegisterOfficialModuleServer(s, srv)
+		},
+  },
 	"omnisyle/test": Component{
 		Client: func(cc *grpc.ClientConn) BinaryClient {
 			return BinaryClient(omnisyle.NewTestClient(cc))
 		},
 		Server: func(s *grpc.Server, srv BinaryServer) {
 			omnisyle.RegisterTestServer(s, srv)
+		},
+  },
+	"omnisyle/test2private": Component{
+		Client: func(cc *grpc.ClientConn) BinaryClient {
+			return BinaryClient(omnisyle.NewTest2privateClient(cc))
+		},
+		Server: func(s *grpc.Server, srv BinaryServer) {
+			omnisyle.RegisterTest2privateServer(s, srv)
 		},
   },
 }

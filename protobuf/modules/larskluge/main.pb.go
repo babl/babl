@@ -199,6 +199,90 @@ var _BablDeploy_serviceDesc = grpc.ServiceDesc{
 	Streams: []grpc.StreamDesc{},
 }
 
+// Client API for Bar service
+
+type BarClient interface {
+	IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error)
+	Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error)
+}
+
+type barClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewBarClient(cc *grpc.ClientConn) BarClient {
+	return &barClient{cc}
+}
+
+func (c *barClient) IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error) {
+	out := new(babl.BinReply)
+	err := grpc.Invoke(ctx, "/babl.larskluge.Bar/IO", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *barClient) Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error) {
+	out := new(babl.Pong)
+	err := grpc.Invoke(ctx, "/babl.larskluge.Bar/Ping", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for Bar service
+
+type BarServer interface {
+	IO(context.Context, *babl.BinRequest) (*babl.BinReply, error)
+	Ping(context.Context, *babl.Empty) (*babl.Pong, error)
+}
+
+func RegisterBarServer(s *grpc.Server, srv BarServer) {
+	s.RegisterService(&_Bar_serviceDesc, srv)
+}
+
+func _Bar_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.BinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(BarServer).IO(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func _Bar_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(BarServer).Ping(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+var _Bar_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "babl.larskluge.Bar",
+	HandlerType: (*BarServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "IO",
+			Handler:    _Bar_IO_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _Bar_Ping_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{},
+}
+
 // Client API for Download service
 
 type DownloadClient interface {

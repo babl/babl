@@ -31,6 +31,90 @@ var _ = math.Inf
 var _ context.Context
 var _ grpc.ClientConn
 
+// Client API for OfficialModule service
+
+type OfficialModuleClient interface {
+	IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error)
+	Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error)
+}
+
+type officialModuleClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewOfficialModuleClient(cc *grpc.ClientConn) OfficialModuleClient {
+	return &officialModuleClient{cc}
+}
+
+func (c *officialModuleClient) IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error) {
+	out := new(babl.BinReply)
+	err := grpc.Invoke(ctx, "/babl.omnisyle.OfficialModule/IO", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *officialModuleClient) Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error) {
+	out := new(babl.Pong)
+	err := grpc.Invoke(ctx, "/babl.omnisyle.OfficialModule/Ping", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for OfficialModule service
+
+type OfficialModuleServer interface {
+	IO(context.Context, *babl.BinRequest) (*babl.BinReply, error)
+	Ping(context.Context, *babl.Empty) (*babl.Pong, error)
+}
+
+func RegisterOfficialModuleServer(s *grpc.Server, srv OfficialModuleServer) {
+	s.RegisterService(&_OfficialModule_serviceDesc, srv)
+}
+
+func _OfficialModule_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.BinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(OfficialModuleServer).IO(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func _OfficialModule_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(OfficialModuleServer).Ping(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+var _OfficialModule_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "babl.omnisyle.OfficialModule",
+	HandlerType: (*OfficialModuleServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "IO",
+			Handler:    _OfficialModule_IO_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _OfficialModule_Ping_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{},
+}
+
 // Client API for Test service
 
 type TestClient interface {
@@ -110,6 +194,90 @@ var _Test_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Ping",
 			Handler:    _Test_Ping_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{},
+}
+
+// Client API for Test2Private service
+
+type Test2PrivateClient interface {
+	IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error)
+	Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error)
+}
+
+type test2PrivateClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewTest2PrivateClient(cc *grpc.ClientConn) Test2PrivateClient {
+	return &test2PrivateClient{cc}
+}
+
+func (c *test2PrivateClient) IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error) {
+	out := new(babl.BinReply)
+	err := grpc.Invoke(ctx, "/babl.omnisyle.Test2private/IO", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *test2PrivateClient) Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error) {
+	out := new(babl.Pong)
+	err := grpc.Invoke(ctx, "/babl.omnisyle.Test2private/Ping", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for Test2Private service
+
+type Test2PrivateServer interface {
+	IO(context.Context, *babl.BinRequest) (*babl.BinReply, error)
+	Ping(context.Context, *babl.Empty) (*babl.Pong, error)
+}
+
+func RegisterTest2PrivateServer(s *grpc.Server, srv Test2PrivateServer) {
+	s.RegisterService(&_Test2Private_serviceDesc, srv)
+}
+
+func _Test2Private_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.BinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(Test2PrivateServer).IO(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func _Test2Private_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(Test2PrivateServer).Ping(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+var _Test2Private_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "babl.omnisyle.Test2private",
+	HandlerType: (*Test2PrivateServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "IO",
+			Handler:    _Test2Private_IO_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _Test2Private_Ping_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{},
