@@ -24,6 +24,11 @@ service Download {
   rpc Ping (babl.Empty) returns (babl.Pong) {}
 }
 
+service Foo {
+  rpc IO (babl.BinRequest) returns (babl.BinReply) {}
+  rpc Ping (babl.Empty) returns (babl.Pong) {}
+}
+
 service ImageResize {
   rpc IO (babl.BinRequest) returns (babl.BinReply) {}
   rpc Ping (babl.Empty) returns (babl.Pong) {}

@@ -1,13 +1,28 @@
-modules:
-  larskluge:
-    - babl-build
-    - babl-deploy
-    - download
-    - image-resize
-    - render-website
-    - s3
-    - string-append
-    - string-upcase
-    - test-fail
-  babltester:
-    - bar
+larskluge:
+  modules:
+  - babl-build
+  - babl-deploy
+  - download
+  - foo
+  - image-resize
+  - render-website
+  - s3
+  - string-append
+  - string-upcase
+  - test-fail
+  public_keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDO94gEr6xoOxbL4k/cH7NvjnYJUp8IIgvZtnrA565RhrOW4S7ox/lbRBA4irVyJY9uJZBNaaTPvQFeARZ81b6xcO+JsJuYwhdbdhQPQz1D11iD2YWhDzKVnBJHYeq1AB+pMoBv6k2cjo5F0I0N9H0yPmJXPyZK86/fyQPiUume2O5wT5c5rV6WJUSjG+Tl0YNw9qhopbynYGHCyz9I8ttZ7gd2n//qGRzSFlaKgvvAmORgmHsHs3nABomCKbytqVN8xZL6kSRBA3DEjmOrMB45dTJ61YoO//rUpBsDWUMQmtwiVzSUBbVzuOxOn+BC6RQuaHo86gl9Ak39KPXq5Syj
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/al02q9041oFSH9YCO+u9pggq65RVoO+7VrIV+HSBkFGpX1q69JQlt5eV4wdCOnNMtZSPaVjoPFf6ojp6swoRHKA6YGuhxEkTGM2P9bmU7joTwgL/D7Cp+XYM7Z/1enq456proD3+Dz3Ox6SDS1FLRCLHGxmyegaTCaRPbBm0Id+k3Ukd/FA3wX4c/AKcHCUQ2fA1DF6dlwgKlWI0eI2aGNMIfvbC2r9tazizaJ5EGzXboq/VhT/m8hRlfkZAViRknXjbsndWfsEdunJgt5Ox80lrCGmkmIs0vdLB1Nd6VOk6embfINqesBebdIUYqqxzJnUSjEffrgKSAiPj1OJR
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCxv/nhMhQlpsKOlMeutlBvwOEcRoTr74KSveqziUbE1PKQhnN4AYnTKGQFbAxzvKbEwUTgsl2S7Oe8sC+xemgYAGEE/PUJ8BPs5knCY3o0PkF3DCKOFPgxQ6wz7B1cclS+iCGBe+htZys8TfQytyx+mhWqbZGL8YDD+LdIt+7x1VnjDwPU8InvZlvPfKB0HFPk2yf1+JyWbfqNX1o4N6unCdPabUnYZWA1Tyshj02KVGoTB2YgFJbn5l8s1AuQR/lWF5Oi4RUZq7aI1G4VA57FOo1Jt0kwH5Eje279NkaAxBZXOs3Q57pHFnbhQyJVCtdd0sNEwYLkfSXRdmvWv4SJjMrPZFJ9b4Php130TIBptsTlne41vKYD3g4xVNykpqFgZlH88AHCSk7EAoNpq4QgZa+4uAf3tTwdrRpKGJVelH+xYdZgi9YrPcqgBF+Tmmj6eVmLJ51otyYtkXMFnVjKHyn0yh2qw+8ONrdxnR2wZRGu4qdZYPFCHrd3xiQ3y+UcRYhqvDtmvRPahbLtqBN1CyogitLXhoDtGx5cWhQuq50K91fbMXsnp6HNSnpr5ef9cdNdoDpisw96otm4ZEeSe8qBNWyI2XE0lW1fpfibnwfTMJvg4I2WaEnN0+Teqn/tuuFw8qHXbYEQWkEBnFC3HgVJiWvWMqLZLiQqlKkZAQ==
+mondoreale:
+  modules:
+  - foobar
+  public_keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9PPwg0DFv8ofTKIyEHSW31+T6coJelDM/NJTug5T7ajPT82rSLbFZ+53FBkuGJIfKHGc5VUKNHrXplxFD9A1To7yIymYhvB9iFvDZWZlQFpeG7FNtZH39rivYwNHKBKe1IAhKXsybjrriOrV8lVFMvofGN8CKW4xgrlMw2llcLBlRIry8o2otVoL3b3H971X60xOj147yF4/akejDtcwC4UFRStx6FRnxk5IYVKRp+65OTy6Su5Fob7DVsVXZqgTb2Tj4I0eF69RnczIBtyWZD7eC6ez13AOKKXEBibKvPXaB1dOOF/HRStVnFCRxAUDknVbXRowb1biE7uDHGm1z
+omnisyle:
+  modules:
+  - test
+  public_keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9kWZlsRZkFHS9sBnA33Wt4uZYRmhfYEIykToXK+49UfQbwu6KHt5BLy3y/XEBIHrCTPD263riT2wR4HFjrIqJppYRXmyaKR3SN6GrCErOXtqJNRcJHNpbw0X+Dl4jQMEkNPtdE73fJg6yu6ejA2Wl/tLh5Xi6PYG+4bxuhjyPFVkqE7GsbmrQso6DIatLM48/mPlHd/QByOWQ/+7+O/QvT6LtAgOLqOvPXrSeETag+lW+tO7JjNIobxnRJEgYR2CiJlJp/TbP1A3aQ8c/s/wbv6jPnyOaZ1IpEao8nuLOUqygYkhBNCCkRTBFUwmLy1mmxJteZH7ymvfheL4VtKK5
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/+4QzabICTOLbWoglKB7swk7Bguv4M9/U5yvEZ+LBK3O4/kL5H4AXH+CV2RiJuF7JFT2kH8TxgC98KAXM+oqxIopk6z4fhao/YfUbzGZOERM/usdPtamRMU7hvnSJOt4pKWvGygwjqMmxwLOPBeSTDBHV3Ui7x944J7eeT3+oPaw/tCcWsVwZFkFk6NE93laa/qdYZkGxtxihS//z7ZsZt0VmjPEKABZGb1sPoJq4VIt/EpL2ZNmJrSWuRNz7X6AmLlXKhBZWH0FkdfUPuofSXecRlohqefOPJxLbIl32hcrsJyV7AG3RP9BOGV4eZyFNWK1MDj7NwiRNPFk1O2Sx
+

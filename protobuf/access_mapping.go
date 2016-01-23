@@ -8,7 +8,8 @@ import (
 	grpc "google.golang.org/grpc"
 
 	larskluge "github.com/larskluge/babl/protobuf/modules/larskluge"
-	babltester "github.com/larskluge/babl/protobuf/modules/babltester"
+	mondoreale "github.com/larskluge/babl/protobuf/modules/mondoreale"
+	omnisyle "github.com/larskluge/babl/protobuf/modules/omnisyle"
 )
 
 
@@ -35,6 +36,14 @@ var Modules = map[string]Component{
 		},
 		Server: func(s *grpc.Server, srv BinaryServer) {
 			larskluge.RegisterDownloadServer(s, srv)
+		},
+  },
+	"larskluge/foo": Component{
+		Client: func(cc *grpc.ClientConn) BinaryClient {
+			return BinaryClient(larskluge.NewFooClient(cc))
+		},
+		Server: func(s *grpc.Server, srv BinaryServer) {
+			larskluge.RegisterFooServer(s, srv)
 		},
   },
 	"larskluge/image-resize": Component{
@@ -85,12 +94,20 @@ var Modules = map[string]Component{
 			larskluge.RegisterTestFailServer(s, srv)
 		},
   },
-	"babltester/bar": Component{
+	"mondoreale/foobar": Component{
 		Client: func(cc *grpc.ClientConn) BinaryClient {
-			return BinaryClient(babltester.NewBarClient(cc))
+			return BinaryClient(mondoreale.NewFoobarClient(cc))
 		},
 		Server: func(s *grpc.Server, srv BinaryServer) {
-			babltester.RegisterBarServer(s, srv)
+			mondoreale.RegisterFoobarServer(s, srv)
+		},
+  },
+	"omnisyle/test": Component{
+		Client: func(cc *grpc.ClientConn) BinaryClient {
+			return BinaryClient(omnisyle.NewTestClient(cc))
+		},
+		Server: func(s *grpc.Server, srv BinaryServer) {
+			omnisyle.RegisterTestServer(s, srv)
 		},
   },
 }
