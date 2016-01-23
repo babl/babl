@@ -5,12 +5,13 @@ require 'active_support/core_ext/string'
 
 
 config_path = File.expand_path('../../config.yml', __FILE__)
-conf = YAML.load(File.read(config_path))['modules']
+conf = YAML.load(File.read(config_path))
 
 modules_path = File.expand_path('../../protobuf/modules', __FILE__)
 
 
-conf.each do |(user, modules)|
+conf.each do |(user, u)|
+  modules = u['modules']
   user_path = File.expand_path(user, modules_path)
   system 'mkdir', '-p', user_path
 
