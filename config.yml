@@ -1,6 +1,7 @@
 larskluge:
   modules:
   - babl-build
+  - babl-ci
   - babl-deploy
   - babl-init-module
   - bar

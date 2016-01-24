@@ -14,6 +14,11 @@ service BablBuild {
   rpc Ping (babl.Empty) returns (babl.Pong) {}
 }
 
+service BablCi {
+  rpc IO (babl.BinRequest) returns (babl.BinReply) {}
+  rpc Ping (babl.Empty) returns (babl.Pong) {}
+}
+
 service BablDeploy {
   rpc IO (babl.BinRequest) returns (babl.BinReply) {}
   rpc Ping (babl.Empty) returns (babl.Pong) {}
