@@ -4,6 +4,7 @@ larskluge:
   - babl-deploy
   - babl-init-module
   - bar
+  - baz
   - download
   - foo
   - image-resize

@@ -46,6 +46,14 @@ var Modules = map[string]Component{
 			larskluge.RegisterBarServer(s, srv)
 		},
   },
+	"larskluge/baz": Component{
+		Client: func(cc *grpc.ClientConn) BinaryClient {
+			return BinaryClient(larskluge.NewBazClient(cc))
+		},
+		Server: func(s *grpc.Server, srv BinaryServer) {
+			larskluge.RegisterBazServer(s, srv)
+		},
+  },
 	"larskluge/download": Component{
 		Client: func(cc *grpc.ClientConn) BinaryClient {
 			return BinaryClient(larskluge.NewDownloadClient(cc))
