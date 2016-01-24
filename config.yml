@@ -2,6 +2,7 @@ larskluge:
   modules:
   - babl-build
   - babl-deploy
+  - babl-init-module
   - bar
   - download
   - foo
