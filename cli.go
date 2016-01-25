@@ -57,10 +57,9 @@ func configureCli() (app *cli.App) {
 			Value: "babl.sh",
 		},
 		cli.IntFlag{
-			Name:   "port",
-			Usage:  "Port to connect to",
-			EnvVar: "PORT",
-			Value:  4444,
+			Name:  "port",
+			Usage: "Port to connect to",
+			Value: 4444,
 		},
 		cli.BoolFlag{
 			Name:  "verbose",
