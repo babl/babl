@@ -10,6 +10,7 @@ import (
 	larskluge "github.com/larskluge/babl/protobuf/modules/larskluge"
 	mondoreale "github.com/larskluge/babl/protobuf/modules/mondoreale"
 	omnisyle "github.com/larskluge/babl/protobuf/modules/omnisyle"
+	snd "github.com/larskluge/babl/protobuf/modules/snd"
 )
 
 
@@ -156,6 +157,14 @@ var Modules = map[string]Component{
 		},
 		Server: func(s *grpc.Server, srv BinaryServer) {
 			omnisyle.RegisterTest2PrivateServer(s, srv)
+		},
+  },
+	"snd/hello-world": Component{
+		Client: func(cc *grpc.ClientConn) BinaryClient {
+			return BinaryClient(snd.NewHelloWorldClient(cc))
+		},
+		Server: func(s *grpc.Server, srv BinaryServer) {
+			snd.RegisterHelloWorldServer(s, srv)
 		},
   },
 }
