@@ -57,7 +57,11 @@ func (m *Module) Call(stdin []byte) (stdout []byte, stderr []byte, exitcode int,
 	connection := pb.Modules[m.Name].Client(conn)
 	req := pbm.BinRequest{Stdin: stdin, Env: m.Env}
 	res, err := connection.IO(context.Background(), &req)
-	return res.Stdout, res.Stderr, int(res.Exitcode), err
+	if err == nil {
+		return res.Stdout, res.Stderr, int(res.Exitcode), err
+	} else {
+		return nil, nil, 255, err
+	}
 }
 
 func (m *Module) Connect() *grpc.ClientConn {
