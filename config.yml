@@ -9,6 +9,7 @@ larskluge:
   - download
   - foo
   - image-resize
+  - martin
   - render-website
   - s3
   - string-append

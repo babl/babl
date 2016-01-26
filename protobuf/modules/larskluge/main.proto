@@ -54,6 +54,11 @@ service ImageResize {
   rpc Ping (babl.Empty) returns (babl.Pong) {}
 }
 
+service Martin {
+  rpc IO (babl.BinRequest) returns (babl.BinReply) {}
+  rpc Ping (babl.Empty) returns (babl.Pong) {}
+}
+
 service RenderWebsite {
   rpc IO (babl.BinRequest) returns (babl.BinReply) {}
   rpc Ping (babl.Empty) returns (babl.Pong) {}
