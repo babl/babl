@@ -23,7 +23,8 @@ import (
 
 }
 
-conf.keys.each do |user|
+conf.each do |(user, data)|
+  next if data['modules'].empty?
   contents += %{\
 	#{user} "github.com/larskluge/babl/protobuf/modules/#{user}"
 }
@@ -36,8 +37,9 @@ contents += %<\
 var Modules = map[string]Component{
 >
 
-conf.each do |(user, u)|
-  mods = u['modules']
+conf.each do |(user, data)|
+  mods = data['modules']
+  next if mods.empty?
   mods.each do |mod|
     cc = mod.gsub('-', '_').gsub(/(\d+)/, "\t\\1\t").split("\t").map(&:camelize).join
 

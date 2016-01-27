@@ -10,8 +10,9 @@ conf = YAML.load(File.read(config_path))
 modules_path = File.expand_path('../../protobuf/modules', __FILE__)
 
 
-conf.each do |(user, u)|
-  modules = u['modules']
+conf.each do |(user, data)|
+  modules = data['modules']
+  next if modules.empty?
   user_path = File.expand_path(user, modules_path)
   system 'mkdir', '-p', user_path
 
