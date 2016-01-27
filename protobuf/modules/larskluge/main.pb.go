@@ -1039,6 +1039,90 @@ var _S3_serviceDesc = grpc.ServiceDesc{
 	Streams: []grpc.StreamDesc{},
 }
 
+// Client API for Sleep service
+
+type SleepClient interface {
+	IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error)
+	Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error)
+}
+
+type sleepClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewSleepClient(cc *grpc.ClientConn) SleepClient {
+	return &sleepClient{cc}
+}
+
+func (c *sleepClient) IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error) {
+	out := new(babl.BinReply)
+	err := grpc.Invoke(ctx, "/babl.larskluge.Sleep/IO", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sleepClient) Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error) {
+	out := new(babl.Pong)
+	err := grpc.Invoke(ctx, "/babl.larskluge.Sleep/Ping", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for Sleep service
+
+type SleepServer interface {
+	IO(context.Context, *babl.BinRequest) (*babl.BinReply, error)
+	Ping(context.Context, *babl.Empty) (*babl.Pong, error)
+}
+
+func RegisterSleepServer(s *grpc.Server, srv SleepServer) {
+	s.RegisterService(&_Sleep_serviceDesc, srv)
+}
+
+func _Sleep_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.BinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(SleepServer).IO(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func _Sleep_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(SleepServer).Ping(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+var _Sleep_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "babl.larskluge.Sleep",
+	HandlerType: (*SleepServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "IO",
+			Handler:    _Sleep_IO_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _Sleep_Ping_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{},
+}
+
 // Client API for StringAppend service
 
 type StringAppendClient interface {

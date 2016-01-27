@@ -69,6 +69,11 @@ service S3 {
   rpc Ping (babl.Empty) returns (babl.Pong) {}
 }
 
+service Sleep {
+  rpc IO (babl.BinRequest) returns (babl.BinReply) {}
+  rpc Ping (babl.Empty) returns (babl.Pong) {}
+}
+
 service StringAppend {
   rpc IO (babl.BinRequest) returns (babl.BinReply) {}
   rpc Ping (babl.Empty) returns (babl.Pong) {}
