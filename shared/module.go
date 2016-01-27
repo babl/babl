@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"strings"
+	"time"
 
 	pb "github.com/larskluge/babl/protobuf"
 	pbm "github.com/larskluge/babl/protobuf/messages"
@@ -76,7 +77,10 @@ func (m *Module) Connect() *grpc.ClientConn {
 	}
 
 	creds := credentials.NewClientTLSFromCert(cp, sn)
-	opts := []grpc.DialOption{grpc.WithTransportCredentials(creds)}
+	opts := []grpc.DialOption{
+		grpc.WithTransportCredentials(creds),
+		grpc.WithTimeout(120 * time.Second),
+	}
 	conn, err := grpc.Dial(m.Address, opts...)
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
