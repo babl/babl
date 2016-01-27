@@ -18,6 +18,7 @@ larskluge:
   - render-website
   - s3
   - sleep
+  - stream
   - string-append
   - string-upcase
   - test-fail

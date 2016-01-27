@@ -79,6 +79,11 @@ service Sleep {
   rpc Ping (babl.Empty) returns (babl.Pong) {}
 }
 
+service Stream {
+  rpc IO (babl.BinRequest) returns (babl.BinReply) {}
+  rpc Ping (babl.Empty) returns (babl.Pong) {}
+}
+
 service StringAppend {
   rpc IO (babl.BinRequest) returns (babl.BinReply) {}
   rpc Ping (babl.Empty) returns (babl.Pong) {}

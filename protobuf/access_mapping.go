@@ -127,6 +127,14 @@ var Modules = map[string]Component{
 			larskluge.RegisterSleepServer(s, srv)
 		},
   },
+	"larskluge/stream": Component{
+		Client: func(cc *grpc.ClientConn) BinaryClient {
+			return BinaryClient(larskluge.NewStreamClient(cc))
+		},
+		Server: func(s *grpc.Server, srv BinaryServer) {
+			larskluge.RegisterStreamServer(s, srv)
+		},
+  },
 	"larskluge/string-append": Component{
 		Client: func(cc *grpc.ClientConn) BinaryClient {
 			return BinaryClient(larskluge.NewStringAppendClient(cc))
