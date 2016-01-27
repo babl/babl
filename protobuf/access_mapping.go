@@ -7,6 +7,7 @@ package babl
 import (
 	grpc "google.golang.org/grpc"
 
+	jangler "github.com/larskluge/babl/protobuf/modules/jangler"
 	larskluge "github.com/larskluge/babl/protobuf/modules/larskluge"
 	mondoreale "github.com/larskluge/babl/protobuf/modules/mondoreale"
 	omnisyle "github.com/larskluge/babl/protobuf/modules/omnisyle"
@@ -15,6 +16,14 @@ import (
 
 
 var Modules = map[string]Component{
+	"jangler/brandon-test": Component{
+		Client: func(cc *grpc.ClientConn) BinaryClient {
+			return BinaryClient(jangler.NewBrandonTestClient(cc))
+		},
+		Server: func(s *grpc.Server, srv BinaryServer) {
+			jangler.RegisterBrandonTestServer(s, srv)
+		},
+  },
 	"larskluge/babl-build": Component{
 		Client: func(cc *grpc.ClientConn) BinaryClient {
 			return BinaryClient(larskluge.NewBablBuildClient(cc))
