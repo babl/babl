@@ -14,4 +14,4 @@ Dir["#{protobuf_path}/github.com/**/*.pb.go"].each do |from|
   system 'mv', from, to.to_s
 end
 
-system "find protobuf/github.com | tail -r | xargs rmdir"
+system "rm -rf protobuf/github.com"
