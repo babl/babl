@@ -2,7 +2,7 @@
 //go:generate bin/module-proto
 //go:generate bin/protoc
 //go:generate sh -c "bin/module-mapping > protobuf/access_mapping.go"
-//go:generate cd shared && go-bindata -pkg shared data/...
+//go:generate sh -c "cd shared && go-bindata -pkg shared data/..."
 
 package main
 
