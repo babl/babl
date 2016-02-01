@@ -8,6 +8,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"strings"
@@ -28,13 +29,14 @@ func address(c *cli.Context) string {
 func defaultAction(c *cli.Context, module_with_tag string) {
 	m := shared.NewModule(module_with_tag)
 
+	if !c.GlobalBool("verbose") {
+		log.SetOutput(ioutil.Discard)
+	}
+
 	log.Println("Connecting to module", m.Name, m.Tag)
 
 	applyEnv(&m.Env, c.StringSlice("env"))
 	log.Println("env", m.Env)
-
-	// verbose := c.GlobalBool("verbose")
-	// log.Println("verbose", verbose)
 
 	m.Address = address(c)
 	log.Printf("Connecting to %s..", m.Address)
