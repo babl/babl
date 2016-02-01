@@ -2,10 +2,10 @@ package shared
 
 import (
 	"io/ioutil"
-	"log"
 	"os"
 	"path"
 
+	"github.com/larskluge/babl/log"
 	"gopkg.in/yaml.v2"
 )
 

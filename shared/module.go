@@ -3,10 +3,10 @@ package shared
 import (
 	"crypto/x509"
 	"fmt"
-	"log"
 	"strings"
 	"time"
 
+	"github.com/larskluge/babl/log"
 	pb "github.com/larskluge/babl/protobuf"
 	pbm "github.com/larskluge/babl/protobuf/messages"
 	"golang.org/x/net/context"

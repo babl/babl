@@ -4,9 +4,9 @@ import (
 	"encoding/base64"
 	"flag"
 	"fmt"
-	"log"
 
 	"github.com/DavidHuie/quartz/go/quartz"
+	"github.com/larskluge/babl/log"
 	"github.com/larskluge/babl/shared"
 )
 

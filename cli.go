@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/codegangsta/cli"
+	"github.com/larskluge/babl/log"
 	"github.com/larskluge/babl/shared"
 )
 

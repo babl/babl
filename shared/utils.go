@@ -3,11 +3,11 @@ package shared
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"sort"
 	"strings"
 
+	"github.com/larskluge/babl/log"
 	pb "github.com/larskluge/babl/protobuf"
 	"github.com/mattn/go-isatty"
 )

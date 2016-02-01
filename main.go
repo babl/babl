@@ -9,11 +9,11 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"strings"
 
 	"github.com/codegangsta/cli"
+	"github.com/larskluge/babl/log"
 	"github.com/larskluge/babl/shared"
 )
 
