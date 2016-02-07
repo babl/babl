@@ -29,6 +29,7 @@ larskluge:
   - babl-init-module
   - bar
   - baz
+  - check-babl3
   - download
   - foo
   - image-resize

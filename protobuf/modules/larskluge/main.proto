@@ -39,6 +39,11 @@ service Baz {
   rpc Ping (babl.Empty) returns (babl.Pong) {}
 }
 
+service CheckBabl3 {
+  rpc IO (babl.BinRequest) returns (babl.BinReply) {}
+  rpc Ping (babl.Empty) returns (babl.Pong) {}
+}
+
 service Download {
   rpc IO (babl.BinRequest) returns (babl.BinReply) {}
   rpc Ping (babl.Empty) returns (babl.Pong) {}
