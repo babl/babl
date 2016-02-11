@@ -35,6 +35,10 @@ larskluge:
   - hi
   - image-resize
   - loyalist-designer-uploads
+  - loyalist-prep-prints
+  - loyalist-print-images
+  - loyalist-product-image
+  - loyalist-team-banner
   - martin
   - render-website
   - s3

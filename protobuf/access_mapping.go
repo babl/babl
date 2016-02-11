@@ -129,6 +129,38 @@ var Modules = map[string]Component{
 			larskluge.RegisterLoyalistDesignerUploadsServer(s, srv)
 		},
   },
+	"larskluge/loyalist-prep-prints": Component{
+		Client: func(cc *grpc.ClientConn) BinaryClient {
+			return BinaryClient(larskluge.NewLoyalistPrepPrintsClient(cc))
+		},
+		Server: func(s *grpc.Server, srv BinaryServer) {
+			larskluge.RegisterLoyalistPrepPrintsServer(s, srv)
+		},
+  },
+	"larskluge/loyalist-print-images": Component{
+		Client: func(cc *grpc.ClientConn) BinaryClient {
+			return BinaryClient(larskluge.NewLoyalistPrintImagesClient(cc))
+		},
+		Server: func(s *grpc.Server, srv BinaryServer) {
+			larskluge.RegisterLoyalistPrintImagesServer(s, srv)
+		},
+  },
+	"larskluge/loyalist-product-image": Component{
+		Client: func(cc *grpc.ClientConn) BinaryClient {
+			return BinaryClient(larskluge.NewLoyalistProductImageClient(cc))
+		},
+		Server: func(s *grpc.Server, srv BinaryServer) {
+			larskluge.RegisterLoyalistProductImageServer(s, srv)
+		},
+  },
+	"larskluge/loyalist-team-banner": Component{
+		Client: func(cc *grpc.ClientConn) BinaryClient {
+			return BinaryClient(larskluge.NewLoyalistTeamBannerClient(cc))
+		},
+		Server: func(s *grpc.Server, srv BinaryServer) {
+			larskluge.RegisterLoyalistTeamBannerServer(s, srv)
+		},
+  },
 	"larskluge/martin": Component{
 		Client: func(cc *grpc.ClientConn) BinaryClient {
 			return BinaryClient(larskluge.NewMartinClient(cc))

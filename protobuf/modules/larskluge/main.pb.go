@@ -1039,6 +1039,342 @@ var _LoyalistDesignerUploads_serviceDesc = grpc.ServiceDesc{
 	Streams: []grpc.StreamDesc{},
 }
 
+// Client API for LoyalistPrepPrints service
+
+type LoyalistPrepPrintsClient interface {
+	IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error)
+	Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error)
+}
+
+type loyalistPrepPrintsClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewLoyalistPrepPrintsClient(cc *grpc.ClientConn) LoyalistPrepPrintsClient {
+	return &loyalistPrepPrintsClient{cc}
+}
+
+func (c *loyalistPrepPrintsClient) IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error) {
+	out := new(babl.BinReply)
+	err := grpc.Invoke(ctx, "/babl.larskluge.LoyalistPrepPrints/IO", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *loyalistPrepPrintsClient) Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error) {
+	out := new(babl.Pong)
+	err := grpc.Invoke(ctx, "/babl.larskluge.LoyalistPrepPrints/Ping", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for LoyalistPrepPrints service
+
+type LoyalistPrepPrintsServer interface {
+	IO(context.Context, *babl.BinRequest) (*babl.BinReply, error)
+	Ping(context.Context, *babl.Empty) (*babl.Pong, error)
+}
+
+func RegisterLoyalistPrepPrintsServer(s *grpc.Server, srv LoyalistPrepPrintsServer) {
+	s.RegisterService(&_LoyalistPrepPrints_serviceDesc, srv)
+}
+
+func _LoyalistPrepPrints_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.BinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(LoyalistPrepPrintsServer).IO(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func _LoyalistPrepPrints_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(LoyalistPrepPrintsServer).Ping(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+var _LoyalistPrepPrints_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "babl.larskluge.LoyalistPrepPrints",
+	HandlerType: (*LoyalistPrepPrintsServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "IO",
+			Handler:    _LoyalistPrepPrints_IO_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _LoyalistPrepPrints_Ping_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{},
+}
+
+// Client API for LoyalistPrintImages service
+
+type LoyalistPrintImagesClient interface {
+	IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error)
+	Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error)
+}
+
+type loyalistPrintImagesClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewLoyalistPrintImagesClient(cc *grpc.ClientConn) LoyalistPrintImagesClient {
+	return &loyalistPrintImagesClient{cc}
+}
+
+func (c *loyalistPrintImagesClient) IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error) {
+	out := new(babl.BinReply)
+	err := grpc.Invoke(ctx, "/babl.larskluge.LoyalistPrintImages/IO", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *loyalistPrintImagesClient) Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error) {
+	out := new(babl.Pong)
+	err := grpc.Invoke(ctx, "/babl.larskluge.LoyalistPrintImages/Ping", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for LoyalistPrintImages service
+
+type LoyalistPrintImagesServer interface {
+	IO(context.Context, *babl.BinRequest) (*babl.BinReply, error)
+	Ping(context.Context, *babl.Empty) (*babl.Pong, error)
+}
+
+func RegisterLoyalistPrintImagesServer(s *grpc.Server, srv LoyalistPrintImagesServer) {
+	s.RegisterService(&_LoyalistPrintImages_serviceDesc, srv)
+}
+
+func _LoyalistPrintImages_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.BinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(LoyalistPrintImagesServer).IO(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func _LoyalistPrintImages_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(LoyalistPrintImagesServer).Ping(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+var _LoyalistPrintImages_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "babl.larskluge.LoyalistPrintImages",
+	HandlerType: (*LoyalistPrintImagesServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "IO",
+			Handler:    _LoyalistPrintImages_IO_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _LoyalistPrintImages_Ping_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{},
+}
+
+// Client API for LoyalistProductImage service
+
+type LoyalistProductImageClient interface {
+	IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error)
+	Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error)
+}
+
+type loyalistProductImageClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewLoyalistProductImageClient(cc *grpc.ClientConn) LoyalistProductImageClient {
+	return &loyalistProductImageClient{cc}
+}
+
+func (c *loyalistProductImageClient) IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error) {
+	out := new(babl.BinReply)
+	err := grpc.Invoke(ctx, "/babl.larskluge.LoyalistProductImage/IO", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *loyalistProductImageClient) Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error) {
+	out := new(babl.Pong)
+	err := grpc.Invoke(ctx, "/babl.larskluge.LoyalistProductImage/Ping", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for LoyalistProductImage service
+
+type LoyalistProductImageServer interface {
+	IO(context.Context, *babl.BinRequest) (*babl.BinReply, error)
+	Ping(context.Context, *babl.Empty) (*babl.Pong, error)
+}
+
+func RegisterLoyalistProductImageServer(s *grpc.Server, srv LoyalistProductImageServer) {
+	s.RegisterService(&_LoyalistProductImage_serviceDesc, srv)
+}
+
+func _LoyalistProductImage_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.BinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(LoyalistProductImageServer).IO(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func _LoyalistProductImage_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(LoyalistProductImageServer).Ping(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+var _LoyalistProductImage_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "babl.larskluge.LoyalistProductImage",
+	HandlerType: (*LoyalistProductImageServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "IO",
+			Handler:    _LoyalistProductImage_IO_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _LoyalistProductImage_Ping_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{},
+}
+
+// Client API for LoyalistTeamBanner service
+
+type LoyalistTeamBannerClient interface {
+	IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error)
+	Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error)
+}
+
+type loyalistTeamBannerClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewLoyalistTeamBannerClient(cc *grpc.ClientConn) LoyalistTeamBannerClient {
+	return &loyalistTeamBannerClient{cc}
+}
+
+func (c *loyalistTeamBannerClient) IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error) {
+	out := new(babl.BinReply)
+	err := grpc.Invoke(ctx, "/babl.larskluge.LoyalistTeamBanner/IO", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *loyalistTeamBannerClient) Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error) {
+	out := new(babl.Pong)
+	err := grpc.Invoke(ctx, "/babl.larskluge.LoyalistTeamBanner/Ping", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for LoyalistTeamBanner service
+
+type LoyalistTeamBannerServer interface {
+	IO(context.Context, *babl.BinRequest) (*babl.BinReply, error)
+	Ping(context.Context, *babl.Empty) (*babl.Pong, error)
+}
+
+func RegisterLoyalistTeamBannerServer(s *grpc.Server, srv LoyalistTeamBannerServer) {
+	s.RegisterService(&_LoyalistTeamBanner_serviceDesc, srv)
+}
+
+func _LoyalistTeamBanner_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.BinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(LoyalistTeamBannerServer).IO(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func _LoyalistTeamBanner_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(LoyalistTeamBannerServer).Ping(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+var _LoyalistTeamBanner_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "babl.larskluge.LoyalistTeamBanner",
+	HandlerType: (*LoyalistTeamBannerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "IO",
+			Handler:    _LoyalistTeamBanner_IO_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _LoyalistTeamBanner_Ping_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{},
+}
+
 // Client API for Martin service
 
 type MartinClient interface {
