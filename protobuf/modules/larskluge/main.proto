@@ -54,6 +54,11 @@ service Foo {
   rpc Ping (babl.Empty) returns (babl.Pong) {}
 }
 
+service Hi {
+  rpc IO (babl.BinRequest) returns (babl.BinReply) {}
+  rpc Ping (babl.Empty) returns (babl.Pong) {}
+}
+
 service ImageResize {
   rpc IO (babl.BinRequest) returns (babl.BinReply) {}
   rpc Ping (babl.Empty) returns (babl.Pong) {}

@@ -105,6 +105,14 @@ var Modules = map[string]Component{
 			larskluge.RegisterFooServer(s, srv)
 		},
   },
+	"larskluge/hi": Component{
+		Client: func(cc *grpc.ClientConn) BinaryClient {
+			return BinaryClient(larskluge.NewHiClient(cc))
+		},
+		Server: func(s *grpc.Server, srv BinaryServer) {
+			larskluge.RegisterHiServer(s, srv)
+		},
+  },
 	"larskluge/image-resize": Component{
 		Client: func(cc *grpc.ClientConn) BinaryClient {
 			return BinaryClient(larskluge.NewImageResizeClient(cc))
