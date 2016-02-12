@@ -12,8 +12,13 @@ import (
 	"github.com/mattn/go-isatty"
 )
 
+func ModuleExists(module string) bool {
+	_, exists := pb.Modules[module]
+	return exists
+}
+
 func EnsureModuleExists(module string) {
-	if _, exists := pb.Modules[module]; exists == false {
+	if !ModuleExists(module) {
 		log.Printf("Unknown module '%s'", module)
 		os.Exit(2)
 	}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/base64"
+	"errors"
 	"flag"
 	"fmt"
 
@@ -29,22 +30,26 @@ type ModuleResponse struct {
 }
 
 func (_ *Babl) Module(req ModuleRequest, response *ModuleResponse) error {
-	m := shared.NewModule(req.Name)
-	m.Env = req.Env
+	if shared.ModuleExists(req.Name) {
+		m := shared.NewModule(req.Name)
+		m.Env = req.Env
 
-	stdin, err := base64.StdEncoding.DecodeString(req.Stdin)
-	log.Printf("Received %d bytes decoded data for Stdin", len(stdin))
-	if err != nil {
+		stdin, err := base64.StdEncoding.DecodeString(req.Stdin)
+		log.Printf("babl-rpc: Received %d bytes decoded data for Stdin", len(stdin))
+		if err != nil {
+			return err
+		}
+
+		stdout, stderr, exitcode, err := m.Call(stdin)
+
+		response.Stdout = base64.StdEncoding.EncodeToString(stdout)
+		response.Stderr = base64.StdEncoding.EncodeToString(stderr)
+		response.Exitcode = exitcode
+
 		return err
+	} else {
+		return errors.New("babl-rpc: unknown module")
 	}
-
-	stdout, stderr, exitcode, err := m.Call(stdin)
-
-	response.Stdout = base64.StdEncoding.EncodeToString(stdout)
-	response.Stderr = base64.StdEncoding.EncodeToString(stderr)
-	response.Exitcode = exitcode
-
-	return err
 }
 
 func main() {
