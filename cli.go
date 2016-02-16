@@ -62,8 +62,8 @@ func configureCli() (app *cli.App) {
 			Value: 4444,
 		},
 		cli.BoolFlag{
-			Name:  "verbose",
-			Usage: "Verbose logging",
+			Name:  "debug",
+			Usage: "Enable debug mode & verbose logging",
 		},
 	}
 	app.Action = func(c *cli.Context) {

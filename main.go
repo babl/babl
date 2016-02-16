@@ -29,7 +29,7 @@ func address(c *cli.Context) string {
 func defaultAction(c *cli.Context, module_with_tag string) {
 	m := shared.NewModule(module_with_tag)
 
-	if !c.GlobalBool("verbose") {
+	if !c.GlobalBool("debug") {
 		log.SetOutput(ioutil.Discard)
 	}
 
