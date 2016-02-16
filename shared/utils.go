@@ -28,6 +28,9 @@ func PrintAvailableModules() {
 	for _, module := range Modules() {
 		fmt.Println(module)
 	}
+	for module, _ := range Config().Defaults {
+		fmt.Println(module)
+	}
 }
 
 func Modules() (modules []string) {
