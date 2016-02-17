@@ -24,12 +24,14 @@ func EnsureModuleExists(module string) {
 	}
 }
 
-func PrintAvailableModules() {
+func PrintAvailableModules(printDefaults bool) {
 	for _, module := range Modules() {
 		fmt.Println(module)
 	}
-	for module, _ := range Config().Defaults {
-		fmt.Println(module)
+	if printDefaults {
+		for module, _ := range Config().Defaults {
+			fmt.Println(module)
+		}
 	}
 }
 

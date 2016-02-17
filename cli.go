@@ -78,8 +78,14 @@ func configureCli() (app *cli.App) {
 			Name:    "list-modules",
 			Aliases: []string{"ls"},
 			Usage:   "List all available modules",
-			Action: func(_ *cli.Context) {
-				shared.PrintAvailableModules()
+			Action: func(c *cli.Context) {
+				shared.PrintAvailableModules(c.Bool("defaults"))
+			},
+			Flags: []cli.Flag{
+				cli.BoolTFlag{
+					Name:  "defaults",
+					Usage: "Lists all modules & their configured defaults",
+				},
 			},
 		},
 		{
