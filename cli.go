@@ -11,8 +11,7 @@ import (
 
 func appendModuleCommand(cmds *[]cli.Command, module string) {
 	*cmds = append(*cmds, cli.Command{
-		Name:  module,
-		Usage: "MODULE",
+		Name: module,
 		Action: func(c *cli.Context) {
 			module := c.Command.Name
 			defaultAction(c, module)
