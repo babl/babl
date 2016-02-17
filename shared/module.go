@@ -79,7 +79,7 @@ func (m *Module) Connect() *grpc.ClientConn {
 	creds := credentials.NewClientTLSFromCert(cp, sn)
 	opts := []grpc.DialOption{
 		grpc.WithTransportCredentials(creds),
-		grpc.WithTimeout(120 * time.Second),
+		grpc.WithTimeout(5 * time.Minute),
 	}
 	conn, err := grpc.Dial(m.Address, opts...)
 	if err != nil {
