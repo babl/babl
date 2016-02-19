@@ -31,7 +31,7 @@ func pingSubCommands() (cmds []cli.Command) {
 			Name: module,
 			Action: func(c *cli.Context) {
 				fmt.Print("ping.. ")
-				m := shared.NewModule(c.Command.Name)
+				m := shared.NewModule(c.Command.Name, false)
 				m.Address = address(c)
 				res, err := m.Ping()
 				if err == nil {
@@ -61,8 +61,9 @@ func configureCli() (app *cli.App) {
 			Value: 4444,
 		},
 		cli.BoolFlag{
-			Name:  "debug",
-			Usage: "Enable debug mode & verbose logging",
+			Name:   "debug",
+			Usage:  "Enable debug mode & verbose logging",
+			EnvVar: "BABL_DEBUG",
 		},
 	}
 	app.Action = func(c *cli.Context) {

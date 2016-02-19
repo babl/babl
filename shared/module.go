@@ -19,9 +19,10 @@ type Module struct {
 	Tag     string
 	Address string
 	Env     map[string]string
+	Debug   bool
 }
 
-func NewModule(name_with_tag string) *Module {
+func NewModule(name_with_tag string, debug bool) *Module {
 	tag := ""
 	parts := strings.Split(name_with_tag, ":")
 	name := parts[0]
@@ -34,8 +35,12 @@ func NewModule(name_with_tag string) *Module {
 		Tag:     tag,
 		Address: "babl.sh:4444",
 		Env:     make(map[string]string),
+		Debug:   debug,
 	}
 	m.loadDefaults()
+	if debug {
+		m.Env["BABL_DEBUG"] = "true"
+	}
 	EnsureModuleExists(m.Name)
 	return &m
 }

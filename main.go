@@ -17,6 +17,8 @@ import (
 	"github.com/larskluge/babl/shared"
 )
 
+var debug = false
+
 func main() {
 	app := configureCli()
 	app.Run(os.Args)
@@ -27,9 +29,10 @@ func address(c *cli.Context) string {
 }
 
 func defaultAction(c *cli.Context, module_with_tag string) {
-	m := shared.NewModule(module_with_tag)
+	debug = c.GlobalBool("debug")
+	m := shared.NewModule(module_with_tag, debug)
 
-	if !c.GlobalBool("debug") {
+	if !debug {
 		log.SetOutput(ioutil.Discard)
 	}
 
