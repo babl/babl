@@ -59,7 +59,7 @@ func defaultAction(c *cli.Context, module_with_tag string) {
 
 func applyEnv(env *map[string]string, envs []string) {
 	for _, val := range envs {
-		x := strings.Split(val, "=")
+		x := strings.SplitN(val, "=", 2)
 		(*env)[x[0]] = x[1]
 	}
 }
