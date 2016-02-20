@@ -104,6 +104,13 @@ func configureCli() (app *cli.App) {
 				fmt.Println(shared.Config())
 			},
 		},
+		{
+			Name:  "upgrade",
+			Usage: "Upgrades the client to the latest available version",
+			Action: func(_ *cli.Context) {
+				shared.Upgrade("babl")
+			},
+		},
 	}
 
 	for _, module := range shared.Modules() {
