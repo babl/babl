@@ -64,7 +64,11 @@ func (m *Module) Call(stdin []byte) (stdout []byte, stderr []byte, exitcode int,
 	req := pbm.BinRequest{Stdin: stdin, Env: m.Env}
 	res, err := connection.IO(context.Background(), &req)
 	if err == nil {
-		return res.Stdout, res.Stderr, int(res.Exitcode), err
+		exitcode := int(res.Exitcode)
+		if exitcode != 0 {
+			log.SetOutput(log.FatalWriter)
+		}
+		return res.Stdout, res.Stderr, exitcode, err
 	} else {
 		return nil, nil, 255, err
 	}
