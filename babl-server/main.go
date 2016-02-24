@@ -53,10 +53,6 @@ func configureCli() (app *cli.App) {
 			EnvVar: "PORT",
 			Value:  4444,
 		},
-		cli.BoolFlag{
-			Name:  "debug",
-			Usage: "Enable debug mode & verbose logging",
-		},
 	}
 	return
 }
