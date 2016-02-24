@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/exec"
 	"syscall"
+	"time"
 
 	"github.com/codegangsta/cli"
 	"github.com/larskluge/babl/log"
@@ -89,13 +90,8 @@ func defaultAction(c *cli.Context) {
 }
 
 func (s *server) IO(ctx context.Context, in *pbm.BinRequest) (*pbm.BinReply, error) {
-	log.Print("-----------------------------------------------------------------------------------")
-	log.Printf("Received %d bytes", len(in.Stdin))
-	if len(in.Stdin) > 0 && len(in.Stdin) < 200 {
-		log.Printf("Received content: %s", in.Stdin)
-	}
+	start := time.Now()
 
-	log.Printf("Executing %s", command)
 	cmd := exec.Command(command)
 	env := os.Environ()
 	cmd.Env = []string{} //{"FOO=BAR"}
@@ -129,11 +125,12 @@ func (s *server) IO(ctx context.Context, in *pbm.BinRequest) (*pbm.BinReply, err
 	if err != nil {
 		log.Printf("ioutil.ReadAll[stderr]: %v", err)
 	}
-	log.Printf("%d bytes stdout, %d bytes stderr.", len(outBytes), len(errBytes))
 
-	res := pbm.BinReply{Stdout: outBytes}
-	res.Exitcode = 0
-	res.Stderr = errBytes
+	res := pbm.BinReply{
+		Stdout:   outBytes,
+		Stderr:   errBytes,
+		Exitcode: 0,
+	}
 
 	if err := cmd.Wait(); err != nil {
 		res.Exitcode = 255
@@ -152,6 +149,15 @@ func (s *server) IO(ctx context.Context, in *pbm.BinRequest) (*pbm.BinReply, err
 			log.Printf("cmd.Wait: %v", err)
 		}
 	}
+
+	status := 500
+	if res.Exitcode == 0 {
+		status = 200
+	}
+
+	elapsed := float64(time.Since(start).Seconds() * 1000)
+
+	log.Printf("stdin=%d stdout=%d stderr=%d exitcode=%d status=%d duration=%.3f", len(in.Stdin), len(res.Stdout), len(res.Stderr), res.Exitcode, status, elapsed)
 
 	return &res, nil
 }
