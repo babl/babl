@@ -34,7 +34,7 @@ func main() {
 func configureCli() (app *cli.App) {
 	app = cli.NewApp()
 	app.Usage = "Server for a Babl Module"
-	app.Version = "0.0.1"
+	app.Version = "0.1.0"
 	app.Action = defaultAction
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
