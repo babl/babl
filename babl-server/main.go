@@ -157,7 +157,7 @@ func (s *server) IO(ctx context.Context, in *pbm.BinRequest) (*pbm.BinReply, err
 
 	elapsed := float64(time.Since(start).Seconds() * 1000)
 
-	log.Printf("stdin=%d stdout=%d stderr=%d exitcode=%d status=%d duration=%.3f", len(in.Stdin), len(res.Stdout), len(res.Stderr), res.Exitcode, status, elapsed)
+	log.Printf("stdin=%d stdout=%d stderr=%d exitcode=%d status=%d duration_ms=%.3f", len(in.Stdin), len(res.Stdout), len(res.Stderr), res.Exitcode, status, elapsed)
 
 	return &res, nil
 }
