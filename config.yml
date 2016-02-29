@@ -27,17 +27,21 @@ larskluge:
   - babl-ci
   - babl-deploy
   - babl-init-module
+  - babl-sh
   - bar
   - baz
+  - check-babl
   - check-babl3
   - download
   - foo
+  - hello-web
   - hi
   - image-resize
   - loyalist-designer-uploads
   - loyalist-prep-prints
   - loyalist-print-images
   - loyalist-product-image
+  - loyalist-s3-upload-backend
   - loyalist-team-banner
   - martin
   - render-website
