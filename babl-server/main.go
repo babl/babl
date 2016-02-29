@@ -113,7 +113,10 @@ func (s *server) IO(ctx context.Context, in *pbm.BinRequest) (*pbm.BinReply, err
 	if errErr != nil {
 		log.Printf("cmd.StderrPipe: %v", errErr)
 	}
-	cmd.Start()
+	err := cmd.Start()
+	if err != nil {
+		log.Printf("cmd.Start: %v", err)
+	}
 
 	stdin.Write(in.Stdin)
 	stdin.Close()
