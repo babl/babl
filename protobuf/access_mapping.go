@@ -65,14 +65,6 @@ var Modules = map[string]Component{
 			larskluge.RegisterBablInitModuleServer(s, srv)
 		},
   },
-	"larskluge/babl-sh": Component{
-		Client: func(cc *grpc.ClientConn) BinaryClient {
-			return BinaryClient(larskluge.NewBablShClient(cc))
-		},
-		Server: func(s *grpc.Server, srv BinaryServer) {
-			larskluge.RegisterBablShServer(s, srv)
-		},
-  },
 	"larskluge/bar": Component{
 		Client: func(cc *grpc.ClientConn) BinaryClient {
 			return BinaryClient(larskluge.NewBarClient(cc))
@@ -121,14 +113,6 @@ var Modules = map[string]Component{
 			larskluge.RegisterFooServer(s, srv)
 		},
   },
-	"larskluge/hello-web": Component{
-		Client: func(cc *grpc.ClientConn) BinaryClient {
-			return BinaryClient(larskluge.NewHelloWebClient(cc))
-		},
-		Server: func(s *grpc.Server, srv BinaryServer) {
-			larskluge.RegisterHelloWebServer(s, srv)
-		},
-  },
 	"larskluge/hi": Component{
 		Client: func(cc *grpc.ClientConn) BinaryClient {
 			return BinaryClient(larskluge.NewHiClient(cc))
@@ -175,14 +159,6 @@ var Modules = map[string]Component{
 		},
 		Server: func(s *grpc.Server, srv BinaryServer) {
 			larskluge.RegisterLoyalistProductImageServer(s, srv)
-		},
-  },
-	"larskluge/loyalist-s3-upload-backend": Component{
-		Client: func(cc *grpc.ClientConn) BinaryClient {
-			return BinaryClient(larskluge.NewLoyalistS3UploadBackendClient(cc))
-		},
-		Server: func(s *grpc.Server, srv BinaryServer) {
-			larskluge.RegisterLoyalistS3UploadBackendServer(s, srv)
 		},
   },
 	"larskluge/loyalist-team-banner": Component{
