@@ -31,6 +31,7 @@ larskluge:
   - babl-ci
   - babl-deploy
   - babl-init-module
+  - bablbot
   - bar
   - baz
   - check-babl

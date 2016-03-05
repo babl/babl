@@ -65,6 +65,14 @@ var Modules = map[string]Component{
 			larskluge.RegisterBablInitModuleServer(s, srv)
 		},
   },
+	"larskluge/bablbot": Component{
+		Client: func(cc *grpc.ClientConn) BinaryClient {
+			return BinaryClient(larskluge.NewBablbotClient(cc))
+		},
+		Server: func(s *grpc.Server, srv BinaryServer) {
+			larskluge.RegisterBablbotServer(s, srv)
+		},
+  },
 	"larskluge/bar": Component{
 		Client: func(cc *grpc.ClientConn) BinaryClient {
 			return BinaryClient(larskluge.NewBarClient(cc))
