@@ -146,7 +146,6 @@ func (s *server) IO(ctx context.Context, in *pbm.BinRequest) (*pbm.BinReply, err
 			// an ExitStatus() method with the same signature.
 			if status, ok := exiterr.Sys().(syscall.WaitStatus); ok {
 				res.Exitcode = int32(status.ExitStatus())
-				log.Printf("Exit Status: %d", status.ExitStatus())
 			}
 		} else {
 			log.Printf("cmd.Wait: %v", err)
