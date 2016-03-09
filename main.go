@@ -44,7 +44,9 @@ func defaultAction(c *cli.Context, module_with_tag string) {
 	m.Address = address(c)
 	log.Printf("Connecting to %s..", m.Address)
 
-	stdout, stderr, exitcode, err := m.Call(shared.ReadStdin())
+	in := shared.ReadStdin()
+	log.Printf("%d bytes read from stdin", len(in))
+	stdout, stderr, exitcode, err := m.Call(in)
 	status := "SUCCESS"
 	if err != nil || exitcode != 0 {
 		status = "ERROR"

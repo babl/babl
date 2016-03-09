@@ -7,7 +7,6 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/larskluge/babl/log"
 	pb "github.com/larskluge/babl/protobuf"
 	"github.com/mattn/go-isatty"
 )
@@ -15,13 +14,6 @@ import (
 func ModuleExists(module string) bool {
 	_, exists := pb.Modules[module]
 	return exists
-}
-
-func EnsureModuleExists(module string) {
-	if !ModuleExists(module) {
-		log.Printf("Unknown module '%s'", module)
-		os.Exit(2)
-	}
 }
 
 func PrintAvailableModules(printDefaults bool) {
@@ -55,6 +47,5 @@ func ReadStdin() (in []byte) {
 	if !isatty.IsTerminal(os.Stdin.Fd()) {
 		in, _ = ioutil.ReadAll(os.Stdin)
 	}
-	log.Printf("%d bytes read from stdin", len(in))
 	return
 }

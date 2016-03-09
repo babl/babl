@@ -41,7 +41,9 @@ func NewModule(name_with_tag string, debug bool) *Module {
 	if debug {
 		m.Env["BABL_DEBUG"] = "true"
 	}
-	EnsureModuleExists(m.Name)
+	if !ModuleExists(m.Name) {
+		log.Fatal("Unknown module")
+	}
 	return &m
 }
 

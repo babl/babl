@@ -12,8 +12,8 @@ import (
 	"syscall"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
-	"github.com/larskluge/babl/log"
 	pb "github.com/larskluge/babl/protobuf"
 	pbm "github.com/larskluge/babl/protobuf/messages"
 	"github.com/larskluge/babl/shared"
@@ -27,6 +27,9 @@ type server struct{}
 var command string
 
 func main() {
+	log.SetOutput(os.Stderr)
+	log.SetFormatter(&log.JSONFormatter{})
+
 	app := configureCli()
 	app.Run(os.Args)
 }
@@ -64,21 +67,24 @@ func defaultAction(c *cli.Context) {
 		cli.ShowAppHelp(c)
 		os.Exit(1)
 	} else {
-		shared.EnsureModuleExists(module)
+		if !shared.ModuleExists(module) {
+			log.WithFields(log.Fields{"module": module}).Fatal("Unknown module")
+		}
 		command = c.String("cmd")
 		address := fmt.Sprintf(":%d", c.Int("port"))
 
+		log.WithFields(log.Fields{"module": module, "address": address}).Info("Start module")
+
 		lis, err := net.Listen("tcp", address)
 		if err != nil {
-			log.Fatalf("failed to listen: %v", err)
+			log.WithFields(log.Fields{"error": err, "address": address}).Fatal("Failed to listen at port")
 		}
-		log.Printf("Serving module %s, listening at %s..", module, address)
 
 		certPEMBlock, _ := Asset("data/server.pem")
 		keyPEMBlock, _ := Asset("data/server.key")
 		cert, err := tls.X509KeyPair(certPEMBlock, keyPEMBlock)
 		if err != nil {
-			log.Fatalf("Could not load key pair %v", err)
+			panic(err)
 		}
 		creds := credentials.NewServerTLSFromCert(&cert)
 		opts := []grpc.ServerOption{grpc.Creds(creds)}
@@ -101,32 +107,32 @@ func (s *server) IO(ctx context.Context, in *pbm.BinRequest) (*pbm.BinReply, err
 	}
 	cmd.Env = append(cmd.Env, env...)
 
-	stdin, errIn := cmd.StdinPipe()
-	if errIn != nil {
-		log.Printf("cmd.StdinPipe: %v", errIn)
-	}
-	stdout, errOut := cmd.StdoutPipe()
-	if errOut != nil {
-		log.Printf("cmd.StdoutPipe: %v", errOut)
-	}
-	stderr, errErr := cmd.StderrPipe()
-	if errErr != nil {
-		log.Printf("cmd.StderrPipe: %v", errErr)
-	}
-	err := cmd.Start()
+	stdin, err := cmd.StdinPipe()
 	if err != nil {
-		log.Printf("cmd.Start: %v", err)
+		log.WithFields(log.Fields{"error": err}).Error("cmd.StdinPipe")
+	}
+	stdout, err := cmd.StdoutPipe()
+	if err != nil {
+		log.WithFields(log.Fields{"error": err}).Error("cmd.StdoutPipe")
+	}
+	stderr, err := cmd.StderrPipe()
+	if err != nil {
+		log.WithFields(log.Fields{"error": err}).Error("cmd.StderrPipe")
+	}
+	err = cmd.Start()
+	if err != nil {
+		log.WithFields(log.Fields{"error": err}).Error("cmd.Start")
 	}
 
 	stdin.Write(in.Stdin)
 	stdin.Close()
 	outBytes, err := ioutil.ReadAll(stdout)
 	if err != nil {
-		log.Printf("ioutil.ReadAll[stdout]: %v", err)
+		log.WithFields(log.Fields{"error": err}).Error("ioutil.ReadAll[stdout]")
 	}
 	errBytes, err := ioutil.ReadAll(stderr)
 	if err != nil {
-		log.Printf("ioutil.ReadAll[stderr]: %v", err)
+		log.WithFields(log.Fields{"error": err}).Error("ioutil.ReadAll[stderr]")
 	}
 
 	res := pbm.BinReply{
@@ -148,7 +154,7 @@ func (s *server) IO(ctx context.Context, in *pbm.BinRequest) (*pbm.BinReply, err
 				res.Exitcode = int32(status.ExitStatus())
 			}
 		} else {
-			log.Printf("cmd.Wait: %v", err)
+			log.WithFields(log.Fields{"error": err}).Error("cmd.Wait")
 		}
 	}
 
@@ -159,13 +165,29 @@ func (s *server) IO(ctx context.Context, in *pbm.BinRequest) (*pbm.BinReply, err
 
 	elapsed := float64(time.Since(start).Seconds() * 1000)
 
-	log.Printf("stdin=%d stdout=%d stderr=%d exitcode=%d status=%d duration_ms=%.3f", len(in.Stdin), len(res.Stdout), len(res.Stderr), res.Exitcode, status, elapsed)
+	fields := log.Fields{
+		"stdin":       len(in.Stdin),
+		"stdout":      len(res.Stdout),
+		"stderr":      len(res.Stderr),
+		"exitcode":    res.Exitcode,
+		"status":      status,
+		"duration_ms": elapsed,
+	}
+	if status != 200 {
+		fields["error"] = string(res.Stderr)
+	}
+	l := log.WithFields(fields)
+	if status == 200 {
+		l.Info("call")
+	} else {
+		l.Error("call")
+	}
 
 	return &res, nil
 }
 
 func (s *server) Ping(ctx context.Context, in *pbm.Empty) (*pbm.Pong, error) {
-	log.Println("Ping Request")
+	log.Info("ping")
 	res := pbm.Pong{Val: "pong"}
 	return &res, nil
 }
