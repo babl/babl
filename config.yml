@@ -63,7 +63,7 @@ larskluge:
   - loyalist-s3-upload-backend
 mondoreale:
   modules:
-  - foobar
+  - text-to-image
   public_keys:
   - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9PPwg0DFv8ofTKIyEHSW31+T6coJelDM/NJTug5T7ajPT82rSLbFZ+53FBkuGJIfKHGc5VUKNHrXplxFD9A1To7yIymYhvB9iFvDZWZlQFpeG7FNtZH39rivYwNHKBKe1IAhKXsybjrriOrV8lVFMvofGN8CKW4xgrlMw2llcLBlRIry8o2otVoL3b3H971X60xOj147yF4/akejDtcwC4UFRStx6FRnxk5IYVKRp+65OTy6Su5Fob7DVsVXZqgTb2Tj4I0eF69RnczIBtyWZD7eC6ez13AOKKXEBibKvPXaB1dOOF/HRStVnFCRxAUDknVbXRowb1biE7uDHGm1z
   web_modules: []

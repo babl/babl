@@ -9,7 +9,7 @@ package babl.mondoreale;
 import "github.com/larskluge/babl/protobuf/messages/main.proto";
 
 
-service Foobar {
+service TextToImage {
   rpc IO (babl.BinRequest) returns (babl.BinReply) {}
   rpc Ping (babl.Empty) returns (babl.Pong) {}
 }

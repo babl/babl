@@ -241,12 +241,12 @@ var Modules = map[string]Component{
 			larskluge.RegisterTestFailServer(s, srv)
 		},
   },
-	"mondoreale/foobar": Component{
+	"mondoreale/text-to-image": Component{
 		Client: func(cc *grpc.ClientConn) BinaryClient {
-			return BinaryClient(mondoreale.NewFoobarClient(cc))
+			return BinaryClient(mondoreale.NewTextToImageClient(cc))
 		},
 		Server: func(s *grpc.Server, srv BinaryServer) {
-			mondoreale.RegisterFoobarServer(s, srv)
+			mondoreale.RegisterTextToImageServer(s, srv)
 		},
   },
 	"omnisyle/official-module": Component{

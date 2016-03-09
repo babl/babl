@@ -31,85 +31,85 @@ var _ = math.Inf
 var _ context.Context
 var _ grpc.ClientConn
 
-// Client API for Foobar service
+// Client API for TextToImage service
 
-type FoobarClient interface {
+type TextToImageClient interface {
 	IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error)
 	Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error)
 }
 
-type foobarClient struct {
+type textToImageClient struct {
 	cc *grpc.ClientConn
 }
 
-func NewFoobarClient(cc *grpc.ClientConn) FoobarClient {
-	return &foobarClient{cc}
+func NewTextToImageClient(cc *grpc.ClientConn) TextToImageClient {
+	return &textToImageClient{cc}
 }
 
-func (c *foobarClient) IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error) {
+func (c *textToImageClient) IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error) {
 	out := new(babl.BinReply)
-	err := grpc.Invoke(ctx, "/babl.mondoreale.Foobar/IO", in, out, c.cc, opts...)
+	err := grpc.Invoke(ctx, "/babl.mondoreale.TextToImage/IO", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *foobarClient) Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error) {
+func (c *textToImageClient) Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error) {
 	out := new(babl.Pong)
-	err := grpc.Invoke(ctx, "/babl.mondoreale.Foobar/Ping", in, out, c.cc, opts...)
+	err := grpc.Invoke(ctx, "/babl.mondoreale.TextToImage/Ping", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// Server API for Foobar service
+// Server API for TextToImage service
 
-type FoobarServer interface {
+type TextToImageServer interface {
 	IO(context.Context, *babl.BinRequest) (*babl.BinReply, error)
 	Ping(context.Context, *babl.Empty) (*babl.Pong, error)
 }
 
-func RegisterFoobarServer(s *grpc.Server, srv FoobarServer) {
-	s.RegisterService(&_Foobar_serviceDesc, srv)
+func RegisterTextToImageServer(s *grpc.Server, srv TextToImageServer) {
+	s.RegisterService(&_TextToImage_serviceDesc, srv)
 }
 
-func _Foobar_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+func _TextToImage_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
 	in := new(babl.BinRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
-	out, err := srv.(FoobarServer).IO(ctx, in)
+	out, err := srv.(TextToImageServer).IO(ctx, in)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func _Foobar_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+func _TextToImage_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
 	in := new(babl.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
-	out, err := srv.(FoobarServer).Ping(ctx, in)
+	out, err := srv.(TextToImageServer).Ping(ctx, in)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-var _Foobar_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "babl.mondoreale.Foobar",
-	HandlerType: (*FoobarServer)(nil),
+var _TextToImage_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "babl.mondoreale.TextToImage",
+	HandlerType: (*TextToImageServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "IO",
-			Handler:    _Foobar_IO_Handler,
+			Handler:    _TextToImage_IO_Handler,
 		},
 		{
 			MethodName: "Ping",
-			Handler:    _Foobar_Ping_Handler,
+			Handler:    _TextToImage_Ping_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{},
