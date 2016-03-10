@@ -451,90 +451,6 @@ var _Bablbot_serviceDesc = grpc.ServiceDesc{
 	Streams: []grpc.StreamDesc{},
 }
 
-// Client API for Bar service
-
-type BarClient interface {
-	IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error)
-	Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error)
-}
-
-type barClient struct {
-	cc *grpc.ClientConn
-}
-
-func NewBarClient(cc *grpc.ClientConn) BarClient {
-	return &barClient{cc}
-}
-
-func (c *barClient) IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error) {
-	out := new(babl.BinReply)
-	err := grpc.Invoke(ctx, "/babl.larskluge.Bar/IO", in, out, c.cc, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *barClient) Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error) {
-	out := new(babl.Pong)
-	err := grpc.Invoke(ctx, "/babl.larskluge.Bar/Ping", in, out, c.cc, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// Server API for Bar service
-
-type BarServer interface {
-	IO(context.Context, *babl.BinRequest) (*babl.BinReply, error)
-	Ping(context.Context, *babl.Empty) (*babl.Pong, error)
-}
-
-func RegisterBarServer(s *grpc.Server, srv BarServer) {
-	s.RegisterService(&_Bar_serviceDesc, srv)
-}
-
-func _Bar_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
-	in := new(babl.BinRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	out, err := srv.(BarServer).IO(ctx, in)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func _Bar_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
-	in := new(babl.Empty)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	out, err := srv.(BarServer).Ping(ctx, in)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-var _Bar_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "babl.larskluge.Bar",
-	HandlerType: (*BarServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "IO",
-			Handler:    _Bar_IO_Handler,
-		},
-		{
-			MethodName: "Ping",
-			Handler:    _Bar_Ping_Handler,
-		},
-	},
-	Streams: []grpc.StreamDesc{},
-}
-
 // Client API for Baz service
 
 type BazClient interface {
@@ -703,85 +619,85 @@ var _CheckBabl_serviceDesc = grpc.ServiceDesc{
 	Streams: []grpc.StreamDesc{},
 }
 
-// Client API for CheckBabl3 service
+// Client API for CryptoPrice service
 
-type CheckBabl3Client interface {
+type CryptoPriceClient interface {
 	IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error)
 	Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error)
 }
 
-type checkBabl3Client struct {
+type cryptoPriceClient struct {
 	cc *grpc.ClientConn
 }
 
-func NewCheckBabl3Client(cc *grpc.ClientConn) CheckBabl3Client {
-	return &checkBabl3Client{cc}
+func NewCryptoPriceClient(cc *grpc.ClientConn) CryptoPriceClient {
+	return &cryptoPriceClient{cc}
 }
 
-func (c *checkBabl3Client) IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error) {
+func (c *cryptoPriceClient) IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error) {
 	out := new(babl.BinReply)
-	err := grpc.Invoke(ctx, "/babl.larskluge.CheckBabl3/IO", in, out, c.cc, opts...)
+	err := grpc.Invoke(ctx, "/babl.larskluge.CryptoPrice/IO", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *checkBabl3Client) Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error) {
+func (c *cryptoPriceClient) Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error) {
 	out := new(babl.Pong)
-	err := grpc.Invoke(ctx, "/babl.larskluge.CheckBabl3/Ping", in, out, c.cc, opts...)
+	err := grpc.Invoke(ctx, "/babl.larskluge.CryptoPrice/Ping", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// Server API for CheckBabl3 service
+// Server API for CryptoPrice service
 
-type CheckBabl3Server interface {
+type CryptoPriceServer interface {
 	IO(context.Context, *babl.BinRequest) (*babl.BinReply, error)
 	Ping(context.Context, *babl.Empty) (*babl.Pong, error)
 }
 
-func RegisterCheckBabl3Server(s *grpc.Server, srv CheckBabl3Server) {
-	s.RegisterService(&_CheckBabl3_serviceDesc, srv)
+func RegisterCryptoPriceServer(s *grpc.Server, srv CryptoPriceServer) {
+	s.RegisterService(&_CryptoPrice_serviceDesc, srv)
 }
 
-func _CheckBabl3_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+func _CryptoPrice_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
 	in := new(babl.BinRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
-	out, err := srv.(CheckBabl3Server).IO(ctx, in)
+	out, err := srv.(CryptoPriceServer).IO(ctx, in)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func _CheckBabl3_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+func _CryptoPrice_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
 	in := new(babl.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
-	out, err := srv.(CheckBabl3Server).Ping(ctx, in)
+	out, err := srv.(CryptoPriceServer).Ping(ctx, in)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-var _CheckBabl3_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "babl.larskluge.CheckBabl3",
-	HandlerType: (*CheckBabl3Server)(nil),
+var _CryptoPrice_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "babl.larskluge.CryptoPrice",
+	HandlerType: (*CryptoPriceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "IO",
-			Handler:    _CheckBabl3_IO_Handler,
+			Handler:    _CryptoPrice_IO_Handler,
 		},
 		{
 			MethodName: "Ping",
-			Handler:    _CheckBabl3_Ping_Handler,
+			Handler:    _CryptoPrice_Ping_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{},

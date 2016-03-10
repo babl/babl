@@ -73,14 +73,6 @@ var Modules = map[string]Component{
 			larskluge.RegisterBablbotServer(s, srv)
 		},
   },
-	"larskluge/bar": Component{
-		Client: func(cc *grpc.ClientConn) BinaryClient {
-			return BinaryClient(larskluge.NewBarClient(cc))
-		},
-		Server: func(s *grpc.Server, srv BinaryServer) {
-			larskluge.RegisterBarServer(s, srv)
-		},
-  },
 	"larskluge/baz": Component{
 		Client: func(cc *grpc.ClientConn) BinaryClient {
 			return BinaryClient(larskluge.NewBazClient(cc))
@@ -97,12 +89,12 @@ var Modules = map[string]Component{
 			larskluge.RegisterCheckBablServer(s, srv)
 		},
   },
-	"larskluge/check-babl3": Component{
+	"larskluge/crypto-price": Component{
 		Client: func(cc *grpc.ClientConn) BinaryClient {
-			return BinaryClient(larskluge.NewCheckBabl3Client(cc))
+			return BinaryClient(larskluge.NewCryptoPriceClient(cc))
 		},
 		Server: func(s *grpc.Server, srv BinaryServer) {
-			larskluge.RegisterCheckBabl3Server(s, srv)
+			larskluge.RegisterCryptoPriceServer(s, srv)
 		},
   },
 	"larskluge/download": Component{

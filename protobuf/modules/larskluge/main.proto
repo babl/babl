@@ -34,11 +34,6 @@ service Bablbot {
   rpc Ping (babl.Empty) returns (babl.Pong) {}
 }
 
-service Bar {
-  rpc IO (babl.BinRequest) returns (babl.BinReply) {}
-  rpc Ping (babl.Empty) returns (babl.Pong) {}
-}
-
 service Baz {
   rpc IO (babl.BinRequest) returns (babl.BinReply) {}
   rpc Ping (babl.Empty) returns (babl.Pong) {}
@@ -49,7 +44,7 @@ service CheckBabl {
   rpc Ping (babl.Empty) returns (babl.Pong) {}
 }
 
-service CheckBabl3 {
+service CryptoPrice {
   rpc IO (babl.BinRequest) returns (babl.BinReply) {}
   rpc Ping (babl.Empty) returns (babl.Pong) {}
 }
