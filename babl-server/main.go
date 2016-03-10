@@ -73,7 +73,7 @@ func defaultAction(c *cli.Context) {
 		command = c.String("cmd")
 		address := fmt.Sprintf(":%d", c.Int("port"))
 
-		log.WithFields(log.Fields{"module": module, "address": address}).Info("Start module")
+		log.Warn("Start module")
 
 		lis, err := net.Listen("tcp", address)
 		if err != nil {
