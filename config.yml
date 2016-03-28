@@ -30,6 +30,7 @@ larskluge:
   - babl-build
   - babl-ci
   - babl-deploy
+  - babl-events-trigger
   - babl-init-module
   - bablbot
   - baz
@@ -57,6 +58,7 @@ larskluge:
   - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/al02q9041oFSH9YCO+u9pggq65RVoO+7VrIV+HSBkFGpX1q69JQlt5eV4wdCOnNMtZSPaVjoPFf6ojp6swoRHKA6YGuhxEkTGM2P9bmU7joTwgL/D7Cp+XYM7Z/1enq456proD3+Dz3Ox6SDS1FLRCLHGxmyegaTCaRPbBm0Id+k3Ukd/FA3wX4c/AKcHCUQ2fA1DF6dlwgKlWI0eI2aGNMIfvbC2r9tazizaJ5EGzXboq/VhT/m8hRlfkZAViRknXjbsndWfsEdunJgt5Ox80lrCGmkmIs0vdLB1Nd6VOk6embfINqesBebdIUYqqxzJnUSjEffrgKSAiPj1OJR
   - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCxv/nhMhQlpsKOlMeutlBvwOEcRoTr74KSveqziUbE1PKQhnN4AYnTKGQFbAxzvKbEwUTgsl2S7Oe8sC+xemgYAGEE/PUJ8BPs5knCY3o0PkF3DCKOFPgxQ6wz7B1cclS+iCGBe+htZys8TfQytyx+mhWqbZGL8YDD+LdIt+7x1VnjDwPU8InvZlvPfKB0HFPk2yf1+JyWbfqNX1o4N6unCdPabUnYZWA1Tyshj02KVGoTB2YgFJbn5l8s1AuQR/lWF5Oi4RUZq7aI1G4VA57FOo1Jt0kwH5Eje279NkaAxBZXOs3Q57pHFnbhQyJVCtdd0sNEwYLkfSXRdmvWv4SJjMrPZFJ9b4Php130TIBptsTlne41vKYD3g4xVNykpqFgZlH88AHCSk7EAoNpq4QgZa+4uAf3tTwdrRpKGJVelH+xYdZgi9YrPcqgBF+Tmmj6eVmLJ51otyYtkXMFnVjKHyn0yh2qw+8ONrdxnR2wZRGu4qdZYPFCHrd3xiQ3y+UcRYhqvDtmvRPahbLtqBN1CyogitLXhoDtGx5cWhQuq50K91fbMXsnp6HNSnpr5ef9cdNdoDpisw96otm4ZEeSe8qBNWyI2XE0lW1fpfibnwfTMJvg4I2WaEnN0+Teqn/tuuFw8qHXbYEQWkEBnFC3HgVJiWvWMqLZLiQqlKkZAQ==
   web_modules:
+  - babl-events
   - babl-sh
   - hello-web
   - loyalist-s3-upload-backend
@@ -80,5 +82,9 @@ snd:
   - hello-world
   public_keys:
   - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCg2W//hfj+Q4lPeN4i7BFetJGWuvyp0+EeplDXaXzFQpXJf/5rvZfMmuQ2AGnY7/gg6A7RxPFWX7qAd3Ysx/BeqioMjbxGJBIg5ajeCr6gt6ME3TZqT/9XjIX1q/ILzzOxNPCmDmps+A7sM27EWXj08/L3xpSborF2Aunn24OGwahos1Vqyc05wi7+rfrB5TvryUD+5zOWV0u7d8609L3Uy8sZxTv2lfkBEdDdqMJLVgA8oPRIFf49/O28Yq05baOL44bCm247Ir5TYyBNwd7nbKPfpaP5++CP4xArSoON+ZKtKztHW6AKFxhzPL1Nz2YqWnqSQiSrh64P8MW+8yQz
+  web_modules: []
+stralsi:
+  modules: []
+  public_keys: []
   web_modules: []
 

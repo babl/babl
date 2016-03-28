@@ -57,6 +57,14 @@ var Modules = map[string]Component{
 			larskluge.RegisterBablDeployServer(s, srv)
 		},
   },
+	"larskluge/babl-events-trigger": Component{
+		Client: func(cc *grpc.ClientConn) BinaryClient {
+			return BinaryClient(larskluge.NewBablEventsTriggerClient(cc))
+		},
+		Server: func(s *grpc.Server, srv BinaryServer) {
+			larskluge.RegisterBablEventsTriggerServer(s, srv)
+		},
+  },
 	"larskluge/babl-init-module": Component{
 		Client: func(cc *grpc.ClientConn) BinaryClient {
 			return BinaryClient(larskluge.NewBablInitModuleClient(cc))

@@ -283,6 +283,90 @@ var _BablDeploy_serviceDesc = grpc.ServiceDesc{
 	Streams: []grpc.StreamDesc{},
 }
 
+// Client API for BablEventsTrigger service
+
+type BablEventsTriggerClient interface {
+	IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error)
+	Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error)
+}
+
+type bablEventsTriggerClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewBablEventsTriggerClient(cc *grpc.ClientConn) BablEventsTriggerClient {
+	return &bablEventsTriggerClient{cc}
+}
+
+func (c *bablEventsTriggerClient) IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error) {
+	out := new(babl.BinReply)
+	err := grpc.Invoke(ctx, "/babl.larskluge.BablEventsTrigger/IO", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bablEventsTriggerClient) Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error) {
+	out := new(babl.Pong)
+	err := grpc.Invoke(ctx, "/babl.larskluge.BablEventsTrigger/Ping", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for BablEventsTrigger service
+
+type BablEventsTriggerServer interface {
+	IO(context.Context, *babl.BinRequest) (*babl.BinReply, error)
+	Ping(context.Context, *babl.Empty) (*babl.Pong, error)
+}
+
+func RegisterBablEventsTriggerServer(s *grpc.Server, srv BablEventsTriggerServer) {
+	s.RegisterService(&_BablEventsTrigger_serviceDesc, srv)
+}
+
+func _BablEventsTrigger_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.BinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(BablEventsTriggerServer).IO(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func _BablEventsTrigger_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(BablEventsTriggerServer).Ping(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+var _BablEventsTrigger_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "babl.larskluge.BablEventsTrigger",
+	HandlerType: (*BablEventsTriggerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "IO",
+			Handler:    _BablEventsTrigger_IO_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _BablEventsTrigger_Ping_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{},
+}
+
 // Client API for BablInitModule service
 
 type BablInitModuleClient interface {
