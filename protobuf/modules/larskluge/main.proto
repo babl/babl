@@ -34,6 +34,11 @@ service BablInitModule {
   rpc Ping (babl.Empty) returns (babl.Pong) {}
 }
 
+service BablJob {
+  rpc IO (babl.BinRequest) returns (babl.BinReply) {}
+  rpc Ping (babl.Empty) returns (babl.Pong) {}
+}
+
 service Bablbot {
   rpc IO (babl.BinRequest) returns (babl.BinReply) {}
   rpc Ping (babl.Empty) returns (babl.Pong) {}
