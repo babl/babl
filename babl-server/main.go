@@ -9,6 +9,7 @@ import (
 	"net"
 	"os"
 	"os/exec"
+	"strings"
 	"syscall"
 	"time"
 
@@ -102,10 +103,13 @@ func (s *server) IO(ctx context.Context, in *pbm.BinRequest) (*pbm.BinReply, err
 	env := os.Environ()
 	cmd.Env = []string{} //{"FOO=BAR"}
 
+	vars := []string{}
 	for k, v := range in.Env {
 		cmd.Env = append(cmd.Env, fmt.Sprintf("%s=%s", k, v))
+		vars = append(vars, k)
 	}
 	cmd.Env = append(cmd.Env, env...)
+	cmd.Env = append(cmd.Env, "BABL_VARS="+strings.Join(vars, ","))
 
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
