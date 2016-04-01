@@ -1,2 +1,0 @@
-- service: babl
-  command: "/go/src/github.com/larskluge/babl/bin/tests"
