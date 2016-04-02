@@ -98,6 +98,15 @@ func configureCli() (app *cli.App) {
 			},
 		},
 		{
+			Name:  "logs",
+			Usage: "logs <module>",
+			Action: func(c *cli.Context) {
+				pattern := c.Args().First()
+				LogsInit()
+				Logs(pattern)
+			},
+		},
+		{
 			Name:  "config",
 			Usage: "Print configuration",
 			Action: func(_ *cli.Context) {
