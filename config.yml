@@ -33,6 +33,7 @@ larskluge:
   - babl-events-trigger
   - babl-init-module
   - babl-job
+  - babl-repo-sync
   - bablbot
   - baz
   - check-babl
@@ -53,6 +54,7 @@ larskluge:
   - stream
   - string-append
   - string-upcase
+  - test
   - test-fail
   public_keys:
   - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDO94gEr6xoOxbL4k/cH7NvjnYJUp8IIgvZtnrA565RhrOW4S7ox/lbRBA4irVyJY9uJZBNaaTPvQFeARZ81b6xcO+JsJuYwhdbdhQPQz1D11iD2YWhDzKVnBJHYeq1AB+pMoBv6k2cjo5F0I0N9H0yPmJXPyZK86/fyQPiUume2O5wT5c5rV6WJUSjG+Tl0YNw9qhopbynYGHCyz9I8ttZ7gd2n//qGRzSFlaKgvvAmORgmHsHs3nABomCKbytqVN8xZL6kSRBA3DEjmOrMB45dTJ61YoO//rUpBsDWUMQmtwiVzSUBbVzuOxOn+BC6RQuaHo86gl9Ak39KPXq5Syj

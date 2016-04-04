@@ -39,6 +39,11 @@ service BablJob {
   rpc Ping (babl.Empty) returns (babl.Pong) {}
 }
 
+service BablRepoSync {
+  rpc IO (babl.BinRequest) returns (babl.BinReply) {}
+  rpc Ping (babl.Empty) returns (babl.Pong) {}
+}
+
 service Bablbot {
   rpc IO (babl.BinRequest) returns (babl.BinReply) {}
   rpc Ping (babl.Empty) returns (babl.Pong) {}
@@ -135,6 +140,11 @@ service StringAppend {
 }
 
 service StringUpcase {
+  rpc IO (babl.BinRequest) returns (babl.BinReply) {}
+  rpc Ping (babl.Empty) returns (babl.Pong) {}
+}
+
+service Test {
   rpc IO (babl.BinRequest) returns (babl.BinReply) {}
   rpc Ping (babl.Empty) returns (babl.Pong) {}
 }

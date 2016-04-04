@@ -535,6 +535,90 @@ var _BablJob_serviceDesc = grpc.ServiceDesc{
 	Streams: []grpc.StreamDesc{},
 }
 
+// Client API for BablRepoSync service
+
+type BablRepoSyncClient interface {
+	IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error)
+	Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error)
+}
+
+type bablRepoSyncClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewBablRepoSyncClient(cc *grpc.ClientConn) BablRepoSyncClient {
+	return &bablRepoSyncClient{cc}
+}
+
+func (c *bablRepoSyncClient) IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error) {
+	out := new(babl.BinReply)
+	err := grpc.Invoke(ctx, "/babl.larskluge.BablRepoSync/IO", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bablRepoSyncClient) Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error) {
+	out := new(babl.Pong)
+	err := grpc.Invoke(ctx, "/babl.larskluge.BablRepoSync/Ping", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for BablRepoSync service
+
+type BablRepoSyncServer interface {
+	IO(context.Context, *babl.BinRequest) (*babl.BinReply, error)
+	Ping(context.Context, *babl.Empty) (*babl.Pong, error)
+}
+
+func RegisterBablRepoSyncServer(s *grpc.Server, srv BablRepoSyncServer) {
+	s.RegisterService(&_BablRepoSync_serviceDesc, srv)
+}
+
+func _BablRepoSync_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.BinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(BablRepoSyncServer).IO(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func _BablRepoSync_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(BablRepoSyncServer).Ping(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+var _BablRepoSync_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "babl.larskluge.BablRepoSync",
+	HandlerType: (*BablRepoSyncServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "IO",
+			Handler:    _BablRepoSync_IO_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _BablRepoSync_Ping_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{},
+}
+
 // Client API for Bablbot service
 
 type BablbotClient interface {
@@ -2210,6 +2294,90 @@ var _StringUpcase_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Ping",
 			Handler:    _StringUpcase_Ping_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{},
+}
+
+// Client API for Test service
+
+type TestClient interface {
+	IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error)
+	Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error)
+}
+
+type testClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewTestClient(cc *grpc.ClientConn) TestClient {
+	return &testClient{cc}
+}
+
+func (c *testClient) IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error) {
+	out := new(babl.BinReply)
+	err := grpc.Invoke(ctx, "/babl.larskluge.Test/IO", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *testClient) Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error) {
+	out := new(babl.Pong)
+	err := grpc.Invoke(ctx, "/babl.larskluge.Test/Ping", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for Test service
+
+type TestServer interface {
+	IO(context.Context, *babl.BinRequest) (*babl.BinReply, error)
+	Ping(context.Context, *babl.Empty) (*babl.Pong, error)
+}
+
+func RegisterTestServer(s *grpc.Server, srv TestServer) {
+	s.RegisterService(&_Test_serviceDesc, srv)
+}
+
+func _Test_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.BinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(TestServer).IO(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func _Test_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(TestServer).Ping(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+var _Test_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "babl.larskluge.Test",
+	HandlerType: (*TestServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "IO",
+			Handler:    _Test_IO_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _Test_Ping_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{},
