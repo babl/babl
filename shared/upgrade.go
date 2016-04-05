@@ -31,7 +31,7 @@ func Upgrade(app string) {
 		log.Fatal(err)
 	}
 
-	cmd := fmt.Sprintf("wget -O- '%s' | gunzip > '%s' && chmod +x '%s'", binUrl(app), appPath(), appPath())
+	cmd := fmt.Sprintf("wget -q -O- '%s' | gunzip > '%s' && chmod +x '%s'", binUrl(app), appPath(), appPath())
 
 	err = syscall.Exec(sh, []string{"sh", "-c", cmd}, os.Environ())
 	log.Fatal(err)
