@@ -265,6 +265,14 @@ var Modules = map[string]Component{
 			larskluge.RegisterTestFailServer(s, srv)
 		},
   },
+	"larskluge/test2": Component{
+		Client: func(cc *grpc.ClientConn) BinaryClient {
+			return BinaryClient(larskluge.NewTest2Client(cc))
+		},
+		Server: func(s *grpc.Server, srv BinaryServer) {
+			larskluge.RegisterTest2Server(s, srv)
+		},
+  },
 	"mondoreale/text-to-image": Component{
 		Client: func(cc *grpc.ClientConn) BinaryClient {
 			return BinaryClient(mondoreale.NewTextToImageClient(cc))

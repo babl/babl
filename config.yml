@@ -56,6 +56,7 @@ larskluge:
   - string-upcase
   - test
   - test-fail
+  - test2
   public_keys:
   - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDO94gEr6xoOxbL4k/cH7NvjnYJUp8IIgvZtnrA565RhrOW4S7ox/lbRBA4irVyJY9uJZBNaaTPvQFeARZ81b6xcO+JsJuYwhdbdhQPQz1D11iD2YWhDzKVnBJHYeq1AB+pMoBv6k2cjo5F0I0N9H0yPmJXPyZK86/fyQPiUume2O5wT5c5rV6WJUSjG+Tl0YNw9qhopbynYGHCyz9I8ttZ7gd2n//qGRzSFlaKgvvAmORgmHsHs3nABomCKbytqVN8xZL6kSRBA3DEjmOrMB45dTJ61YoO//rUpBsDWUMQmtwiVzSUBbVzuOxOn+BC6RQuaHo86gl9Ak39KPXq5Syj
   - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/al02q9041oFSH9YCO+u9pggq65RVoO+7VrIV+HSBkFGpX1q69JQlt5eV4wdCOnNMtZSPaVjoPFf6ojp6swoRHKA6YGuhxEkTGM2P9bmU7joTwgL/D7Cp+XYM7Z/1enq456proD3+Dz3Ox6SDS1FLRCLHGxmyegaTCaRPbBm0Id+k3Ukd/FA3wX4c/AKcHCUQ2fA1DF6dlwgKlWI0eI2aGNMIfvbC2r9tazizaJ5EGzXboq/VhT/m8hRlfkZAViRknXjbsndWfsEdunJgt5Ox80lrCGmkmIs0vdLB1Nd6VOk6embfINqesBebdIUYqqxzJnUSjEffrgKSAiPj1OJR
@@ -66,6 +67,9 @@ larskluge:
   - babl-sh
   - hello-web
   - loyalist-s3-upload-backend
+  - test3
+  - test4
+  - test5
 mondoreale:
   modules:
   - text-to-image

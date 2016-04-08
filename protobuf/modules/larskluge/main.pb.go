@@ -2466,3 +2466,87 @@ var _TestFail_serviceDesc = grpc.ServiceDesc{
 	},
 	Streams: []grpc.StreamDesc{},
 }
+
+// Client API for Test2 service
+
+type Test2Client interface {
+	IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error)
+	Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error)
+}
+
+type test2Client struct {
+	cc *grpc.ClientConn
+}
+
+func NewTest2Client(cc *grpc.ClientConn) Test2Client {
+	return &test2Client{cc}
+}
+
+func (c *test2Client) IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error) {
+	out := new(babl.BinReply)
+	err := grpc.Invoke(ctx, "/babl.larskluge.Test2/IO", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *test2Client) Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error) {
+	out := new(babl.Pong)
+	err := grpc.Invoke(ctx, "/babl.larskluge.Test2/Ping", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for Test2 service
+
+type Test2Server interface {
+	IO(context.Context, *babl.BinRequest) (*babl.BinReply, error)
+	Ping(context.Context, *babl.Empty) (*babl.Pong, error)
+}
+
+func RegisterTest2Server(s *grpc.Server, srv Test2Server) {
+	s.RegisterService(&_Test2_serviceDesc, srv)
+}
+
+func _Test2_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.BinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(Test2Server).IO(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func _Test2_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(Test2Server).Ping(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+var _Test2_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "babl.larskluge.Test2",
+	HandlerType: (*Test2Server)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "IO",
+			Handler:    _Test2_IO_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _Test2_Ping_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{},
+}
