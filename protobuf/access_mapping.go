@@ -265,6 +265,14 @@ var Modules = map[string]Component{
 			babl.RegisterJobServer(s, srv)
 		},
   },
+	"babl/nsq-consumer": Component{
+		Client: func(cc *grpc.ClientConn) BinaryClient {
+			return BinaryClient(babl.NewNsqConsumerClient(cc))
+		},
+		Server: func(s *grpc.Server, srv BinaryServer) {
+			babl.RegisterNsqConsumerServer(s, srv)
+		},
+  },
 	"babl/nsq-job": Component{
 		Client: func(cc *grpc.ClientConn) BinaryClient {
 			return BinaryClient(babl.NewNsqJobClient(cc))

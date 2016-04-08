@@ -13,6 +13,11 @@ service Job {
   rpc Ping (.babl.Empty) returns (.babl.Pong) {}
 }
 
+service NsqConsumer {
+  rpc IO (.babl.BinRequest) returns (.babl.BinReply) {}
+  rpc Ping (.babl.Empty) returns (.babl.Pong) {}
+}
+
 service NsqJob {
   rpc IO (.babl.BinRequest) returns (.babl.BinReply) {}
   rpc Ping (.babl.Empty) returns (.babl.Pong) {}

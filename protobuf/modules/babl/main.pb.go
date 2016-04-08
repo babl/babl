@@ -115,6 +115,90 @@ var _Job_serviceDesc = grpc.ServiceDesc{
 	Streams: []grpc.StreamDesc{},
 }
 
+// Client API for NsqConsumer service
+
+type NsqConsumerClient interface {
+	IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error)
+	Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error)
+}
+
+type nsqConsumerClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewNsqConsumerClient(cc *grpc.ClientConn) NsqConsumerClient {
+	return &nsqConsumerClient{cc}
+}
+
+func (c *nsqConsumerClient) IO(ctx context.Context, in *babl.BinRequest, opts ...grpc.CallOption) (*babl.BinReply, error) {
+	out := new(babl.BinReply)
+	err := grpc.Invoke(ctx, "/babl.babl.NsqConsumer/IO", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *nsqConsumerClient) Ping(ctx context.Context, in *babl.Empty, opts ...grpc.CallOption) (*babl.Pong, error) {
+	out := new(babl.Pong)
+	err := grpc.Invoke(ctx, "/babl.babl.NsqConsumer/Ping", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for NsqConsumer service
+
+type NsqConsumerServer interface {
+	IO(context.Context, *babl.BinRequest) (*babl.BinReply, error)
+	Ping(context.Context, *babl.Empty) (*babl.Pong, error)
+}
+
+func RegisterNsqConsumerServer(s *grpc.Server, srv NsqConsumerServer) {
+	s.RegisterService(&_NsqConsumer_serviceDesc, srv)
+}
+
+func _NsqConsumer_IO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.BinRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(NsqConsumerServer).IO(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func _NsqConsumer_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+	in := new(babl.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	out, err := srv.(NsqConsumerServer).Ping(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+var _NsqConsumer_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "babl.babl.NsqConsumer",
+	HandlerType: (*NsqConsumerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "IO",
+			Handler:    _NsqConsumer_IO_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _NsqConsumer_Ping_Handler,
+		},
+	},
+	Streams: []grpc.StreamDesc{},
+}
+
 // Client API for NsqJob service
 
 type NsqJobClient interface {
