@@ -1,4 +1,3 @@
-//go:generate sh -c "curl -s https://babl-sh.herokuapp.com/api/all | json2yaml > config.yml"
 //go:generate bin/module-proto
 //go:generate bin/protoc
 //go:generate sh -c "bin/module-mapping > protobuf/access_mapping.go"
