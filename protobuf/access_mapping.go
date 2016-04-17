@@ -185,6 +185,14 @@ var Modules = map[string]Component{
 			larskluge.RegisterLoyalistTeamBannerServer(s, srv)
 		},
   },
+	"larskluge/mail": Component{
+		Client: func(cc *grpc.ClientConn) BinaryClient {
+			return BinaryClient(larskluge.NewMailClient(cc))
+		},
+		Server: func(s *grpc.Server, srv BinaryServer) {
+			larskluge.RegisterMailServer(s, srv)
+		},
+  },
 	"larskluge/martin": Component{
 		Client: func(cc *grpc.ClientConn) BinaryClient {
 			return BinaryClient(larskluge.NewMartinClient(cc))

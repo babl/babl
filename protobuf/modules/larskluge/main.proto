@@ -113,6 +113,11 @@ service LoyalistTeamBanner {
   rpc Ping (.babl.Empty) returns (.babl.Pong) {}
 }
 
+service Mail {
+  rpc IO (.babl.BinRequest) returns (.babl.BinReply) {}
+  rpc Ping (.babl.Empty) returns (.babl.Pong) {}
+}
+
 service Martin {
   rpc IO (.babl.BinRequest) returns (.babl.BinReply) {}
   rpc Ping (.babl.Empty) returns (.babl.Pong) {}
