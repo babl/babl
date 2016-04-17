@@ -153,6 +153,11 @@ service StringUpcase {
   rpc Ping (.babl.Empty) returns (.babl.Pong) {}
 }
 
+service Template {
+  rpc IO (.babl.BinRequest) returns (.babl.BinReply) {}
+  rpc Ping (.babl.Empty) returns (.babl.Pong) {}
+}
+
 service Test {
   rpc IO (.babl.BinRequest) returns (.babl.BinReply) {}
   rpc Ping (.babl.Empty) returns (.babl.Pong) {}

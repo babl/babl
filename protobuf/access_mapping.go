@@ -249,6 +249,14 @@ var Modules = map[string]Component{
 			larskluge.RegisterStringUpcaseServer(s, srv)
 		},
   },
+	"larskluge/template": Component{
+		Client: func(cc *grpc.ClientConn) BinaryClient {
+			return BinaryClient(larskluge.NewTemplateClient(cc))
+		},
+		Server: func(s *grpc.Server, srv BinaryServer) {
+			larskluge.RegisterTemplateServer(s, srv)
+		},
+  },
 	"larskluge/test": Component{
 		Client: func(cc *grpc.ClientConn) BinaryClient {
 			return BinaryClient(larskluge.NewTestClient(cc))
