@@ -8,6 +8,8 @@ import (
 
 	larskluge "github.com/larskluge/babl/protobuf/modules/larskluge"
 	babl "github.com/larskluge/babl/protobuf/modules/babl"
+	alt_f4 "github.com/larskluge/babl/protobuf/modules/alt_f4"
+	nneves "github.com/larskluge/babl/protobuf/modules/nneves"
 	mondoreale "github.com/larskluge/babl/protobuf/modules/mondoreale"
 	omnisyle "github.com/larskluge/babl/protobuf/modules/omnisyle"
 	snd "github.com/larskluge/babl/protobuf/modules/snd"
@@ -303,6 +305,22 @@ var Modules = map[string]Component{
 		},
 		Server: func(s *grpc.Server, srv BinaryServer) {
 			babl.RegisterNsqJobServer(s, srv)
+		},
+  },
+	"alt-f4/test": Component{
+		Client: func(cc *grpc.ClientConn) BinaryClient {
+			return BinaryClient(alt_f4.NewTestClient(cc))
+		},
+		Server: func(s *grpc.Server, srv BinaryServer) {
+			alt_f4.RegisterTestServer(s, srv)
+		},
+  },
+	"nneves/image-watermark": Component{
+		Client: func(cc *grpc.ClientConn) BinaryClient {
+			return BinaryClient(nneves.NewImageWatermarkClient(cc))
+		},
+		Server: func(s *grpc.Server, srv BinaryServer) {
+			nneves.RegisterImageWatermarkServer(s, srv)
 		},
   },
 	"mondoreale/text-to-image": Component{
