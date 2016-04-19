@@ -28,8 +28,9 @@ import (
 }
 
 modules_by_owner.each do |(owner, _)|
+  package_name = owner.gsub('-', '_')
   contents += %{\
-	#{owner} "github.com/larskluge/babl/protobuf/modules/#{owner}"
+	#{package_name} "github.com/larskluge/babl/protobuf/modules/#{package_name}"
 }
 end
 
@@ -41,16 +42,17 @@ var Modules = map[string]Component{
 >
 
 modules_by_owner.each do |(owner, mods)|
+  package_name = owner.gsub('-', '_')
   mods.each do |mod|
     cc = mod.gsub('-', '_').gsub(/(\d+)/, "\t\\1\t").split("\t").map(&:camelize).join
 
     contents += %<\
 	"#{owner}/#{mod}": Component{
 		Client: func(cc *grpc.ClientConn) BinaryClient {
-			return BinaryClient(#{owner}.New#{cc}Client(cc))
+			return BinaryClient(#{package_name}.New#{cc}Client(cc))
 		},
 		Server: func(s *grpc.Server, srv BinaryServer) {
-			#{owner}.Register#{cc}Server(s, srv)
+			#{package_name}.Register#{cc}Server(s, srv)
 		},
   },
 >
