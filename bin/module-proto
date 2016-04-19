@@ -19,7 +19,8 @@ end
 
 
 modules_by_owner.each do |(owner, mods)|
-  owner_path = File.expand_path(owner, MODULES_PATH)
+  package_name = owner.gsub('-', '_')
+  owner_path = File.expand_path(package_name, MODULES_PATH)
   system 'mkdir', '-p', owner_path
 
   contents = %{\
@@ -29,7 +30,7 @@ modules_by_owner.each do |(owner, mods)|
 
 syntax = "proto3";
 
-package babl.#{owner};
+package babl.#{package_name};
 import "github.com/larskluge/babl/protobuf/messages/main.proto";
 
 }
