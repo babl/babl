@@ -25,26 +25,6 @@ func appendModuleCommand(cmds *[]cli.Command, module string) {
 	})
 }
 
-func pingSubCommands() (cmds []cli.Command) {
-	for _, module := range shared.Modules() {
-		cmds = append(cmds, cli.Command{
-			Name: module,
-			Action: func(c *cli.Context) {
-				fmt.Print("ping.. ")
-				m := shared.NewModule(c.Command.Name, false)
-				m.Address = address(c)
-				res, err := m.Ping()
-				if err == nil {
-					fmt.Println(res.Val)
-				} else {
-					log.Fatalf("Failed: %v", err)
-				}
-			},
-		})
-	}
-	return
-}
-
 func configureCli() (app *cli.App) {
 	app = cli.NewApp()
 	app.Usage = "Client to access the Babl Network."
@@ -89,12 +69,19 @@ func configureCli() (app *cli.App) {
 			},
 		},
 		{
-			Name:        "ping",
-			Usage:       "ping <module>",
-			Subcommands: pingSubCommands(),
-			Action: func(_ *cli.Context) {
-				fmt.Println("Unknown module")
-				os.Exit(3)
+			Name:  "ping",
+			Usage: "ping <module>",
+			Action: func(c *cli.Context) {
+				module := c.Args().First()
+				fmt.Print("ping.. ")
+				m := shared.NewModule(module, false)
+				m.Address = address(c)
+				res, err := m.Ping()
+				if err == nil {
+					fmt.Println(res.Val)
+				} else {
+					log.Fatalf("Failed: %v", err)
+				}
 			},
 		},
 		{
