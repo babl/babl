@@ -29,7 +29,7 @@ type ModuleResponse struct {
 }
 
 func (_ *Babl) Module(req ModuleRequest, response *ModuleResponse) error {
-	if shared.ModuleExists(req.Name) {
+	if shared.CheckModuleName(req.Name) {
 		m := shared.NewModule(req.Name, false)
 		m.Env = req.Env
 
@@ -46,7 +46,7 @@ func (_ *Babl) Module(req ModuleRequest, response *ModuleResponse) error {
 
 		return err
 	} else {
-		return errors.New("babl-rpc: unknown module")
+		return errors.New("babl-rpc: module name format incorrect")
 	}
 }
 

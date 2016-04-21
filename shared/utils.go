@@ -4,16 +4,16 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"regexp"
 	"sort"
 	"strings"
 
-	pb "github.com/larskluge/babl/protobuf"
 	"github.com/mattn/go-isatty"
 )
 
-func ModuleExists(module string) bool {
-	_, exists := pb.Modules[module]
-	return exists
+func CheckModuleName(module string) bool {
+	r := regexp.MustCompile("^[a-z][a-z0-9-]*/[a-z][a-z0-9-]*$")
+	return r.MatchString(module)
 }
 
 func PrintAvailableModules(printDefaults bool) {

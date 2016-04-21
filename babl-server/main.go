@@ -68,8 +68,8 @@ func defaultAction(c *cli.Context) {
 		cli.ShowAppHelp(c)
 		os.Exit(1)
 	} else {
-		if !shared.ModuleExists(module) {
-			log.WithFields(log.Fields{"module": module}).Fatal("Unknown module")
+		if !shared.CheckModuleName(module) {
+			log.WithFields(log.Fields{"module": module}).Fatal("Module name format incorrect")
 		}
 		command = c.String("cmd")
 		address := fmt.Sprintf(":%d", c.Int("port"))
