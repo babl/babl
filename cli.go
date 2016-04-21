@@ -9,22 +9,6 @@ import (
 	"github.com/larskluge/babl/shared"
 )
 
-func appendModuleCommand(cmds *[]cli.Command, module string) {
-	*cmds = append(*cmds, cli.Command{
-		Name: module,
-		Action: func(c *cli.Context) {
-			module := c.Command.Name
-			defaultAction(c, module)
-		},
-		Flags: []cli.Flag{
-			cli.StringSliceFlag{
-				Name:  "env, e",
-				Usage: "Send environment variables, e.g. -e FOO=42",
-			},
-		},
-	})
-}
-
 func configureCli() (app *cli.App) {
 	app = cli.NewApp()
 	app.Usage = "Client to access the Babl Network."
@@ -47,10 +31,15 @@ func configureCli() (app *cli.App) {
 		},
 	}
 	app.Action = func(c *cli.Context) {
-		fmt.Fprintln(app.Writer, "Incorrect Usage.")
-		fmt.Fprintln(app.Writer)
-		cli.ShowAppHelp(c)
-		os.Exit(1)
+		module := c.Args().First()
+		if shared.CheckModuleName(module) {
+			defaultAction(c)
+		} else {
+			fmt.Fprintln(app.Writer, "Incorrect Usage.")
+			fmt.Fprintln(app.Writer)
+			cli.ShowAppHelp(c)
+			os.Exit(1)
+		}
 	}
 
 	app.Commands = []cli.Command{
@@ -107,13 +96,6 @@ func configureCli() (app *cli.App) {
 				shared.Upgrade("babl")
 			},
 		},
-	}
-
-	for _, module := range shared.Modules() {
-		appendModuleCommand(&app.Commands, module)
-	}
-	for module, _ := range shared.Config().Defaults {
-		appendModuleCommand(&app.Commands, module)
 	}
 	return
 }

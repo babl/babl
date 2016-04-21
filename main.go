@@ -24,7 +24,8 @@ func address(c *cli.Context) string {
 	return fmt.Sprintf("%s:%d", c.GlobalString("host"), c.GlobalInt("port"))
 }
 
-func defaultAction(c *cli.Context, module_with_tag string) {
+func defaultAction(c *cli.Context) {
+	module_with_tag := c.Args().First()
 	debug = c.GlobalBool("debug")
 	m := shared.NewModule(module_with_tag, debug)
 
