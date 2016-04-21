@@ -1,8 +1,10 @@
 package shared
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"regexp"
 	"sort"
@@ -10,6 +12,12 @@ import (
 
 	"github.com/mattn/go-isatty"
 )
+
+func check(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
 
 func CheckModuleName(module string) bool {
 	r := regexp.MustCompile("^[a-z][a-z0-9-]*/[a-z][a-z0-9-]*$")
@@ -28,8 +36,16 @@ func PrintAvailableModules(printDefaults bool) {
 }
 
 func Modules() (modules []string) {
-	for module, _ := range pb.Modules {
-		modules = append(modules, module)
+	resp, err := http.Get("https://babl.sh/api/modules")
+	check(err)
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	check(err)
+	var mods []map[string]interface{}
+	err = json.Unmarshal(body, &mods)
+	check(err)
+	for _, mod := range mods {
+		modules = append(modules, mod["full_name"].(string))
 	}
 	sort.Strings(modules)
 	return
@@ -37,9 +53,7 @@ func Modules() (modules []string) {
 
 func Version() string {
 	version, err := Asset("data/VERSION")
-	if err != nil {
-		panic(err)
-	}
+	check(err)
 	return strings.Trim(string(version), "\n")
 }
 
