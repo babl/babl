@@ -49,6 +49,9 @@ func defaultAction(c *cli.Context) {
 		status = "ERROR"
 	}
 	log.Printf("Module finished: %s. %d bytes stdout, %d bytes stderr:, exit w/ %d", status, len(stdout), len(stderr), exitcode)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%+v\n", err)
+	}
 	if len(stderr) > 0 {
 		log.Print(string(stderr))
 	}

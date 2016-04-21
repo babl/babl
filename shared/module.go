@@ -89,7 +89,7 @@ func (m *Module) Call(stdin []byte) (stdout []byte, stderr []byte, exitcode int,
 		}
 		return res.Stdout, res.Stderr, exitcode, err
 	} else {
-		return nil, nil, 255, err
+		return nil, nil, 254, err
 	}
 }
 
