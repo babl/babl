@@ -9,6 +9,7 @@ import (
 	"github.com/larskluge/babl/log"
 	pb "github.com/larskluge/babl/protobuf"
 	pbm "github.com/larskluge/babl/protobuf/messages"
+	"github.com/serenize/snaker"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -41,14 +42,29 @@ func NewModule(name_with_tag string, debug bool) *Module {
 	if debug {
 		m.Env["BABL_DEBUG"] = "true"
 	}
-	if !ModuleExists(m.Name) {
-		log.Fatal("Unknown module")
+	if !CheckModuleName(m.Name) {
+		log.Fatal("Module name format incorrect")
 	}
 	return &m
 }
 
 func (m *Module) Fullname() string {
 	return fmt.Sprintf("%s:%s", m.Name, m.Tag)
+}
+
+func (m *Module) Owner() string {
+	parts := strings.SplitN(m.Name, "/", 2)
+	return parts[0]
+}
+
+func (m *Module) GrpcModuleName() string {
+	mod := strings.SplitN(m.Name, "/", 2)[1]
+	snake := strings.Replace(mod, "-", "_", -1)
+	return snaker.SnakeToCamel(snake)
+}
+
+func (m *Module) GrpcServiceName() string {
+	return fmt.Sprintf("babl.%s.%s", m.Owner(), m.GrpcModuleName())
 }
 
 func (m *Module) loadDefaults() {
@@ -62,9 +78,10 @@ func (m *Module) Call(stdin []byte) (stdout []byte, stderr []byte, exitcode int,
 	conn := m.Connect()
 	defer conn.Close()
 
-	connection := pb.Modules[m.Name].Client(conn)
+	connection := pb.BinaryClient(pb.NewBinaryClient(conn))
+
 	req := pbm.BinRequest{Stdin: stdin, Env: m.Env}
-	res, err := connection.IO(context.Background(), &req)
+	res, err := connection.IO(m.GrpcServiceName(), context.Background(), &req)
 	if err == nil {
 		exitcode := int(res.Exitcode)
 		if exitcode != 0 {
@@ -103,8 +120,8 @@ func (m *Module) Ping() (res *pbm.Pong, err error) {
 	conn := m.Connect()
 	defer conn.Close()
 
-	connection := pb.Modules[m.Name].Client(conn)
+	connection := pb.BinaryClient(pb.NewBinaryClient(conn))
 	req := pbm.Empty{}
-	res, err = connection.Ping(context.Background(), &req)
+	res, err = connection.Ping(m.GrpcServiceName(), context.Background(), &req)
 	return
 }
