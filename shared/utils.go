@@ -20,7 +20,7 @@ func check(err error) {
 }
 
 func CheckModuleName(module string) bool {
-	r := regexp.MustCompile("^[a-z][a-z0-9-]*/[a-z][a-z0-9-]*$")
+	r := regexp.MustCompile("^[a-z][a-z0-9-]*/[a-z][a-z0-9-:]*$")
 	return r.MatchString(module)
 }
 
