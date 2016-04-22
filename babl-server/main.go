@@ -91,7 +91,8 @@ func defaultAction(c *cli.Context) {
 		opts := []grpc.ServerOption{grpc.Creds(creds)}
 
 		s := grpc.NewServer(opts...)
-		pb.Modules[module].Server(s, &server{})
+		m := shared.NewModule(module, false)
+		pb.RegisterBinaryServer(m.GrpcServiceName(), s, &server{})
 		s.Serve(lis)
 	}
 }
