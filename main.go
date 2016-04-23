@@ -8,25 +8,16 @@ import (
 	"os"
 	"strings"
 
-	"github.com/codegangsta/cli"
 	"github.com/larskluge/babl/log"
 	"github.com/larskluge/babl/shared"
 )
-
-var debug = false
 
 func main() {
 	app := configureCli()
 	app.Run(os.Args)
 }
 
-func address(c *cli.Context) string {
-	return fmt.Sprintf("%s:%d", c.GlobalString("host"), c.GlobalInt("port"))
-}
-
-func defaultAction(c *cli.Context) {
-	module_with_tag := c.Args().First()
-	debug = c.GlobalBool("debug")
+func defaultAction(module_with_tag string, envs []string, address string, debug bool) {
 	m := shared.NewModule(module_with_tag, debug)
 
 	if !debug {
@@ -35,10 +26,10 @@ func defaultAction(c *cli.Context) {
 
 	log.Println("Connecting to module", m.Name, m.Tag)
 
-	applyEnv(&m.Env, c.StringSlice("env"))
-	log.Println("env", m.Env)
+	applyEnv(&m.Env, envs)
+	log.Printf("%+v\n", m.Env)
 
-	m.Address = address(c)
+	m.Address = address
 	log.Printf("Connecting to %s..", m.Address)
 
 	in := shared.ReadStdin()

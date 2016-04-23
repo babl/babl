@@ -1,13 +1,38 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/codegangsta/cli"
 	"github.com/larskluge/babl/log"
 	"github.com/larskluge/babl/shared"
 )
+
+type envFlags []string
+
+func (e *envFlags) String() string {
+	return strings.Join(*e, ",")
+}
+
+func (e *envFlags) Set(value string) error {
+	*e = append(*e, value)
+	return nil
+}
+
+func parseEnvFlags(flags []string) (envs envFlags) {
+	set := flag.NewFlagSet("env", flag.ExitOnError)
+	set.Var(&envs, "env", "Send environment variables, e.g. -e FOO=42")
+	set.Var(&envs, "e", "Send environment variables, e.g. -e FOO=42")
+	set.Parse(flags)
+	return
+}
+
+func address(c *cli.Context) string {
+	return fmt.Sprintf("%s:%d", c.GlobalString("host"), c.GlobalInt("port"))
+}
 
 func configureCli() (app *cli.App) {
 	app = cli.NewApp()
@@ -33,7 +58,8 @@ func configureCli() (app *cli.App) {
 	app.Action = func(c *cli.Context) {
 		module := c.Args().First()
 		if shared.CheckModuleName(module) {
-			defaultAction(c)
+			envs := parseEnvFlags(c.Args().Tail())
+			defaultAction(module, envs, address(c), c.GlobalBool("debug"))
 		} else {
 			fmt.Fprintln(app.Writer, "Incorrect Usage.")
 			fmt.Fprintln(app.Writer)
