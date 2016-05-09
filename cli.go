@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"os/exec"
 	"strings"
 
 	"github.com/codegangsta/cli"
@@ -106,6 +107,20 @@ func configureCli() (app *cli.App) {
 				pattern := c.Args().First()
 				LogsInit()
 				Logs(pattern)
+			},
+		},
+		{
+			Name:  "home",
+			Usage: "Open the module page in your browser",
+			Action: func(c *cli.Context) {
+				cfg := shared.ModuleConfig()
+				url := fmt.Sprintf("https://babl.sh/%s", cfg.Id)
+				_, err := exec.Command("open", url).Output()
+				if err == nil {
+					os.Exit(0)
+				} else {
+					os.Exit(1)
+				}
 			},
 		},
 		{
