@@ -13,7 +13,7 @@ var include = [...][]string{{"module", "%s"}, {"module_version", "%s", "version"
 var conn redis.Conn
 
 func LogsInit() {
-	c, err := redis.DialURL("redis://h:p4rmqocfi3snf82b6r7pg1pbnp1@ec2-54-235-164-4.compute-1.amazonaws.com:17979")
+	c, err := redis.DialURL("redis://h:peuid3ljura1lj7rpv29toq01g6@ec2-54-235-164-4.compute-1.amazonaws.com:17979")
 	if err != nil {
 		panic(err)
 	}
