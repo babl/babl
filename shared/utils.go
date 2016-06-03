@@ -45,7 +45,9 @@ func Modules() (modules []string) {
 	err = json.Unmarshal(body, &mods)
 	check(err)
 	for _, mod := range mods {
-		modules = append(modules, mod["full_name"].(string))
+		if mod["type"] == "babl" {
+			modules = append(modules, mod["full_name"].(string))
+		}
 	}
 	sort.Strings(modules)
 	return
