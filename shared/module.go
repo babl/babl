@@ -67,6 +67,10 @@ func (m *Module) GrpcServiceName() string {
 	return fmt.Sprintf("babl.%s.%s", m.Owner(), m.GrpcModuleName())
 }
 
+func (m *Module) KafkaTopicName(method string) string {
+	return fmt.Sprintf("%s.%s", m.GrpcServiceName(), method)
+}
+
 func (m *Module) loadDefaults() {
 	mod, ok := Config().Defaults[m.Fullname()]
 	if ok {
