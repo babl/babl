@@ -51,6 +51,11 @@ func configureCli() (app *cli.App) {
 			Value: 4444,
 		},
 		cli.BoolFlag{
+			Name:   "async",
+			Usage:  "Flag request to be processed asynchronously and do not wait for a response",
+			EnvVar: "BABL_ASYNC",
+		},
+		cli.BoolFlag{
 			Name:   "debug",
 			Usage:  "Enable debug mode & verbose logging",
 			EnvVar: "BABL_DEBUG",
@@ -60,7 +65,9 @@ func configureCli() (app *cli.App) {
 		module := c.Args().First()
 		if shared.CheckModuleName(module) {
 			envs := parseEnvFlags(c.Args().Tail())
-			defaultAction(module, envs, address(c), c.GlobalBool("debug"))
+			async := c.GlobalBool("async")
+			debug := c.GlobalBool("debug")
+			defaultAction(module, envs, address(c), async, debug)
 		} else {
 			fmt.Fprintln(app.Writer, "Incorrect Usage.")
 			fmt.Fprintln(app.Writer)
@@ -90,7 +97,7 @@ func configureCli() (app *cli.App) {
 			Action: func(c *cli.Context) {
 				module := c.Args().First()
 				fmt.Print("ping.. ")
-				m := shared.NewModule(module, false)
+				m := shared.NewModule(module)
 				m.Address = address(c)
 				res, err := m.Ping()
 				if err == nil {

@@ -19,11 +19,14 @@ type Module struct {
 	Name    string
 	Tag     string
 	Address string
-	Env     map[string]string
-	Debug   bool
+	Env     Env
+	async   bool
+	debug   bool
 }
 
-func NewModule(name_with_tag string, debug bool) *Module {
+type Env map[string]string
+
+func NewModule(name_with_tag string) *Module {
 	tag := ""
 	parts := strings.Split(name_with_tag, ":")
 	name := parts[0]
@@ -35,13 +38,9 @@ func NewModule(name_with_tag string, debug bool) *Module {
 		Name:    name,
 		Tag:     tag,
 		Address: "babl.sh:4444",
-		Env:     make(map[string]string),
-		Debug:   debug,
+		Env:     Env{},
 	}
 	m.loadDefaults()
-	if debug {
-		m.Env["BABL_DEBUG"] = "true"
-	}
 	if !CheckModuleName(m.Name) {
 		log.Fatal("Module name format incorrect")
 	}
@@ -75,6 +74,32 @@ func (m *Module) loadDefaults() {
 	mod, ok := Config().Defaults[m.Fullname()]
 	if ok {
 		m.Env = mod.Env
+	}
+}
+
+func (m *Module) GetAsync() bool {
+	return m.async
+}
+
+func (m *Module) SetAsync(val bool) {
+	m.async = val
+	if val {
+		m.Env["BABL_ASYNC"] = "true"
+	} else {
+		delete(m.Env, "BABL_ASYNC")
+	}
+}
+
+func (m *Module) GetDebug() bool {
+	return m.debug
+}
+
+func (m *Module) SetDebug(val bool) {
+	m.debug = val
+	if val {
+		m.Env["BABL_DEBUG"] = "true"
+	} else {
+		delete(m.Env, "BABL_DEBUG")
 	}
 }
 

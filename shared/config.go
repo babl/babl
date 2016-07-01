@@ -19,7 +19,7 @@ type Cfg struct {
 
 type module struct {
 	Module string
-	Env    map[string]string
+	Env    Env
 }
 
 func Config() (cfg Cfg) {

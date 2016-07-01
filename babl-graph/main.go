@@ -8,7 +8,7 @@ import (
 
 func main() {
 	m := shared.NewModule("string-append", false)
-	m.Env = map[string]string{
+	m.Env = shared.Env{
 		"APPENDIX": "bar",
 	}
 	stdout, _, _, _ := m.Call(shared.ReadStdin())

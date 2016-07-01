@@ -17,8 +17,10 @@ func main() {
 	app.Run(os.Args)
 }
 
-func defaultAction(module_with_tag string, envs []string, address string, debug bool) {
-	m := shared.NewModule(module_with_tag, debug)
+func defaultAction(module_with_tag string, envs []string, address string, async, debug bool) {
+	m := shared.NewModule(module_with_tag)
+	m.SetAsync(async)
+	m.SetDebug(debug)
 
 	if !debug {
 		log.SetOutput(ioutil.Discard)
@@ -50,7 +52,7 @@ func defaultAction(module_with_tag string, envs []string, address string, debug 
 	os.Exit(exitcode)
 }
 
-func applyEnv(env *map[string]string, envs []string) {
+func applyEnv(env *shared.Env, envs []string) {
 	for _, val := range envs {
 		x := strings.SplitN(val, "=", 2)
 		(*env)[x[0]] = x[1]
