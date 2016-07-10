@@ -32,7 +32,7 @@ func parseEnvFlags(flags []string) (envs envFlags) {
 }
 
 func address(c *cli.Context) string {
-	return fmt.Sprintf("%s:%d", c.GlobalString("host"), c.GlobalInt("port"))
+	return c.GlobalString("connect-to")
 }
 
 func configureCli() (app *cli.App) {
@@ -41,14 +41,9 @@ func configureCli() (app *cli.App) {
 	app.Version = shared.Version()
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
-			Name:  "host",
-			Usage: "Host to connect to, e.g. babl.sh, localhost",
-			Value: "babl.sh",
-		},
-		cli.IntFlag{
-			Name:  "port",
-			Usage: "Port to connect to",
-			Value: 4444,
+			Name:  "connect-to, c",
+			Usage: "Host & port to connect to, e.g. babl.sh:4444, localhost:4445",
+			Value: "babl.sh:4444",
 		},
 		cli.BoolFlag{
 			Name:   "async",
