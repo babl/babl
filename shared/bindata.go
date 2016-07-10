@@ -69,7 +69,7 @@ func (fi bindataFileInfo) Sys() interface{} {
 	return nil
 }
 
-var _dataVersion = []byte("\x1f\x8b\x08\x00\x00\x09\x6e\x88\x00\xff\x32\xd0\x33\xd6\x33\xe2\x02\x04\x00\x00\xff\xff\xa1\xb6\xa1\x16\x06\x00\x00\x00")
+var _dataVersion = []byte("\x1f\x8b\x08\x00\x00\x09\x6e\x88\x00\xff\x32\xd0\x33\xd6\x33\xe6\x02\x04\x00\x00\xff\xff\xe0\x87\xba\x0f\x06\x00\x00\x00")
 
 func dataVersionBytes() ([]byte, error) {
 	return bindataRead(
@@ -84,7 +84,7 @@ func dataVersion() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "data/VERSION", size: 6, mode: os.FileMode(420), modTime: time.Unix(1462816898, 0)}
+	info := bindataFileInfo{name: "data/VERSION", size: 6, mode: os.FileMode(420), modTime: time.Unix(1468161835, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -104,7 +104,7 @@ func dataCaPem() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "data/ca.pem", size: 802, mode: os.FileMode(420), modTime: time.Unix(1446813769, 0)}
+	info := bindataFileInfo{name: "data/ca.pem", size: 802, mode: os.FileMode(420), modTime: time.Unix(1464953553, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
