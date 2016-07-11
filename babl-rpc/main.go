@@ -30,7 +30,7 @@ type ModuleResponse struct {
 
 func (_ *Babl) Module(req ModuleRequest, response *ModuleResponse) error {
 	if shared.CheckModuleName(req.Name) {
-		m := shared.NewModule(req.Name, false)
+		m := shared.NewModule(req.Name)
 		m.Env = req.Env
 
 		stdin, err := base64.StdEncoding.DecodeString(req.Stdin)
