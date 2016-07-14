@@ -1,5 +1,3 @@
-//go:generate sh -c "cd shared && go-bindata -pkg shared data/..."
-
 package main
 
 import (
@@ -8,8 +6,9 @@ import (
 	"os"
 	"strings"
 
+	"github.com/larskluge/babl/bablutils"
 	"github.com/larskluge/babl/log"
-	"github.com/larskluge/babl/shared"
+	"github.com/larskluge/babl/module"
 )
 
 const Version = "0.3.3"
@@ -20,7 +19,7 @@ func main() {
 }
 
 func defaultAction(module_with_tag string, envs []string, address string, async, debug bool) {
-	m := shared.NewModule(module_with_tag)
+	m := module.New(module_with_tag)
 	m.SetAsync(async)
 	m.SetDebug(debug)
 
@@ -36,7 +35,7 @@ func defaultAction(module_with_tag string, envs []string, address string, async,
 	m.Address = address
 	log.Printf("Connecting to %s..", m.Address)
 
-	in := shared.ReadStdin()
+	in := bablutils.ReadStdin()
 	log.Printf("%d bytes read from stdin", len(in))
 	stdout, stderr, exitcode, err := m.Call(in)
 	status := "SUCCESS"
@@ -54,7 +53,7 @@ func defaultAction(module_with_tag string, envs []string, address string, async,
 	os.Exit(exitcode)
 }
 
-func applyEnv(env *shared.Env, envs []string) {
+func applyEnv(env *module.Env, envs []string) {
 	for _, val := range envs {
 		x := strings.SplitN(val, "=", 2)
 		(*env)[x[0]] = x[1]

@@ -1,15 +1,12 @@
-package shared
+package module
 
 import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"regexp"
 	"sort"
-
-	"github.com/mattn/go-isatty"
 )
 
 func check(err error) {
@@ -49,12 +46,5 @@ func Modules() (modules []string) {
 		}
 	}
 	sort.Strings(modules)
-	return
-}
-
-func ReadStdin() (in []byte) {
-	if !isatty.IsTerminal(os.Stdin.Fd()) {
-		in, _ = ioutil.ReadAll(os.Stdin)
-	}
 	return
 }

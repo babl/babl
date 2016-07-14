@@ -8,8 +8,9 @@ import (
 	"strings"
 
 	"github.com/codegangsta/cli"
+	"github.com/larskluge/babl/bablutils"
 	"github.com/larskluge/babl/log"
-	"github.com/larskluge/babl/shared"
+	"github.com/larskluge/babl/module"
 )
 
 type envFlags []string
@@ -57,12 +58,12 @@ func configureCli() (app *cli.App) {
 		},
 	}
 	app.Action = func(c *cli.Context) {
-		module := c.Args().First()
-		if shared.CheckModuleName(module) {
+		mod := c.Args().First()
+		if module.CheckModuleName(mod) {
 			envs := parseEnvFlags(c.Args().Tail())
 			async := c.GlobalBool("async")
 			debug := c.GlobalBool("debug")
-			defaultAction(module, envs, address(c), async, debug)
+			defaultAction(mod, envs, address(c), async, debug)
 		} else {
 			fmt.Fprintln(app.Writer, "Incorrect Usage.")
 			fmt.Fprintln(app.Writer)
@@ -77,7 +78,7 @@ func configureCli() (app *cli.App) {
 			Aliases: []string{"ls"},
 			Usage:   "List all available modules",
 			Action: func(c *cli.Context) {
-				shared.PrintAvailableModules(c.Bool("defaults"))
+				module.PrintAvailableModules(c.Bool("defaults"))
 			},
 			Flags: []cli.Flag{
 				cli.BoolTFlag{
@@ -90,9 +91,9 @@ func configureCli() (app *cli.App) {
 			Name:  "ping",
 			Usage: "ping <module>",
 			Action: func(c *cli.Context) {
-				module := c.Args().First()
+				mod := c.Args().First()
 				fmt.Print("ping.. ")
-				m := shared.NewModule(module)
+				m := module.New(mod)
 				m.Address = address(c)
 				res, err := m.Ping()
 				if err == nil {
@@ -115,7 +116,7 @@ func configureCli() (app *cli.App) {
 			Name:  "home",
 			Usage: "Open the module page in your browser",
 			Action: func(c *cli.Context) {
-				cfg := shared.ModuleConfig()
+				cfg := module.ModuleConfig()
 				url := fmt.Sprintf("https://babl.sh/%s", cfg.Id)
 				_, err := exec.Command("open", url).Output()
 				if err == nil {
@@ -129,14 +130,14 @@ func configureCli() (app *cli.App) {
 			Name:  "config",
 			Usage: "Print configuration",
 			Action: func(_ *cli.Context) {
-				fmt.Println(shared.Config())
+				fmt.Println(module.Config())
 			},
 		},
 		{
 			Name:  "upgrade",
 			Usage: "Upgrades the client to the latest available version",
 			Action: func(_ *cli.Context) {
-				shared.Upgrade("babl")
+				bablutils.Upgrade("babl")
 			},
 		},
 	}

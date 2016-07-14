@@ -1,4 +1,6 @@
-package shared
+//go:generate go-bindata -pkg module -prefix data data/...
+
+package module
 
 import (
 	"crypto/x509"
@@ -26,7 +28,7 @@ type Module struct {
 
 type Env map[string]string
 
-func NewModule(name_with_tag string) *Module {
+func New(name_with_tag string) *Module {
 	tag := ""
 	parts := strings.Split(name_with_tag, ":")
 	name := parts[0]
@@ -123,10 +125,8 @@ func (m *Module) Call(stdin []byte) (stdout []byte, stderr []byte, exitcode int,
 }
 
 func (m *Module) Connect() *grpc.ClientConn {
-	data, err := Asset("data/ca.pem")
-	if err != nil {
-		log.Fatal("asset not found")
-	}
+	data, err := Asset("ca.pem")
+	check(err)
 	sn := "babl.test.youtube.com"
 	cp := x509.NewCertPool()
 	if !cp.AppendCertsFromPEM(data) {

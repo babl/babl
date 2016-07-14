@@ -1,4 +1,4 @@
-package shared
+package module
 
 import (
 	"io/ioutil"
