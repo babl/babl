@@ -11,7 +11,7 @@ import (
 	"github.com/larskluge/babl/module"
 )
 
-const Version = "0.3.3"
+const Version = "0.4.0"
 
 func main() {
 	app := configureCli()
