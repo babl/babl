@@ -7,7 +7,7 @@ import (
 	"fmt"
 
 	"github.com/DavidHuie/quartz/go/quartz"
-	"github.com/larskluge/babl/bablutils"
+	"github.com/larskluge/babl/module"
 )
 
 const Version = "0.1.0"
@@ -31,8 +31,8 @@ type ModuleResponse struct {
 }
 
 func (_ *Babl) Module(req ModuleRequest, response *ModuleResponse) error {
-	if bablutils.CheckModuleName(req.Name) {
-		m := bablutils.NewModule(req.Name)
+	if module.CheckModuleName(req.Name) {
+		m := module.New(req.Name)
 		m.Env = req.Env
 
 		stdin, err := base64.StdEncoding.DecodeString(req.Stdin)
