@@ -7,8 +7,10 @@ import (
 	"fmt"
 
 	"github.com/DavidHuie/quartz/go/quartz"
-	"github.com/larskluge/babl/shared"
+	"github.com/larskluge/babl/bablutils"
 )
+
+const Version = "0.1.0"
 
 var (
 	printVersion = flag.Bool("version", false, "print version & exit")
@@ -29,8 +31,8 @@ type ModuleResponse struct {
 }
 
 func (_ *Babl) Module(req ModuleRequest, response *ModuleResponse) error {
-	if shared.CheckModuleName(req.Name) {
-		m := shared.NewModule(req.Name)
+	if bablutils.CheckModuleName(req.Name) {
+		m := bablutils.NewModule(req.Name)
 		m.Env = req.Env
 
 		stdin, err := base64.StdEncoding.DecodeString(req.Stdin)
@@ -53,7 +55,7 @@ func (_ *Babl) Module(req ModuleRequest, response *ModuleResponse) error {
 func main() {
 	flag.Parse()
 	if *printVersion {
-		fmt.Println(shared.Version)
+		fmt.Println(Version)
 	} else {
 		Babl := &Babl{}
 		quartz.RegisterName("babl", Babl)
