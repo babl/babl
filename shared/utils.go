@@ -8,7 +8,6 @@ import (
 	"os"
 	"regexp"
 	"sort"
-	"strings"
 
 	"github.com/mattn/go-isatty"
 )
@@ -51,12 +50,6 @@ func Modules() (modules []string) {
 	}
 	sort.Strings(modules)
 	return
-}
-
-func Version() string {
-	version, err := Asset("data/VERSION")
-	check(err)
-	return strings.Trim(string(version), "\n")
 }
 
 func ReadStdin() (in []byte) {

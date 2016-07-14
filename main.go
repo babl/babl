@@ -12,6 +12,8 @@ import (
 	"github.com/larskluge/babl/shared"
 )
 
+const Version = "0.3.3"
+
 func main() {
 	app := configureCli()
 	app.Run(os.Args)

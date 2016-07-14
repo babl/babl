@@ -38,7 +38,7 @@ func address(c *cli.Context) string {
 func configureCli() (app *cli.App) {
 	app = cli.NewApp()
 	app.Usage = "Client to access the Babl Network."
-	app.Version = shared.Version()
+	app.Version = Version
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:  "connect-to, c",
