@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"strings"
 	"time"
+	"unicode"
 
 	"github.com/larskluge/babl/log"
 	pb "github.com/larskluge/babl/protobuf"
 	pbm "github.com/larskluge/babl/protobuf/messages"
-	"github.com/serenize/snaker"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -56,10 +56,15 @@ func (m *Module) Owner() string {
 	return parts[0]
 }
 
-func (m *Module) GrpcModuleName() string {
+func (m *Module) GrpcModuleName() (res string) {
 	mod := strings.SplitN(m.Name, "/", 2)[1]
-	snake := strings.Replace(mod, "-", "_", -1)
-	return snaker.SnakeToCamel(snake)
+	words := strings.Split(mod, "-")
+	for _, word := range words {
+		w := []rune(word)
+		w[0] = unicode.ToUpper(w[0])
+		res += string(w)
+	}
+	return res
 }
 
 func (m *Module) GrpcServiceName() string {
