@@ -8,9 +8,9 @@ import (
 	"strings"
 
 	"github.com/codegangsta/cli"
+	"github.com/larskluge/babl/bablmodule"
 	"github.com/larskluge/babl/bablutils"
 	"github.com/larskluge/babl/log"
-	"github.com/larskluge/babl/module"
 )
 
 type envFlags []string
@@ -59,7 +59,7 @@ func configureCli() (app *cli.App) {
 	}
 	app.Action = func(c *cli.Context) {
 		mod := c.Args().First()
-		if module.CheckModuleName(mod) {
+		if bablmodule.CheckModuleName(mod) {
 			envs := parseEnvFlags(c.Args().Tail())
 			async := c.GlobalBool("async")
 			debug := c.GlobalBool("debug")
@@ -78,7 +78,7 @@ func configureCli() (app *cli.App) {
 			Aliases: []string{"ls"},
 			Usage:   "List all available modules",
 			Action: func(c *cli.Context) {
-				module.PrintAvailableModules(c.Bool("defaults"))
+				bablmodule.PrintAvailableModules(c.Bool("defaults"))
 			},
 			Flags: []cli.Flag{
 				cli.BoolTFlag{
@@ -93,7 +93,7 @@ func configureCli() (app *cli.App) {
 			Action: func(c *cli.Context) {
 				mod := c.Args().First()
 				fmt.Print("ping.. ")
-				m := module.New(mod)
+				m := bablmodule.New(mod)
 				m.Address = address(c)
 				res, err := m.Ping()
 				if err == nil {
@@ -116,7 +116,7 @@ func configureCli() (app *cli.App) {
 			Name:  "home",
 			Usage: "Open the module page in your browser",
 			Action: func(c *cli.Context) {
-				cfg := module.ModuleConfig()
+				cfg := bablmodule.ModuleConfig()
 				url := fmt.Sprintf("https://babl.sh/%s", cfg.Id)
 				_, err := exec.Command("open", url).Output()
 				if err == nil {
@@ -130,7 +130,7 @@ func configureCli() (app *cli.App) {
 			Name:  "config",
 			Usage: "Print configuration",
 			Action: func(_ *cli.Context) {
-				fmt.Println(module.Config())
+				fmt.Println(bablmodule.Config())
 			},
 		},
 		{

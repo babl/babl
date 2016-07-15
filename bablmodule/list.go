@@ -1,4 +1,4 @@
-package module
+package bablmodule
 
 import (
 	"encoding/json"

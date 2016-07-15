@@ -1,3 +1,5 @@
+//go:generate sh -c "cd bablmodule && go-bindata -pkg bablmodule -prefix data data/..."
+
 package main
 
 import (
@@ -6,9 +8,9 @@ import (
 	"os"
 	"strings"
 
+	"github.com/larskluge/babl/bablmodule"
 	"github.com/larskluge/babl/bablutils"
 	"github.com/larskluge/babl/log"
-	"github.com/larskluge/babl/module"
 )
 
 const Version = "0.4.0"
@@ -19,7 +21,7 @@ func main() {
 }
 
 func defaultAction(module_with_tag string, envs []string, address string, async, debug bool) {
-	m := module.New(module_with_tag)
+	m := bablmodule.New(module_with_tag)
 	m.SetAsync(async)
 	m.SetDebug(debug)
 
@@ -53,7 +55,7 @@ func defaultAction(module_with_tag string, envs []string, address string, async,
 	os.Exit(exitcode)
 }
 
-func applyEnv(env *module.Env, envs []string) {
+func applyEnv(env *bablmodule.Env, envs []string) {
 	for _, val := range envs {
 		x := strings.SplitN(val, "=", 2)
 		(*env)[x[0]] = x[1]

@@ -1,6 +1,4 @@
-//go:generate go-bindata -pkg module -prefix data data/...
-
-package module
+package bablmodule
 
 import (
 	"crypto/x509"

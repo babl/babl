@@ -3,7 +3,7 @@
 // data/ca.pem
 // DO NOT EDIT!
 
-package module
+package bablmodule
 
 import (
 	"bytes"
