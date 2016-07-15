@@ -13,7 +13,7 @@ import (
 	"github.com/larskluge/babl/log"
 )
 
-const Version = "0.4.1"
+const Version = "0.4.2"
 
 func main() {
 	app := configureCli()
