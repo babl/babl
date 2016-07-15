@@ -1,7 +1,9 @@
 package bablutils
 
 import (
+	"compress/gzip"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -27,24 +29,39 @@ func (u *Upgrade) Upgrade(currentVersion string) {
 		fmt.Println("Already up-to-date.")
 		return
 	}
-	sh, err := exec.LookPath("sh")
-	if err != nil {
-		log.Fatal(err)
-	}
 
-	cmd := fmt.Sprintf("wget -q -O- '%s' | gunzip > '%s' && chmod +x '%s'", u.binUrl(), u.appPath(), u.appPath())
+	mv, err := exec.LookPath("mv")
+	check(err)
 
-	err = syscall.Exec(sh, []string{"sh", "-c", cmd}, os.Environ())
-	log.Fatal(err)
+	tmpfile, err := ioutil.TempFile("", "upgrading-"+u.App)
+	check(err)
+
+	resp, err := http.Get(u.BinaryUrl())
+	check(err)
+	defer resp.Body.Close()
+
+	decompress, err := gzip.NewReader(resp.Body)
+	check(err)
+	_, err = io.Copy(tmpfile, decompress)
+	check(err)
+	decompress.Close()
+	tmpfile.Close()
+
+	info, err := os.Stat(u.AppPath())
+	check(err)
+	os.Chmod(tmpfile.Name(), info.Mode())
+
+	err = syscall.Exec(mv, []string{"mv", tmpfile.Name(), u.AppPath()}, os.Environ())
+	check(err)
 }
 
-func (u *Upgrade) binUrl() string {
+func (u *Upgrade) BinaryUrl() string {
 	goos := runtime.GOOS
 	goarch := runtime.GOARCH
 	return fmt.Sprintf("http://s3.amazonaws.com/babl/%s_%s_%s.gz", u.App, goos, goarch)
 }
 
-func (u *Upgrade) appPath() string {
+func (u *Upgrade) AppPath() string {
 	app, err := osext.Executable()
 	if err != nil {
 		log.Fatal(err)
