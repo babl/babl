@@ -6,8 +6,8 @@ import (
 )
 
 func TestModuleGrpcModuleName(t *testing.T) {
-	mod := New("larskluge/http-forwarder")
-	expected := "HttpForwarder"
+	mod := New("larskluge/http-forward")
+	expected := "HttpForward"
 	actual := mod.GrpcModuleName()
 	if strings.Compare(expected, actual) != 0 {
 		t.Fatalf("expected '%s', but result was '%s'", expected, actual)
