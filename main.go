@@ -16,6 +16,7 @@ import (
 const Version = "0.4.2"
 
 func main() {
+	bablutils.PrintPlainVersionAndExit(os.Args, Version)
 	app := configureCli()
 	app.Run(os.Args)
 }
