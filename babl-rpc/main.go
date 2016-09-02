@@ -14,6 +14,7 @@ const Version = "0.1.0"
 
 var (
 	printVersion = flag.Bool("version", false, "print version & exit")
+	endpoint     = flag.String("endpoint", "babl.sh:4444", "Endpoint to connect to")
 )
 
 type Babl struct{}
@@ -34,6 +35,7 @@ func (_ *Babl) Module(req ModuleRequest, response *ModuleResponse) error {
 	if bablmodule.CheckModuleName(req.Name) {
 		m := bablmodule.New(req.Name)
 		m.Env = req.Env
+		m.Address = *endpoint
 
 		stdin, err := base64.StdEncoding.DecodeString(req.Stdin)
 		if err != nil {
