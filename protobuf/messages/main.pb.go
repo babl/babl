@@ -25,14 +25,22 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the proto package it is being compiled against.
+// A compilation error at this line likely means your copy of the
+// proto package needs to be updated.
+const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
+
 type BinRequest struct {
-	Stdin []byte            `protobuf:"bytes,1,opt,name=stdin,proto3" json:"stdin,omitempty"`
-	Env   map[string]string `protobuf:"bytes,2,rep,name=env" json:"env,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Stdin      []byte            `protobuf:"bytes,1,opt,name=stdin,proto3" json:"stdin,omitempty"`
+	Env        map[string]string `protobuf:"bytes,2,rep,name=env" json:"env,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	PayloadUrl string            `protobuf:"bytes,3,opt,name=payloadUrl" json:"payloadUrl,omitempty"`
 }
 
-func (m *BinRequest) Reset()         { *m = BinRequest{} }
-func (m *BinRequest) String() string { return proto.CompactTextString(m) }
-func (*BinRequest) ProtoMessage()    {}
+func (m *BinRequest) Reset()                    { *m = BinRequest{} }
+func (m *BinRequest) String() string            { return proto.CompactTextString(m) }
+func (*BinRequest) ProtoMessage()               {}
+func (*BinRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{0} }
 
 func (m *BinRequest) GetEnv() map[string]string {
 	if m != nil {
@@ -47,21 +55,53 @@ type BinReply struct {
 	Exitcode int32  `protobuf:"varint,3,opt,name=exitcode" json:"exitcode,omitempty"`
 }
 
-func (m *BinReply) Reset()         { *m = BinReply{} }
-func (m *BinReply) String() string { return proto.CompactTextString(m) }
-func (*BinReply) ProtoMessage()    {}
+func (m *BinReply) Reset()                    { *m = BinReply{} }
+func (m *BinReply) String() string            { return proto.CompactTextString(m) }
+func (*BinReply) ProtoMessage()               {}
+func (*BinReply) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{1} }
 
 type Empty struct {
 }
 
-func (m *Empty) Reset()         { *m = Empty{} }
-func (m *Empty) String() string { return proto.CompactTextString(m) }
-func (*Empty) ProtoMessage()    {}
+func (m *Empty) Reset()                    { *m = Empty{} }
+func (m *Empty) String() string            { return proto.CompactTextString(m) }
+func (*Empty) ProtoMessage()               {}
+func (*Empty) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{2} }
 
 type Pong struct {
 	Val string `protobuf:"bytes,1,opt,name=val" json:"val,omitempty"`
 }
 
-func (m *Pong) Reset()         { *m = Pong{} }
-func (m *Pong) String() string { return proto.CompactTextString(m) }
-func (*Pong) ProtoMessage()    {}
+func (m *Pong) Reset()                    { *m = Pong{} }
+func (m *Pong) String() string            { return proto.CompactTextString(m) }
+func (*Pong) ProtoMessage()               {}
+func (*Pong) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{3} }
+
+func init() {
+	proto.RegisterType((*BinRequest)(nil), "babl.BinRequest")
+	proto.RegisterType((*BinReply)(nil), "babl.BinReply")
+	proto.RegisterType((*Empty)(nil), "babl.Empty")
+	proto.RegisterType((*Pong)(nil), "babl.Pong")
+}
+
+func init() { proto.RegisterFile("main.proto", fileDescriptor0) }
+
+var fileDescriptor0 = []byte{
+	// 241 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x4c, 0x90, 0xc1, 0x4a, 0xc4, 0x30,
+	0x14, 0x45, 0x49, 0x3b, 0x1d, 0x3b, 0x4f, 0x17, 0x12, 0x44, 0xe2, 0x2c, 0xa4, 0x74, 0x55, 0x10,
+	0xba, 0x50, 0x10, 0x71, 0x29, 0x74, 0x2f, 0x01, 0xdd, 0xa7, 0xf6, 0x21, 0xc5, 0x4c, 0x12, 0xd3,
+	0x34, 0x98, 0x2f, 0xf2, 0x37, 0x25, 0x69, 0x47, 0xdd, 0xe5, 0x5e, 0x72, 0xb8, 0x87, 0x07, 0x70,
+	0x10, 0xa3, 0x6a, 0x8d, 0xd5, 0x4e, 0xd3, 0x4d, 0x2f, 0x7a, 0x59, 0x7f, 0x13, 0x80, 0xa7, 0x51,
+	0x71, 0xfc, 0x9c, 0x71, 0x72, 0xf4, 0x02, 0x8a, 0xc9, 0x0d, 0xa3, 0x62, 0xa4, 0x22, 0xcd, 0x19,
+	0x5f, 0x02, 0xbd, 0x81, 0x1c, 0x95, 0x67, 0x59, 0x95, 0x37, 0xa7, 0xb7, 0x57, 0x6d, 0x04, 0xdb,
+	0x3f, 0xa8, 0xed, 0x94, 0xef, 0x94, 0xb3, 0x81, 0xc7, 0x5f, 0xf4, 0x1a, 0xc0, 0x88, 0x20, 0xb5,
+	0x18, 0x5e, 0xac, 0x64, 0x79, 0x45, 0x9a, 0x1d, 0xff, 0xd7, 0xec, 0xef, 0xa1, 0x3c, 0x02, 0xf4,
+	0x1c, 0xf2, 0x0f, 0x0c, 0x69, 0x6c, 0xc7, 0xe3, 0x33, 0x0a, 0x78, 0x21, 0x67, 0x64, 0x59, 0xea,
+	0x96, 0xf0, 0x98, 0x3d, 0x90, 0xfa, 0x15, 0xca, 0xb4, 0x69, 0x64, 0xa0, 0x97, 0xb0, 0x9d, 0xdc,
+	0xa0, 0x67, 0xb7, 0x7a, 0xae, 0x69, 0xed, 0xd1, 0xda, 0x84, 0x2f, 0x3d, 0x5a, 0x4b, 0xf7, 0x50,
+	0xe2, 0xd7, 0xe8, 0xde, 0xf4, 0x80, 0xc9, 0xa8, 0xe0, 0xbf, 0xb9, 0x3e, 0x81, 0xa2, 0x3b, 0x18,
+	0x17, 0x6a, 0x06, 0x9b, 0x67, 0xad, 0xde, 0xa3, 0x94, 0x17, 0xf2, 0x28, 0xe5, 0x85, 0xec, 0xb7,
+	0xe9, 0x62, 0x77, 0x3f, 0x01, 0x00, 0x00, 0xff, 0xff, 0xf1, 0xfb, 0x8e, 0x59, 0x3f, 0x01, 0x00,
+	0x00,
+}

@@ -6,6 +6,7 @@ package babl;
 message BinRequest {
   bytes stdin = 1;
   map<string, string> env = 2;
+  string payloadUrl = 3;
 }
 
 message BinReply {
