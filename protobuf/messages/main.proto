@@ -13,6 +13,7 @@ message BinReply {
   bytes stdout = 1;
   bytes stderr = 2;
   int32 exitcode = 3;
+  string payloadUrl = 4;
 }
 
 message Empty {
