@@ -1,4 +1,5 @@
 //go:generate sh -c "cd bablmodule && go-bindata -pkg bablmodule -prefix data data/..."
+//go:generate sh -c "cd protobuf && protoc -I ./messages/ ./messages/main.proto --go_out=plugins=grpc:messages"
 
 package main
 
