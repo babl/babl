@@ -128,6 +128,26 @@ func configureCli() (app *cli.App) {
 			},
 		},
 		{
+			Name:  "info",
+			Usage: "Prints runtime information for the current module",
+			Action: func(c *cli.Context) {
+				cfg := bablmodule.ModuleConfig()
+				id := cfg.Id
+				m := bablmodule.New("babl/runtime-info")
+				m.Env = bablmodule.Env{"MODULE": id}
+				stdout, stderr, exitcode, err := m.Call([]byte{})
+				if err != nil {
+					panic(err)
+				}
+				if exitcode == 0 {
+					fmt.Print(string(stdout))
+				} else {
+					fmt.Print(string(stderr))
+				}
+				os.Exit(exitcode)
+			},
+		},
+		{
 			Name:  "config",
 			Usage: "Print configuration",
 			Action: func(_ *cli.Context) {
