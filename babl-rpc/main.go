@@ -5,16 +5,20 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"os"
 
 	"github.com/DavidHuie/quartz/go/quartz"
 	"github.com/larskluge/babl/bablmodule"
 )
 
-const Version = "0.1.1"
+const (
+	Version             = "0.1.1"
+	DefaultBablEndpoint = "babl.sh:4444"
+)
 
 var (
 	printVersion = flag.Bool("version", false, "print version & exit")
-	endpoint     = flag.String("endpoint", "babl.sh:4444", "Endpoint to connect to")
+	endpoint     = flag.String("endpoint", DefaultBablEndpoint, "Endpoint to connect to")
 )
 
 type Babl struct{}
@@ -31,11 +35,20 @@ type ModuleResponse struct {
 	Exitcode int
 }
 
+func bablEndpoint() string {
+	ep := *endpoint
+	env := os.Getenv("BABL_ENDPOINT")
+	if ep == DefaultBablEndpoint && env != "" {
+		ep = env
+	}
+	return ep
+}
+
 func (_ *Babl) Module(req ModuleRequest, response *ModuleResponse) error {
 	if bablmodule.CheckModuleName(req.Name) {
 		m := bablmodule.New(req.Name)
 		m.Env = req.Env
-		m.Address = *endpoint
+		m.Address = bablEndpoint()
 
 		stdin, err := base64.StdEncoding.DecodeString(req.Stdin)
 		if err != nil {
