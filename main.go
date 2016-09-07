@@ -14,7 +14,7 @@ import (
 	"github.com/larskluge/babl/log"
 )
 
-const Version = "0.4.3"
+const Version = "0.4.4"
 
 func main() {
 	bablutils.PrintPlainVersionAndExit(os.Args, Version)
