@@ -47,6 +47,12 @@ func configureCli() (app *cli.App) {
 			Value:  "babl.sh:4444",
 			EnvVar: "BABL_ENDPOINT",
 		},
+		cli.StringFlag{
+			Name:   "storage",
+			Usage:  "Endpoint for Babl storage",
+			Value:  "babl.sh:4443",
+			EnvVar: "BABL_STORAGE",
+		},
 		cli.BoolFlag{
 			Name:   "async",
 			Usage:  "Flag request to be processed asynchronously and do not wait for a response",
@@ -64,7 +70,8 @@ func configureCli() (app *cli.App) {
 			envs := parseEnvFlags(c.Args().Tail())
 			async := c.GlobalBool("async")
 			debug := c.GlobalBool("debug")
-			defaultAction(mod, envs, address(c), async, debug)
+			storageEndpoint := c.GlobalString("storage")
+			defaultAction(mod, envs, address(c), storageEndpoint, async, debug)
 		} else {
 			fmt.Fprintln(app.Writer, "Incorrect Usage.")
 			fmt.Fprintln(app.Writer)

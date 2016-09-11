@@ -5,7 +5,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strings"
 
@@ -22,7 +21,7 @@ func main() {
 	app.Run(os.Args)
 }
 
-func defaultAction(module_with_tag string, envs []string, address string, async, debug bool) {
+func defaultAction(module_with_tag string, envs []string, address, storageEndpoint string, async, debug bool) {
 	m := bablmodule.New(module_with_tag)
 	m.SetAsync(async)
 	m.SetDebug(debug)
@@ -40,6 +39,8 @@ func defaultAction(module_with_tag string, envs []string, address string, async,
 	log.Debugf("%+v\n", m.Env)
 
 	m.Address = address
+	m.StorageEndpoint = storageEndpoint
+	log.WithFields(log.Fields{"babl": address, "storage": storageEndpoint}).Info("Connecting to")
 
 	in := bablutils.ReadStdin()
 	log.Infof("%d bytes read from stdin", len(in))

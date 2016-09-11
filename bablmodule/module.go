@@ -1,6 +1,7 @@
 package bablmodule
 
 import (
+	"bytes"
 	"crypto/x509"
 	"fmt"
 	"strings"
@@ -8,6 +9,8 @@ import (
 	"unicode"
 
 	log "github.com/Sirupsen/logrus"
+	"github.com/larskluge/babl-storage/download"
+	"github.com/larskluge/babl-storage/upload"
 	pb "github.com/larskluge/babl/protobuf"
 	pbm "github.com/larskluge/babl/protobuf/messages"
 	"golang.org/x/net/context"
@@ -15,13 +18,16 @@ import (
 	"google.golang.org/grpc/credentials"
 )
 
+const MaxPayloadSize = 1024 * 512 // 512kb
+
 type Module struct {
-	Name    string
-	Tag     string
-	Address string
-	Env     Env
-	async   bool
-	debug   bool
+	Name            string
+	Tag             string
+	Address         string
+	StorageEndpoint string
+	Env             Env
+	async           bool
+	debug           bool
 }
 
 type Env map[string]string
@@ -35,10 +41,11 @@ func New(name_with_tag string) *Module {
 	}
 
 	m := Module{
-		Name:    name,
-		Tag:     tag,
-		Address: "babl.sh:4444",
-		Env:     Env{},
+		Name:            name,
+		Tag:             tag,
+		Address:         "babl.sh:4444",
+		StorageEndpoint: "babl.sh:4443",
+		Env:             Env{},
 	}
 	m.loadDefaults()
 	if !CheckModuleName(m.Name) {
@@ -113,13 +120,21 @@ func (m *Module) Call(stdin []byte) (stdout []byte, stderr []byte, exitcode int,
 	defer conn.Close()
 
 	connection := pb.BinaryClient(pb.NewBinaryClient(conn))
+	req := pbm.BinRequest{Env: m.Env}
 
-	req := pbm.BinRequest{Stdin: stdin, Env: m.Env}
+	if len(stdin) > MaxPayloadSize {
+		up, err := upload.New(m.StorageEndpoint, bytes.NewReader(stdin))
+		check(err)
+		go up.WaitForCompletion()
+		req.PayloadUrl = up.Url
+	}
+
 	res, err := connection.IO(m.GrpcServiceName(), context.Background(), &req)
 	if err == nil {
 		exitcode := int(res.Exitcode)
-		if exitcode != 0 {
-			log.SetOutput(log.FatalWriter)
+		if res.PayloadUrl != "" {
+			stdout, err = download.Download(res.PayloadUrl)
+			check(err)
 		}
 		return res.Stdout, res.Stderr, exitcode, err
 	} else {
