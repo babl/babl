@@ -7,10 +7,10 @@ import (
 	"os/exec"
 	"strings"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
 	"github.com/larskluge/babl/bablmodule"
 	"github.com/larskluge/babl/bablutils"
-	"github.com/larskluge/babl/log"
 )
 
 type envFlags []string

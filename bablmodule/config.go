@@ -5,7 +5,7 @@ import (
 	"os"
 	"path"
 
-	"github.com/larskluge/babl/log"
+	log "github.com/Sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 )
 

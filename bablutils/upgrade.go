@@ -12,8 +12,8 @@ import (
 	"runtime"
 	"syscall"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/kardianos/osext"
-	"github.com/larskluge/babl/log"
 )
 
 type Upgrade struct {

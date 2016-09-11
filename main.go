@@ -9,9 +9,9 @@ import (
 	"os"
 	"strings"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/larskluge/babl/bablmodule"
 	"github.com/larskluge/babl/bablutils"
-	"github.com/larskluge/babl/log"
 )
 
 const Version = "0.4.4"
@@ -27,20 +27,22 @@ func defaultAction(module_with_tag string, envs []string, address string, async,
 	m.SetAsync(async)
 	m.SetDebug(debug)
 
+	log.SetOutput(os.Stderr)
+	log.SetLevel(log.ErrorLevel)
+
 	if !debug {
-		log.SetOutput(ioutil.Discard)
+		log.SetLevel(log.DebugLevel)
 	}
 
-	log.Println("Connecting to module", m.Name, m.Tag)
+	log.Infof("Connecting to module", m.Name, m.Tag)
 
 	applyEnv(&m.Env, envs)
-	log.Printf("%+v\n", m.Env)
+	log.Debugf("%+v\n", m.Env)
 
 	m.Address = address
-	log.Printf("Connecting to %s..", m.Address)
 
 	in := bablutils.ReadStdin()
-	log.Printf("%d bytes read from stdin", len(in))
+	log.Infof("%d bytes read from stdin", len(in))
 	stdout, stderr, exitcode, err := m.Call(in)
 	status := "SUCCESS"
 	if err != nil || exitcode != 0 {
@@ -48,12 +50,12 @@ func defaultAction(module_with_tag string, envs []string, address string, async,
 	}
 	log.Printf("Module finished: %s. %d bytes stdout, %d bytes stderr:, exit w/ %d", status, len(stdout), len(stderr), exitcode)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%+v\n", err)
+		log.Errorf("%+v\n", err)
 	}
 	if len(stderr) > 0 {
-		log.Print(string(stderr))
+		log.Error(string(stderr))
 	}
-	fmt.Printf("%s", stdout)
+	fmt.Print(string(stdout))
 	os.Exit(exitcode)
 }
 
