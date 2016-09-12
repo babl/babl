@@ -18,13 +18,17 @@ import (
 	"google.golang.org/grpc/credentials"
 )
 
-const MaxPayloadSize = 1024 * 512 // 512kb
+const (
+	MaxPayloadSize         = 1024 * 512 // 512kb
+	DefaultBablEndpoint    = "babl.sh:4444"
+	DefaultStorageEndpoint = "babl.sh:4443"
+)
 
 type Module struct {
 	Name            string
 	Tag             string
-	Address         string
-	StorageEndpoint string
+	endpoint        string
+	storageEndpoint string
 	Env             Env
 	async           bool
 	debug           bool
@@ -41,11 +45,9 @@ func New(name_with_tag string) *Module {
 	}
 
 	m := Module{
-		Name:            name,
-		Tag:             tag,
-		Address:         "babl.sh:4444",
-		StorageEndpoint: "babl.sh:4443",
-		Env:             Env{},
+		Name: name,
+		Tag:  tag,
+		Env:  Env{},
 	}
 	m.loadDefaults()
 	if !CheckModuleName(m.Name) {
@@ -56,6 +58,30 @@ func New(name_with_tag string) *Module {
 
 func (m *Module) Fullname() string {
 	return fmt.Sprintf("%s:%s", m.Name, m.Tag)
+}
+
+func (m *Module) Endpoint() string {
+	if m.endpoint == "" {
+		return DefaultBablEndpoint
+	} else {
+		return m.endpoint
+	}
+}
+
+func (m *Module) SetEndpoint(e string) {
+	m.endpoint = e
+}
+
+func (m *Module) StorageEndpoint() string {
+	if m.storageEndpoint == "" {
+		return DefaultStorageEndpoint
+	} else {
+		return m.storageEndpoint
+	}
+}
+
+func (m *Module) SetStorageEndpoint(e string) {
+	m.storageEndpoint = e
 }
 
 func (m *Module) Owner() string {
@@ -115,7 +141,7 @@ func (m *Module) SetDebug(val bool) {
 	}
 }
 
-func (m *Module) Call(stdin []byte) (stdout []byte, stderr []byte, exitcode int, err error) {
+func (m *Module) Call(stdin []byte) ([]byte, []byte, int, error) {
 	conn := m.Connect()
 	defer conn.Close()
 
@@ -123,7 +149,7 @@ func (m *Module) Call(stdin []byte) (stdout []byte, stderr []byte, exitcode int,
 	req := pbm.BinRequest{Stdin: stdin, Env: m.Env}
 
 	if len(stdin) > MaxPayloadSize {
-		up, err := upload.New(m.StorageEndpoint, bytes.NewReader(stdin))
+		up, err := upload.New(m.StorageEndpoint(), bytes.NewReader(stdin))
 		check(err)
 		go up.WaitForCompletion()
 		req.Stdin = nil
@@ -157,7 +183,7 @@ func (m *Module) Connect() *grpc.ClientConn {
 		grpc.WithTransportCredentials(creds),
 		grpc.WithTimeout(5 * time.Minute),
 	}
-	conn, err := grpc.Dial(m.Address, opts...)
+	conn, err := grpc.Dial(m.Endpoint(), opts...)
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
