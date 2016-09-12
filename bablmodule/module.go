@@ -27,11 +27,12 @@ const (
 type Module struct {
 	Name            string
 	Tag             string
-	endpoint        string
-	storageEndpoint string
 	Env             Env
 	async           bool
 	debug           bool
+	IncludePayload  bool
+	endpoint        string
+	storageEndpoint string
 }
 
 type Env map[string]string
@@ -45,9 +46,10 @@ func New(name_with_tag string) *Module {
 	}
 
 	m := Module{
-		Name: name,
-		Tag:  tag,
-		Env:  Env{},
+		Name:           name,
+		Tag:            tag,
+		Env:            Env{},
+		IncludePayload: true,
 	}
 	m.loadDefaults()
 	if !CheckModuleName(m.Name) {
@@ -141,7 +143,7 @@ func (m *Module) SetDebug(val bool) {
 	}
 }
 
-func (m *Module) Call(stdin []byte) ([]byte, []byte, int, error) {
+func (m *Module) Call(stdin []byte) ([]byte, []byte, int, string, error) {
 	conn := m.Connect()
 	defer conn.Close()
 
@@ -159,13 +161,13 @@ func (m *Module) Call(stdin []byte) ([]byte, []byte, int, error) {
 	res, err := connection.IO(m.GrpcServiceName(), context.Background(), &req)
 	if err == nil {
 		exitcode := int(res.Exitcode)
-		if res.PayloadUrl != "" {
+		if res.PayloadUrl != "" && m.IncludePayload {
 			res.Stdout, err = download.Download(res.PayloadUrl)
 			check(err)
 		}
-		return res.Stdout, res.Stderr, exitcode, err
+		return res.Stdout, res.Stderr, exitcode, res.PayloadUrl, err
 	} else {
-		return nil, nil, 254, err
+		return nil, nil, 254, "", err
 	}
 }
 

@@ -25,7 +25,6 @@ type ModuleRequest struct {
 	Name            string
 	Env             map[string]string
 	Stdin           string
-	IncludePayload  bool
 	BablEndpoint    string
 	StorageEndpoint string
 }
@@ -61,19 +60,23 @@ func (_ *Babl) Module(req ModuleRequest, response *ModuleResponse) error {
 		m.Env = req.Env
 		m.SetEndpoint(req.bablEndpoint())
 		m.SetStorageEndpoint(req.storageEndpoint())
+		m.IncludePayload = false
 
 		stdin, err := base64.StdEncoding.DecodeString(req.Stdin)
 		if err != nil {
 			return err
 		}
 
-		stdout, stderr, exitcode, err := m.Call(stdin)
+		stdout, stderr, exitcode, payloadUrl, err := m.Call(stdin)
+		if err != nil {
+			return err
+		}
 
 		response.Stdout = base64.StdEncoding.EncodeToString(stdout)
 		response.Stderr = base64.StdEncoding.EncodeToString(stderr)
 		response.Exitcode = exitcode
-
-		return err
+		response.PayloadUrl = payloadUrl
+		return nil
 	} else {
 		return errors.New("babl-rpc: module name format incorrect")
 	}
