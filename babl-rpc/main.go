@@ -12,43 +12,55 @@ import (
 )
 
 const (
-	Version             = "0.1.2"
-	DefaultBablEndpoint = "babl.sh:4444"
+	Version = "0.1.2"
 )
 
 var (
 	printVersion = flag.Bool("version", false, "print version & exit")
-	endpoint     = flag.String("endpoint", DefaultBablEndpoint, "Endpoint to connect to")
 )
 
 type Babl struct{}
 
 type ModuleRequest struct {
-	Name  string
-	Env   map[string]string
-	Stdin string
+	Name            string
+	Env             map[string]string
+	Stdin           string
+	IncludePayload  bool
+	BablEndpoint    string
+	StorageEndpoint string
 }
 
 type ModuleResponse struct {
-	Stdout   string
-	Stderr   string
-	Exitcode int
+	Stdout     string
+	Stderr     string
+	Exitcode   int
+	PayloadUrl string
 }
 
-func bablEndpoint() string {
-	ep := *endpoint
-	env := os.Getenv("BABL_ENDPOINT")
-	if ep == DefaultBablEndpoint && env != "" {
-		ep = env
+func (req *ModuleRequest) bablEndpoint() (be string) {
+	be = req.BablEndpoint
+	if be != "" {
+		return
 	}
-	return ep
+	be = os.Getenv("BABL_ENDPOINT")
+	return
+}
+
+func (req *ModuleRequest) storageEndpoint() (se string) {
+	se = req.StorageEndpoint
+	if se != "" {
+		return
+	}
+	se = os.Getenv("BABL_STORAGE")
+	return
 }
 
 func (_ *Babl) Module(req ModuleRequest, response *ModuleResponse) error {
 	if bablmodule.CheckModuleName(req.Name) {
 		m := bablmodule.New(req.Name)
 		m.Env = req.Env
-		m.Address = bablEndpoint()
+		m.SetEndpoint(req.bablEndpoint())
+		m.SetStorageEndpoint(req.storageEndpoint())
 
 		stdin, err := base64.StdEncoding.DecodeString(req.Stdin)
 		if err != nil {
