@@ -120,12 +120,13 @@ func (m *Module) Call(stdin []byte) (stdout []byte, stderr []byte, exitcode int,
 	defer conn.Close()
 
 	connection := pb.BinaryClient(pb.NewBinaryClient(conn))
-	req := pbm.BinRequest{Env: m.Env}
+	req := pbm.BinRequest{Stdin: stdin, Env: m.Env}
 
 	if len(stdin) > MaxPayloadSize {
 		up, err := upload.New(m.StorageEndpoint, bytes.NewReader(stdin))
 		check(err)
 		go up.WaitForCompletion()
+		req.Stdin = nil
 		req.PayloadUrl = up.Url
 	}
 
@@ -133,7 +134,7 @@ func (m *Module) Call(stdin []byte) (stdout []byte, stderr []byte, exitcode int,
 	if err == nil {
 		exitcode := int(res.Exitcode)
 		if res.PayloadUrl != "" {
-			stdout, err = download.Download(res.PayloadUrl)
+			res.Stdout, err = download.Download(res.PayloadUrl)
 			check(err)
 		}
 		return res.Stdout, res.Stderr, exitcode, err
