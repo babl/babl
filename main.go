@@ -38,13 +38,13 @@ func defaultAction(module_with_tag string, envs []string, address, storageEndpoi
 	applyEnv(&m.Env, envs)
 	log.Debugf("%+v\n", m.Env)
 
-	m.Address = address
-	m.StorageEndpoint = storageEndpoint
+	m.SetEndpoint(address)
+	m.SetStorageEndpoint(storageEndpoint)
 	log.WithFields(log.Fields{"babl": address, "storage": storageEndpoint}).Info("Connecting to")
 
 	in := bablutils.ReadStdin()
 	log.Infof("%d bytes read from stdin", len(in))
-	stdout, stderr, exitcode, err := m.Call(in)
+	stdout, stderr, exitcode, _, err := m.Call(in)
 	status := "SUCCESS"
 	if err != nil || exitcode != 0 {
 		status = "ERROR"

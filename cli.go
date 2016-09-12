@@ -102,7 +102,7 @@ func configureCli() (app *cli.App) {
 				mod := c.Args().First()
 				fmt.Print("ping.. ")
 				m := bablmodule.New(mod)
-				m.Address = address(c)
+				m.SetEndpoint(address(c))
 				res, err := m.Ping()
 				if err == nil {
 					fmt.Println(res.Val)
@@ -142,7 +142,7 @@ func configureCli() (app *cli.App) {
 				id := cfg.Id
 				m := bablmodule.New("babl/runtime-info")
 				m.Env = bablmodule.Env{"MODULE": id}
-				stdout, stderr, exitcode, err := m.Call([]byte{})
+				stdout, stderr, exitcode, _, err := m.Call([]byte{})
 				if err != nil {
 					panic(err)
 				}
