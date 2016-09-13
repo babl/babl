@@ -48,13 +48,14 @@ func defaultAction(module_with_tag string, envs []string, address, storageEndpoi
 	status := "SUCCESS"
 	if err != nil || exitcode != 0 {
 		status = "ERROR"
+		log.SetLevel(log.DebugLevel)
 	}
 	log.Printf("Module finished: %s. %d bytes stdout, %d bytes stderr:, exit w/ %d", status, len(stdout), len(stderr), exitcode)
 	if err != nil {
 		log.Errorf("%+v\n", err)
 	}
 	if len(stderr) > 0 {
-		log.Error(string(stderr))
+		log.Warn(string(stderr))
 	}
 	fmt.Print(string(stdout))
 	os.Exit(exitcode)
