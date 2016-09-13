@@ -29,11 +29,11 @@ func defaultAction(module_with_tag string, envs []string, address, storageEndpoi
 	log.SetOutput(os.Stderr)
 	log.SetLevel(log.ErrorLevel)
 
-	if !debug {
+	if debug {
 		log.SetLevel(log.DebugLevel)
 	}
 
-	log.Infof("Connecting to module", m.Name, m.Tag)
+	log.WithFields(log.Fields{"module": m.Name, "tag": m.Tag}).Info("Connecting to module")
 
 	applyEnv(&m.Env, envs)
 	log.Debugf("%+v\n", m.Env)
