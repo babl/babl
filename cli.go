@@ -43,8 +43,8 @@ func configureCli() (app *cli.App) {
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:   "connect-to, c",
-			Usage:  "Host & port to connect to, e.g. babl.sh:4444, localhost:4445",
-			Value:  "babl.sh:4444",
+			Usage:  "Host & port to connect to, e.g. babl.sh:4445, localhost:4444",
+			Value:  "babl.sh:4445",
 			EnvVar: "BABL_ENDPOINT",
 		},
 		cli.StringFlag{
