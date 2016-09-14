@@ -30,6 +30,7 @@ type Module struct {
 	Env             Env
 	async           bool
 	debug           bool
+	PayloadUrl      string
 	FetchPayload    bool
 	endpoint        string
 	storageEndpoint string
@@ -148,7 +149,7 @@ func (m *Module) Call(stdin []byte) ([]byte, []byte, int, string, error) {
 	defer conn.Close()
 
 	connection := pb.BinaryClient(pb.NewBinaryClient(conn))
-	req := pbm.BinRequest{Stdin: stdin, Env: m.Env}
+	req := pbm.BinRequest{Stdin: stdin, Env: m.Env, PayloadUrl: m.PayloadUrl}
 
 	if len(stdin) > MaxPayloadSize {
 		up, err := upload.New(m.StorageEndpoint(), bytes.NewReader(stdin))

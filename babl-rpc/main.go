@@ -26,6 +26,7 @@ type ModuleRequest struct {
 	Name            string
 	Env             map[string]string
 	Stdin           string
+	PayloadUrl      string
 	BablEndpoint    string
 	StorageEndpoint string
 }
@@ -64,7 +65,8 @@ func (_ *Babl) Module(req ModuleRequest, response *ModuleResponse) error {
 		m.Env = req.Env
 		m.SetEndpoint(req.bablEndpoint())
 		m.SetStorageEndpoint(req.storageEndpoint())
-		m.IncludePayload = false
+		m.FetchPayload = false
+		m.PayloadUrl = req.PayloadUrl
 
 		stdin, err := base64.StdEncoding.DecodeString(req.Stdin)
 		if err != nil {
