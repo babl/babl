@@ -12,7 +12,8 @@ import (
 )
 
 const (
-	Version = "0.2.0"
+	Version             = "0.2.0"
+	DefaultBablEndpoint = "babl.sh:4444" // lock in Babl v4 for the time being
 )
 
 var (
@@ -42,7 +43,10 @@ func (req *ModuleRequest) bablEndpoint() (be string) {
 		return
 	}
 	be = os.Getenv("BABL_ENDPOINT")
-	return
+	if be != "" {
+		return
+	}
+	return DefaultBablEndpoint
 }
 
 func (req *ModuleRequest) storageEndpoint() (se string) {
