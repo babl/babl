@@ -30,7 +30,7 @@ type Module struct {
 	Env             Env
 	async           bool
 	debug           bool
-	IncludePayload  bool
+	FetchPayload    bool
 	endpoint        string
 	storageEndpoint string
 }
@@ -46,10 +46,10 @@ func New(name_with_tag string) *Module {
 	}
 
 	m := Module{
-		Name:           name,
-		Tag:            tag,
-		Env:            Env{},
-		IncludePayload: true,
+		Name:         name,
+		Tag:          tag,
+		Env:          Env{},
+		FetchPayload: true,
 	}
 	m.loadDefaults()
 	if !CheckModuleName(m.Name) {
@@ -161,7 +161,7 @@ func (m *Module) Call(stdin []byte) ([]byte, []byte, int, string, error) {
 	res, err := connection.IO(m.GrpcServiceName(), context.Background(), &req)
 	if err == nil {
 		exitcode := int(res.Exitcode)
-		if res.PayloadUrl != "" && m.IncludePayload {
+		if res.PayloadUrl != "" && m.FetchPayload {
 			res.Stdout, err = download.Download(res.PayloadUrl)
 			check(err)
 		}
