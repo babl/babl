@@ -10,6 +10,7 @@ import (
 	"os/exec"
 	"regexp"
 	"runtime"
+	"strings"
 	"syscall"
 
 	log "github.com/Sirupsen/logrus"
@@ -17,7 +18,8 @@ import (
 )
 
 type Upgrade struct {
-	App string
+	App    string
+	Latest string
 }
 
 func NewUpgrade(app string) Upgrade {
@@ -29,7 +31,7 @@ func (u *Upgrade) Upgrade(currentVersion string) {
 		fmt.Println("Already up-to-date.")
 		return
 	}
-
+	fmt.Println("Upgrading to latest…", u.Latest)
 	mv, err := exec.LookPath("mv")
 	check(err)
 
@@ -48,11 +50,23 @@ func (u *Upgrade) Upgrade(currentVersion string) {
 	tmpfile.Close()
 
 	info, err := os.Stat(u.AppPath())
+
 	check(err)
 	os.Chmod(tmpfile.Name(), info.Mode())
 
-	err = syscall.Exec(mv, []string{"mv", tmpfile.Name(), u.AppPath()}, os.Environ())
+	if u.latestVersionBinary(tmpfile.Name()) {
+		fmt.Println("Upgrade successful")
+		err = syscall.Exec(mv, []string{"mv", tmpfile.Name(), u.AppPath()}, os.Environ())
+		check(err)
+	} else {
+		fmt.Println("Upgrade went wrong... please try again")
+	}
+}
+
+func (u *Upgrade) latestVersionBinary(file string) bool {
+	out, err := exec.Command(file, "-plainversion").Output()
 	check(err)
+	return strings.TrimSpace(string(out)) == u.Latest
 }
 
 func (u *Upgrade) BinaryUrl() string {
@@ -86,6 +100,7 @@ func (u *Upgrade) LatestVersion() string {
 		msg := fmt.Sprintf("Version number not detected in '%s'", version)
 		panic(msg)
 	}
+	u.Latest = matches[1]
 	return matches[1]
 }
 
