@@ -12,12 +12,12 @@ type RRSuite struct{}
 
 var _ = Suite(&RRSuite{})
 
-func (s *RRSuite) TestNoServers(c *C) {
+func (s *RRSuite) TestNoEndpoints(c *C) {
 	_, err := New([]Endpoint{})
 	c.Assert(err, NotNil)
 }
 
-func (s *RRSuite) TestOneServer(c *C) {
+func (s *RRSuite) TestOneEndpoint(c *C) {
 	lb, err := New([]Endpoint{Endpoint{endpoint: "a", weight: 1}})
 	c.Assert(err, IsNil)
 
