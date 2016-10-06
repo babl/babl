@@ -6,8 +6,10 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"sync"
 
 	"github.com/DavidHuie/quartz/go/quartz"
+	rr "github.com/larskluge/babl/babl-rpc/roundrobin"
 	"github.com/larskluge/babl/bablmodule"
 )
 
@@ -18,6 +20,8 @@ const (
 
 var (
 	printVersion = flag.Bool("version", false, "print version & exit")
+	loadBalancer = map[string]rr.RoundRobin{}
+	lbMutex      sync.Mutex
 )
 
 type Babl struct{}
@@ -59,11 +63,27 @@ func (req *ModuleRequest) storageEndpoint() (se string) {
 	return
 }
 
+func (req *ModuleRequest) nextEndpoint() string {
+	lbMutex.Lock()
+	defer lbMutex.Unlock()
+
+	rs := req.bablEndpoint()
+
+	lb, ok := loadBalancer[rs]
+	if !ok {
+		x, err := rr.New(ParseEndpoints(rs))
+		check(err)
+		lb = *x
+		loadBalancer[rs] = lb
+	}
+	return lb.NextEndpoint()
+}
+
 func (_ *Babl) Module(req ModuleRequest, response *ModuleResponse) error {
 	if bablmodule.CheckModuleName(req.Name) {
 		m := bablmodule.New(req.Name)
 		m.Env = req.Env
-		m.SetEndpoint(req.bablEndpoint())
+		m.SetEndpoint(req.nextEndpoint())
 		m.SetStorageEndpoint(req.storageEndpoint())
 		m.FetchPayload = false
 		m.PayloadUrl = req.PayloadUrl

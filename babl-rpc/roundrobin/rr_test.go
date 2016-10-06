@@ -18,7 +18,7 @@ func (s *RRSuite) TestNoEndpoints(c *C) {
 }
 
 func (s *RRSuite) TestOneEndpoint(c *C) {
-	lb, err := New([]Endpoint{Endpoint{endpoint: "a", weight: 1}})
+	lb, err := New([]Endpoint{Endpoint{Endpoint: "a", Weight: 1}})
 	c.Assert(err, IsNil)
 
 	c.Assert(seq(c, lb, 3), DeepEquals, []string{"a", "a", "a"})

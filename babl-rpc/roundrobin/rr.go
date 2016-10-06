@@ -6,8 +6,8 @@ import (
 )
 
 type Endpoint struct {
-	endpoint string
-	weight   int
+	Endpoint string
+	Weight   int
 }
 
 type RoundRobin struct {
@@ -55,8 +55,8 @@ func (r *RoundRobin) NextEndpoint() string {
 			}
 		}
 		ep := r.endpoints[r.index]
-		if ep.weight >= r.currentWeight {
-			return ep.endpoint
+		if ep.Weight >= r.currentWeight {
+			return ep.Endpoint
 		}
 	}
 }
@@ -64,8 +64,8 @@ func (r *RoundRobin) NextEndpoint() string {
 func (rr *RoundRobin) maxWeight() int {
 	max := -1
 	for _, e := range rr.endpoints {
-		if e.weight > max {
-			max = e.weight
+		if e.Weight > max {
+			max = e.Weight
 		}
 	}
 	return max
@@ -75,9 +75,9 @@ func (rr *RoundRobin) weightGcd() int {
 	divisor := -1
 	for _, e := range rr.endpoints {
 		if divisor == -1 {
-			divisor = e.weight
+			divisor = e.Weight
 		} else {
-			divisor = gcd(divisor, e.weight)
+			divisor = gcd(divisor, e.Weight)
 		}
 	}
 	return divisor
