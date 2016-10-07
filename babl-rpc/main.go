@@ -20,7 +20,7 @@ const (
 
 var (
 	printVersion = flag.Bool("version", false, "print version & exit")
-	loadBalancer = map[string]rr.RoundRobin{}
+	loadBalancer = map[string]*rr.RoundRobin{}
 	lbMutex      sync.Mutex
 )
 
@@ -71,9 +71,9 @@ func (req *ModuleRequest) nextEndpoint() string {
 
 	lb, ok := loadBalancer[rs]
 	if !ok {
-		x, err := rr.New(ParseEndpoints(rs))
+		var err error
+		lb, err = rr.New(ParseEndpoints(rs))
 		check(err)
-		lb = *x
 		loadBalancer[rs] = lb
 	}
 	return lb.NextEndpoint()
