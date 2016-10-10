@@ -13,3 +13,12 @@ func TestModuleGrpcModuleName(t *testing.T) {
 		t.Fatalf("expected '%s', but result was '%s'", expected, actual)
 	}
 }
+
+func TestDockerServiceName(t *testing.T) {
+	mod := New("larskluge/http-forward")
+	expected := "larskluge--http-forward"
+	actual := mod.DockerServiceName()
+	if strings.Compare(expected, actual) != 0 {
+		t.Fatalf("expected '%s', but result was '%s'", expected, actual)
+	}
+}

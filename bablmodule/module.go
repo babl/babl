@@ -87,6 +87,11 @@ func (m *Module) SetStorageEndpoint(e string) {
 	m.storageEndpoint = e
 }
 
+func (m *Module) NameOnly() string {
+	parts := strings.SplitN(m.Name, "/", 2)
+	return parts[1]
+}
+
 func (m *Module) Owner() string {
 	parts := strings.SplitN(m.Name, "/", 2)
 	return parts[0]
@@ -109,6 +114,10 @@ func (m *Module) GrpcServiceName() string {
 
 func (m *Module) KafkaTopicName(method string) string {
 	return fmt.Sprintf("%s.%s", m.GrpcServiceName(), method)
+}
+
+func (m *Module) DockerServiceName() string {
+	return fmt.Sprintf("%s--%s", m.Owner(), m.NameOnly())
 }
 
 func (m *Module) loadDefaults() {
