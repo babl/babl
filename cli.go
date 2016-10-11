@@ -58,6 +58,10 @@ func configureCli() (app *cli.App) {
 			Usage:  "Flag request to be processed asynchronously and do not wait for a response",
 			EnvVar: "BABL_ASYNC",
 		},
+		cli.StringFlag{
+			Name:  "payload-url",
+			Usage: "URL pointing to payload",
+		},
 		cli.BoolFlag{
 			Name:   "debug",
 			Usage:  "Enable debug mode & verbose logging",
@@ -71,7 +75,8 @@ func configureCli() (app *cli.App) {
 			async := c.GlobalBool("async")
 			debug := c.GlobalBool("debug")
 			storageEndpoint := c.GlobalString("storage")
-			defaultAction(mod, envs, address(c), storageEndpoint, async, debug)
+			payloadUrl := c.GlobalString("payload-url")
+			defaultAction(mod, envs, address(c), storageEndpoint, payloadUrl, async, debug)
 		} else {
 			fmt.Fprintln(app.Writer, "Incorrect Usage.")
 			fmt.Fprintln(app.Writer)

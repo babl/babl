@@ -21,9 +21,10 @@ func main() {
 	app.Run(os.Args)
 }
 
-func defaultAction(module_with_tag string, envs []string, address, storageEndpoint string, async, debug bool) {
+func defaultAction(module_with_tag string, envs []string, address, storageEndpoint, payloadUrl string, async, debug bool) {
 	m := bablmodule.New(module_with_tag)
 	m.SetAsync(async)
+	m.PayloadUrl = payloadUrl
 	m.SetDebug(debug)
 
 	log.SetOutput(os.Stderr)
