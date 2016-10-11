@@ -38,6 +38,12 @@ func (u *Update) BinaryUrl() string {
 	return fmt.Sprintf("http://s3.amazonaws.com/babl/releases/%s/%s_%s_%s.gz", u.Version, u.App, goos, goarch)
 }
 
+func (u *Update) downloadVersionBinary(file string) bool {
+	out, err := exec.Command(file, "-plainversion").Output()
+	check(err)
+	return u.Version == strings.TrimSpace(string(out))
+}
+
 func (u *Update) Update(args []string) {
 
 	mv, err := exec.LookPath("mv")
@@ -66,11 +72,15 @@ func (u *Update) Update(args []string) {
 	info, err := os.Stat(AppPath())
 	check(err)
 	os.Chmod(tmpfile.Name(), info.Mode())
+	if downloadVersionBinary(tmpfile.Name()) {
+		cmd := exec.Command(mv, []string{tmpfile.Name(), AppPath()}...)
+		err = cmd.Run()
+		check(err)
 
-	cmd := exec.Command(mv, []string{tmpfile.Name(), AppPath()}...)
-	err = cmd.Run()
-	check(err)
+		err = syscall.Exec(args[0], args, os.Environ())
+		check(err)
+	} else {
+		panic("")
+	}
 
-	err = syscall.Exec(args[0], args, os.Environ())
-	check(err)
 }
