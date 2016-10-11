@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
+	"strings"
 	"syscall"
 )
 
@@ -56,10 +57,9 @@ func (u *Update) Update(args []string) {
 	check(err)
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
-
-	if http.DetectContentType(body) != "application/x-gzip" {
-		panic(fmt.Sprintf("File does not exist %s /n Are you sure %s is the right version?", u.BinaryUrl(), u.Version))
+	if resp.StatusCode == 403 {
+		fmt.Println(fmt.Sprintf("%s : %s version not found", u.App, u.Version))
+		os.Exit(-1)
 	}
 
 	decompress, err := gzip.NewReader(resp.Body)
@@ -72,7 +72,8 @@ func (u *Update) Update(args []string) {
 	info, err := os.Stat(AppPath())
 	check(err)
 	os.Chmod(tmpfile.Name(), info.Mode())
-	if downloadVersionBinary(tmpfile.Name()) {
+
+	if u.downloadVersionBinary(tmpfile.Name()) {
 		cmd := exec.Command(mv, []string{tmpfile.Name(), AppPath()}...)
 		err = cmd.Run()
 		check(err)
@@ -80,7 +81,8 @@ func (u *Update) Update(args []string) {
 		err = syscall.Exec(args[0], args, os.Environ())
 		check(err)
 	} else {
-		panic("")
+		fmt.Println("Downloaded binary seems to be corrupt or wrong version, please try again later.")
+		os.Exit(-1)
 	}
 
 }
