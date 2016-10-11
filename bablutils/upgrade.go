@@ -11,9 +11,6 @@ import (
 	"regexp"
 	"runtime"
 	"syscall"
-
-	log "github.com/Sirupsen/logrus"
-	"github.com/kardianos/osext"
 )
 
 type Upgrade struct {
@@ -47,11 +44,11 @@ func (u *Upgrade) Upgrade(currentVersion string) {
 	decompress.Close()
 	tmpfile.Close()
 
-	info, err := os.Stat(u.AppPath())
+	info, err := os.Stat(AppPath())
 	check(err)
 	os.Chmod(tmpfile.Name(), info.Mode())
 
-	err = syscall.Exec(mv, []string{"mv", tmpfile.Name(), u.AppPath()}, os.Environ())
+	err = syscall.Exec(mv, []string{"mv", tmpfile.Name(), AppPath()}, os.Environ())
 	check(err)
 }
 
@@ -59,14 +56,6 @@ func (u *Upgrade) BinaryUrl() string {
 	goos := runtime.GOOS
 	goarch := runtime.GOARCH
 	return fmt.Sprintf("http://s3.amazonaws.com/babl/%s_%s_%s.gz", u.App, goos, goarch)
-}
-
-func (u *Upgrade) AppPath() string {
-	app, err := osext.Executable()
-	if err != nil {
-		log.Fatal(err)
-	}
-	return app
 }
 
 func (u *Upgrade) latestVersionUrl() string {
