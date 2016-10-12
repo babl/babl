@@ -10,6 +10,7 @@ import (
 	"os/exec"
 	"regexp"
 	"runtime"
+	"strings"
 	"syscall"
 
 	log "github.com/Sirupsen/logrus"
@@ -29,7 +30,6 @@ func (u *Upgrade) Upgrade(currentVersion string) {
 		fmt.Println("Already up-to-date.")
 		return
 	}
-
 	mv, err := exec.LookPath("mv")
 	check(err)
 
@@ -51,8 +51,18 @@ func (u *Upgrade) Upgrade(currentVersion string) {
 	check(err)
 	os.Chmod(tmpfile.Name(), info.Mode())
 
-	err = syscall.Exec(mv, []string{"mv", tmpfile.Name(), u.AppPath()}, os.Environ())
+	if u.latestVersionBinary(tmpfile.Name()) {
+		err = syscall.Exec(mv, []string{"mv", tmpfile.Name(), u.AppPath()}, os.Environ())
+		check(err)
+	} else {
+		fmt.Println("Downloaded binary seems to be corrupt or wrong version, please try again later.")
+	}
+}
+
+func (u *Upgrade) latestVersionBinary(file string) bool {
+	out, err := exec.Command(file, "-plainversion").Output()
 	check(err)
+	return u.LatestVersionRunning(strings.TrimSpace(string(out)))
 }
 
 func (u *Upgrade) BinaryUrl() string {
