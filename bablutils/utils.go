@@ -22,8 +22,6 @@ func ReadStdin() (in []byte) {
 
 func AppPath() string {
 	app, err := osext.Executable()
-	if err != nil {
-		panic(err)
-	}
+	check(err)
 	return app
 }

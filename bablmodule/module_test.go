@@ -22,3 +22,20 @@ func TestDockerServiceName(t *testing.T) {
 		t.Fatalf("expected '%s', but result was '%s'", expected, actual)
 	}
 }
+
+func TestDockerFullName(t *testing.T) {
+	mod := New("larskluge/http-forward")
+	expected := "larskluge/http-forward"
+
+	actual := mod.Fullname()
+	if strings.Compare(expected, actual) != 0 {
+		t.Fatalf("expected '%s', but result was '%s'", expected, actual)
+	}
+
+	mod = New("larskluge/http-forward:babl")
+	expected = "larskluge/http-forward:babl"
+	actual = mod.Fullname()
+	if strings.Compare(expected, actual) != 0 {
+		t.Fatalf("expected '%s', but result was '%s'", expected, actual)
+	}
+}
