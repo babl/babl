@@ -60,7 +60,11 @@ func New(name_with_tag string) *Module {
 }
 
 func (m *Module) Fullname() string {
-	return fmt.Sprintf("%s:%s", m.Name, m.Tag)
+	if m.Tag != "" {
+		return fmt.Sprintf("%s:%s", m.Name, m.Tag)
+	} else {
+		return fmt.Sprintf("%s", m.Name)
+	}
 }
 
 func (m *Module) Endpoint() string {

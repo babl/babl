@@ -1,10 +1,10 @@
 package bablutils
 
 import (
+	"github.com/kardianos/osext"
+	"github.com/mattn/go-isatty"
 	"io/ioutil"
 	"os"
-
-	"github.com/mattn/go-isatty"
 )
 
 func check(err error) {
@@ -18,4 +18,10 @@ func ReadStdin() (in []byte) {
 		in, _ = ioutil.ReadAll(os.Stdin)
 	}
 	return
+}
+
+func AppPath() string {
+	app, err := osext.Executable()
+	check(err)
+	return app
 }
