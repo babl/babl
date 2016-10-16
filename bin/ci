@@ -9,10 +9,10 @@ go build
 ./babl --help > /dev/null
 echo i should be upper case now | ./babl larskluge/string-upcase
 gox -osarch="linux/amd64" -osarch="darwin/amd64"
-cat babl_linux_amd64 | gzip | ./babl larskluge/s3-new:babl -e FILE=/babl_linux_amd64.gz
-cat babl_darwin_amd64 | gzip | ./babl larskluge/s3-new:babl -e FILE=/babl_darwin_amd64.gz
+cat babl_linux_amd64 | gzip | ./babl larskluge/s3:babl -e FILE=/babl_linux_amd64.gz
+cat babl_darwin_amd64 | gzip | ./babl larskluge/s3:babl -e FILE=/babl_darwin_amd64.gz
 
-./babl -version | ./babl larskluge/s3-new:babl -e FILE=/babl-latest-version.txt -e CONTENTTYPE=text/plain
+./babl -version | ./babl larskluge/s3:babl -e FILE=/babl-latest-version.txt -e CONTENTTYPE=text/plain
 
 rm -f babl_darwin_amd64 babl_linux_amd64
 go install
