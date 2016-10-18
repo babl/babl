@@ -31,10 +31,12 @@ func TestDockerFullName(t *testing.T) {
 	if strings.Compare(expected, actual) != 0 {
 		t.Fatalf("expected '%s', but result was '%s'", expected, actual)
 	}
+}
 
-	mod = New("larskluge/http-forward:babl")
-	expected = "larskluge/http-forward:babl"
-	actual = mod.Fullname()
+func TestDockerFullNameWithTag(t *testing.T) {
+	mod := New("larskluge/http-forward:babl")
+	expected := "larskluge/http-forward:babl"
+	actual := mod.Fullname()
 	if strings.Compare(expected, actual) != 0 {
 		t.Fatalf("expected '%s', but result was '%s'", expected, actual)
 	}
