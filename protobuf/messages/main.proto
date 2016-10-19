@@ -7,6 +7,8 @@ message BinRequest {
   bytes stdin = 1;
   map<string, string> env = 2;
   string payloadUrl = 3;
+  uint64 id = 4;
+  string module = 5;
 }
 
 message BinReply {
@@ -14,6 +16,8 @@ message BinReply {
   bytes stderr = 2;
   int32 exitcode = 3;
   string payloadUrl = 4;
+  uint64 id = 5;
+  string module = 6;
 }
 
 message Empty {
@@ -21,4 +25,25 @@ message Empty {
 
 message Pong {
   string val = 1;
+}
+
+message Meta {
+  EchoRequest ping = 1;
+  CancelRequest cancel = 2;
+}
+
+message EchoRequest {
+  string id = 1;
+  uint32 sequence_number = 2;
+  bytes payload = 3;
+}
+
+message EchoResponse {
+  string id = 1;
+  uint32 sequence_number = 2;
+  bytes payload = 3;
+}
+
+message CancelRequest {
+  uint64 request_id = 1;
 }

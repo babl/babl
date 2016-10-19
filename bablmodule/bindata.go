@@ -83,7 +83,7 @@ func caPem() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "ca.pem", size: 802, mode: os.FileMode(420), modTime: time.Unix(1468465843, 0)}
+	info := bindataFileInfo{name: "ca.pem", size: 802, mode: os.FileMode(420), modTime: time.Unix(1475832883, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
