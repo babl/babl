@@ -68,7 +68,7 @@ func (u *Upgrade) Update(currentVersion string, newVersion string) {
 		check(err)
 
 		if len(u.Args) != 0 {
-			err = syscall.Exec(u.Args[0], u.Args, os.Environ())
+			err = syscall.Exec(AppPath(), u.Args, os.Environ())
 			check(err)
 		}
 		return
