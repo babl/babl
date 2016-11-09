@@ -23,8 +23,7 @@ message BinReply {
     ERROR = 1;
     EXECUTION_TIMEOUT = 2;
     EXECUTION_CANCELED = 3;
-    EXECUTION_FLUSHED = 4;
-    MODULE_RESPONSE_TIMEOUT = 5;
+    MODULE_RESPONSE_TIMEOUT = 4;
   }
   Status status = 7;
   string error = 8;
