@@ -20,8 +20,11 @@ message BinReply {
   string module = 6;
   enum Status {
     SUCCESS = 0;
-    CMD_ERROR = 1;
-    CMD_TIMEOUT = 2;
+    ERROR = 1;
+    EXECUTION_TIMEOUT = 2;
+    EXECUTION_CANCELED = 3;
+    EXECUTION_FLUSHED = 4;
+    MODULE_RESPONSE_TIMEOUT = 5;
   }
   Status status = 7;
   string error = 8;
