@@ -11,5 +11,5 @@ brew update && brew install --devel protobuf
 
 go get -a github.com/golang/protobuf/protoc-gen-go
 
-protoc -I ./protobuf/ ./protobuf/babl.proto --go_out=plugins=grpc:protobuf
-```
+go generate
+

@@ -18,6 +18,15 @@ message BinReply {
   string payloadUrl = 4;
   uint64 id = 5;
   string module = 6;
+  enum Status {
+    SUCCESS = 0;
+    ERROR = 1;
+    EXECUTION_TIMEOUT = 2;
+    EXECUTION_CANCELED = 3;
+    MODULE_RESPONSE_TIMEOUT = 4;
+  }
+  Status status = 7;
+  string error = 8;
 }
 
 message Empty {
