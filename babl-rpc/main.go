@@ -15,7 +15,7 @@ import (
 
 const (
 	Version             = "0.2.1"
-	DefaultBablEndpoint = "babl.sh:4444" // lock in Babl v4 for the time being
+	DefaultBablEndpoint = "sandbox.babl.sh:4445" // lock in Babl v4 for the time being
 )
 
 var (
