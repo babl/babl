@@ -33,4 +33,14 @@ var _ = Describe("Utils", func() {
 			Expect(ModuleToTopic("larskluge/image-resize", false)).To(Equal("babl.larskluge.ImageResize.IO"))
 		})
 	})
+	Context("#ServiceToModule", func() {
+		It("converts a module name to a docker service", func() {
+			Expect(ServiceToModule("larskluge--string-upcase")).To(Equal("larskluge/string-upcase"))
+		})
+	})
+	Context("#ModuleToService", func() {
+		It("converts a module name to a docker service", func() {
+			Expect(ModuleToService("larskluge/string-upcase")).To(Equal("larskluge--string-upcase"))
+		})
+	})
 })

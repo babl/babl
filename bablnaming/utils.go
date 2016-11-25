@@ -34,3 +34,11 @@ func ModuleToTopic(module string, meta bool) string {
 
 	return "babl." + owner + "." + name + "." + function
 }
+
+func ServiceToModule(service string) string {
+	return strings.Replace(service, "--", "/", 1)
+}
+
+func ModuleToService(module string) string {
+	return strings.Replace(module, "/", "--", 1)
+}

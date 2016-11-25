@@ -39,6 +39,7 @@ message Pong {
 message Meta {
   EchoRequest ping = 1;
   CancelRequest cancel = 2;
+  RestartRequest restart = 3;
 }
 
 message EchoRequest {
@@ -55,4 +56,8 @@ message EchoResponse {
 
 message CancelRequest {
   uint64 request_id = 1;
+}
+
+message RestartRequest {
+   string instance_id = 1;
 }
