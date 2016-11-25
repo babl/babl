@@ -13,7 +13,7 @@ import (
 	"github.com/larskluge/babl/bablutils"
 )
 
-const Version = "0.5.2"
+const Version = "0.5.3"
 
 func main() {
 	bablutils.PrintPlainVersionAndExit(os.Args, Version)

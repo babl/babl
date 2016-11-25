@@ -20,8 +20,8 @@ import (
 
 const (
 	MaxPayloadSize         = 1024 * 512 // 512kb
-	DefaultBablEndpoint    = "babl.sh:4445"
-	DefaultStorageEndpoint = "babl.sh:4443"
+	DefaultBablEndpoint    = "sandbox.babl.sh:4445"
+	DefaultStorageEndpoint = "sandbox.babl.sh:4443"
 )
 
 type Module struct {
