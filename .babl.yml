@@ -3,6 +3,6 @@ defaults:
     module: s3
     env:
       BUCKET: babl
-      AWS_ACCESS_KEY_ID: AKIAJXXFBMHHERIBZ34Q
-      AWS_SECRET_ACCESS_KEY: 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
+      AWS_ACCESS_KEY_ID: XYZ
+      AWS_SECRET_ACCESS_KEY: XYZ
       ACL: public-read
